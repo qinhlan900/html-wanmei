@@ -1,0 +1,2149 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>皖美e行 - 运营管理平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            DEFAULT: '#FF6B35',
+                            light: '#FFF7E6',
+                            dark: '#E55A2B'
+                        },
+                        success: '#10B981',
+                        warning: '#F59E0B',
+                        error: '#DC2626',
+                        info: '#3B82F6',
+                        neutral: {
+                            50: '#F9FAFB',
+                            100: '#F3F4F6',
+                            200: '#E5E7EB',
+                            300: '#D1D5DB',
+                            400: '#9CA3AF',
+                            500: '#6B7280',
+                            600: '#4B5563',
+                            700: '#374151',
+                            800: '#1F2937',
+                            900: '#111827'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'Monaco', 'Consolas', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .page { display: none; }
+        .page.active { display: block; }
+
+        .nav-item { cursor: pointer; }
+        .nav-item:hover { background-color: #F9FAFB; }
+
+        .table-row:hover { background-color: #FFF7E6 !important; }
+
+        .step-node {
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: #FF6B35;
+            color: white;
+            transition: all 0.2s ease;
+        }
+        .btn-primary:hover { opacity: 0.9; }
+
+        .btn-secondary {
+            background-color: #94A3B8;
+            color: white;
+            transition: all 0.2s ease;
+        }
+        .btn-secondary:hover { opacity: 0.9; }
+
+        /* 开关组件样式 */
+        .toggle-checkbox {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #FF6B35;
+        }
+        .toggle-checkbox:checked + .toggle-label:after {
+            transform: translateX(100%);
+        }
+        .toggle-label {
+            display: block;
+            overflow: hidden;
+            cursor: pointer;
+            height: 24px;
+            width: 48px;
+            border-radius: 12px;
+            background-color: #D1D5DB;
+            position: relative;
+            transition: background-color 0.2s ease-in-out;
+        }
+        .toggle-label:after {
+            content: '';
+            display: block;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: white;
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.2s ease-in-out;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-neutral-100 min-h-screen">
+    <!-- Top Navigation -->
+    <header class="bg-primary text-white fixed top-0 left-0 right-0 z-50">
+        <div class="h-14 flex items-center px-4">
+            <div class="flex items-center gap-3">
+                <i data-lucide="car" class="w-6 h-6"></i>
+                <span class="text-lg font-bold">皖美e行</span>
+                <span class="text-xs bg-white/20 px-2 py-0.5 rounded">运营管理平台</span>
+            </div>
+            <nav class="hidden md:flex items-center gap-1 ml-8">
+                <a onclick="showPage('dashboard')" class="nav-item px-4 py-2 rounded hover:bg-white/10 transition-colors">概况</a>
+                <a onclick="showPage('goods')" class="nav-item px-4 py-2 rounded hover:bg-white/10 transition-colors">商品</a>
+                <a onclick="showPage('order')" class="nav-item px-4 py-2 rounded hover:bg-white/10 transition-colors">订单</a>
+                <a onclick="showPage('shop')" class="nav-item px-4 py-2 rounded hover:bg-white/10 transition-colors">店铺</a>
+                <a onclick="showPage('points')" class="nav-item px-4 py-2 rounded hover:bg-white/10 transition-colors">积分商城</a>
+                <a onclick="showPage('statistics')" class="nav-item px-4 py-2 rounded hover:bg-white/10 transition-colors">统计</a>
+                <a onclick="showPage('app')" class="nav-item px-4 py-2 rounded hover:bg-white/10 transition-colors">应用</a>
+                <a onclick="showPage('settlement-list')" id="nav-settlement" class="nav-item px-4 py-2 bg-white/20 rounded font-semibold transition-colors">结算</a>
+                <a onclick="showPage('customer')" class="nav-item px-4 py-2 rounded hover:bg-white/10 transition-colors">客服</a>
+            </nav>
+            <div class="ml-auto flex items-center gap-3">
+                <button class="p-2 hover:bg-white/10 rounded">
+                    <i data-lucide="bell" class="w-5 h-5"></i>
+                </button>
+                <button class="p-2 hover:bg-white/10 rounded">
+                    <i data-lucide="user" class="w-5 h-5"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="flex pt-14">
+        <!-- Sidebar -->
+        <aside class="w-56 bg-white border-r border-neutral-200 fixed left-0 top-14 bottom-0 overflow-y-auto">
+            <nav class="py-4">
+                <div class="px-4 py-2 text-xs text-neutral-500 uppercase tracking-wider">结算管理</div>
+                <a onclick="showPage('settlement-list')" id="nav-settlement-list" class="nav-item flex items-center gap-3 px-4 py-2.5 bg-primary-light text-primary border-l-4 border-primary font-medium">
+                    <i data-lucide="file-text" class="w-5 h-5"></i>
+                    <span>结算账单</span>
+                </a>
+                <a onclick="showPage('reconciliation')" id="nav-reconciliation" class="nav-item flex items-center gap-3 px-4 py-2.5 text-neutral-600 hover:bg-neutral-50 border-l-4 border-transparent">
+                    <i data-lucide="file-check" class="w-5 h-5"></i>
+                    <span>交易对账</span>
+                </a>
+                <a onclick="showPage('account')" id="nav-account" class="nav-item flex items-center gap-3 px-4 py-2.5 text-neutral-600 hover:bg-neutral-50 border-l-4 border-transparent">
+                    <i data-lucide="wallet" class="w-5 h-5"></i>
+                    <span>结算账号</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 ml-56 p-6">
+            <!-- Dashboard Page -->
+            <div id="page-dashboard" class="page">
+                <div class="text-center py-20">
+                    <i data-lucide="bar-chart" class="w-16 h-16 text-neutral-300 mx-auto mb-4"></i>
+                    <h2 class="text-xl text-neutral-500">数据看板页面</h2>
+                    <p class="text-neutral-400 mt-2">点击左侧导航菜单查看相关功能</p>
+                </div>
+            </div>
+
+            <!-- Settlement List Page -->
+            <div id="page-settlement-list" class="page">
+                <!-- 模块1：页面标题与操作区 -->
+                <div class="flex justify-between items-center mb-6">
+                    <h1 class="text-lg font-bold text-neutral-900">结算账单</h1>
+                    <div class="flex gap-3">
+                        <button class="border border-primary text-primary px-4 py-2 rounded text-sm font-medium hover:bg-primary-light transition-colors">导出</button>
+                    </div>
+                </div>
+
+                <!-- 筛选区 -->
+                <div class="bg-white rounded-lg p-4 border border-neutral-200 mb-6">
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+                        <div>
+                            <label class="block text-sm text-neutral-600 mb-1">结算单号</label>
+                            <input type="text" placeholder="请输入单号" class="w-full px-3 py-2 border border-neutral-200 rounded text-sm focus:outline-none focus:border-primary">
+                        </div>
+                        <div>
+                            <label class="block text-sm text-neutral-600 mb-1">店铺名称</label>
+                            <input type="text" placeholder="请输入店铺" class="w-full px-3 py-2 border border-neutral-200 rounded text-sm focus:outline-none focus:border-primary">
+                        </div>
+                        <div>
+                            <label class="block text-sm text-neutral-600 mb-1">结算状态</label>
+                            <select class="w-full px-3 py-2 border border-neutral-200 rounded text-sm bg-white focus:outline-none focus:border-primary">
+                                <option>全部</option>
+                                <option>待确认</option>
+                                <option>待审核</option>
+                                <option>待打款</option>
+                                <option>已打款</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm text-neutral-600 mb-1">结算周期</label>
+                            <input type="date" class="w-full px-3 py-2 border border-neutral-200 rounded text-sm focus:outline-none focus:border-primary">
+                        </div>
+                    </div>
+                    <div class="flex gap-3 justify-end">
+                        <button class="btn-secondary px-4 py-2 rounded text-sm font-medium">重置</button>
+                        <button class="btn-primary px-4 py-2 rounded text-sm font-medium">查询</button>
+                    </div>
+                </div>
+
+                <!-- 账单列表区 -->
+                <div class="bg-white rounded-lg border border-neutral-200 mb-6">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr class="bg-neutral-50 border-b border-neutral-200">
+                                    <th class="text-left py-3 px-4 font-semibold text-neutral-700">结算单号</th>
+                                    <th class="text-left py-3 px-4 font-semibold text-neutral-700">店铺名称</th>
+                                    <th class="text-left py-3 px-4 font-semibold text-neutral-700">结算周期</th>
+                                    <th class="text-right py-3 px-4 font-semibold text-neutral-700">订单总金额</th>
+                                    <th class="text-right py-3 px-4 font-semibold text-neutral-700">平台佣金</th>
+                                    <th class="text-right py-3 px-4 font-semibold text-neutral-700">退款抵扣</th>
+                                    <th class="text-right py-3 px-4 font-semibold text-neutral-700">实付金额</th>
+                                    <th class="text-center py-3 px-4 font-semibold text-neutral-700">状态</th>
+                                    <th class="text-center py-3 px-4 font-semibold text-neutral-700">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="table-row border-b border-neutral-100 transition-colors cursor-pointer" onclick="showPage('settlement-detail')">
+                                    <td class="py-3 px-4 font-mono">JS-20260428-001</td>
+                                    <td class="py-3 px-4">合肥服务区</td>
+                                    <td class="py-3 px-4 text-neutral-600">2026-04-20~04-26</td>
+                                    <td class="py-3 px-4 text-right">¥15,230.00</td>
+                                    <td class="py-3 px-4 text-right text-neutral-500">-¥761.50</td>
+                                    <td class="py-3 px-4 text-right text-error">-¥200.00</td>
+                                    <td class="py-3 px-4 text-right font-bold text-error">¥14,268.50</td>
+                                    <td class="py-3 px-4 text-center"><span class="px-2 py-1 bg-primary-light text-primary text-xs rounded-full">待确认</span></td>
+                                    <td class="py-3 px-4 text-center">
+                                        <button class="text-primary hover:underline" onclick="event.stopPropagation(); showPage('settlement-detail')">查看详情</button>
+                                        <span class="mx-1 text-neutral-300">|</span>
+                                        <button class="text-primary hover:underline transition-colors duration-200 cursor-pointer px-2 py-1 rounded hover:bg-primary/10 active:bg-primary/20" onclick="event.stopPropagation(); handleAppeal('JS-20260428-001')">发起申诉</button>
+                                    </td>
+                                </tr>
+                                <tr class="table-row border-b border-neutral-100 bg-neutral-50 transition-colors cursor-pointer" onclick="showPage('settlement-detail')">
+                                    <td class="py-3 px-4 font-mono">JS-20260428-002</td>
+                                    <td class="py-3 px-4">安庆加油站</td>
+                                    <td class="py-3 px-4 text-neutral-600">2026-04-20~04-26</td>
+                                    <td class="py-3 px-4 text-right">¥9,850.00</td>
+                                    <td class="py-3 px-4 text-right text-neutral-500">-¥492.50</td>
+                                    <td class="py-3 px-4 text-right">-¥0.00</td>
+                                    <td class="py-3 px-4 text-right font-bold">¥9,357.50</td>
+                                    <td class="py-3 px-4 text-center"><span class="px-2 py-1 bg-info/10 text-info text-xs rounded-full">待审核</span></td>
+                                    <td class="py-3 px-4 text-center">
+                                        <button class="text-primary hover:underline" onclick="event.stopPropagation(); showPage('settlement-detail')">查看详情</button>
+                                        <span class="mx-1 text-neutral-300">|</span>
+                                        <button class="text-primary hover:underline transition-colors duration-200 cursor-pointer px-2 py-1 rounded hover:bg-primary/10 active:bg-primary/20" onclick="event.stopPropagation(); handleApprove('JS-20260428-002')">审核通过</button>
+                                    </td>
+                                </tr>
+                                <tr class="table-row border-b border-neutral-100 transition-colors cursor-pointer" onclick="showPage('settlement-detail')">
+                                    <td class="py-3 px-4 font-mono">JS-20260428-003</td>
+                                    <td class="py-3 px-4">芜湖充电站</td>
+                                    <td class="py-3 px-4 text-neutral-600">2026-04-20~04-26</td>
+                                    <td class="py-3 px-4 text-right">¥4,280.00</td>
+                                    <td class="py-3 px-4 text-right text-neutral-500">-¥214.00</td>
+                                    <td class="py-3 px-4 text-right">-¥0.00</td>
+                                    <td class="py-3 px-4 text-right font-bold">¥4,066.00</td>
+                                    <td class="py-3 px-4 text-center"><span class="px-2 py-1 bg-warning/10 text-warning text-xs rounded-full">待打款</span></td>
+                                    <td class="py-3 px-4 text-center">
+                                        <button class="text-primary hover:underline" onclick="event.stopPropagation(); showPage('settlement-detail')">查看详情</button>
+                                        <span class="mx-1 text-neutral-300">|</span>
+                                        <button class="text-primary hover:underline transition-colors duration-200 cursor-pointer px-2 py-1 rounded hover:bg-primary/10 active:bg-primary/20" onclick="event.stopPropagation(); handlePayment('JS-20260428-003')">确认打款</button>
+                                    </td>
+                                </tr>
+                                <tr class="table-row border-b border-neutral-100 bg-neutral-50 transition-colors cursor-pointer" onclick="showPage('settlement-detail')">
+                                    <td class="py-3 px-4 font-mono">JS-20260428-004</td>
+                                    <td class="py-3 px-4">蚌埠商城店</td>
+                                    <td class="py-3 px-4 text-neutral-600">2026-04-13~04-19</td>
+                                    <td class="py-3 px-4 text-right">¥6,780.00</td>
+                                    <td class="py-3 px-4 text-right text-neutral-500">-¥339.00</td>
+                                    <td class="py-3 px-4 text-right">-¥50.00</td>
+                                    <td class="py-3 px-4 text-right font-bold">¥6,391.00</td>
+                                    <td class="py-3 px-4 text-center"><span class="px-2 py-1 bg-success/10 text-success text-xs rounded-full">已打款</span></td>
+                                    <td class="py-3 px-4 text-center">
+                                        <button class="text-primary hover:underline" onclick="event.stopPropagation(); showPage('settlement-detail')">查看详情</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 分页区 -->
+                <div class="flex justify-between items-center">
+                    <span class="text-sm text-neutral-600">共 <span class="font-semibold">4</span> 条记录</span>
+                    <div class="flex items-center gap-2">
+                        <select class="px-2 py-1 border border-neutral-200 rounded text-sm">
+                            <option>10条/页</option>
+                            <option>20条/页</option>
+                        </select>
+                        <button class="px-3 py-1 border border-neutral-200 rounded text-neutral-400 cursor-not-allowed" disabled>
+                            <i data-lucide="chevron-left" class="w-4 h-4"></i>
+                        </button>
+                        <button class="px-3 py-1 border border-primary bg-primary text-white rounded">1</button>
+                        <button class="px-3 py-1 border border-neutral-200 rounded hover:bg-neutral-50 cursor-pointer">2</button>
+                        <button class="px-3 py-1 border border-neutral-200 rounded hover:bg-neutral-50 cursor-pointer">3</button>
+                        <button class="px-3 py-1 border border-neutral-200 rounded hover:bg-neutral-50 cursor-pointer">
+                            <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settlement Detail Page -->
+            <div id="page-settlement-detail" class="page">
+                <div class="flex items-center justify-between mb-6">
+                    <div class="flex items-center gap-4">
+                        <button onclick="showPage('settlement-list')" class="flex items-center gap-1 text-neutral-600 hover:text-primary cursor-pointer">
+                            <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                            <span class="text-sm">返回</span>
+                        </button>
+                        <h1 class="text-2xl font-bold text-neutral-900">结算详情</h1>
+                    </div>
+                    <!-- 操作按钮 -->
+                    <div class="flex gap-3">
+                        <button class="border border-neutral-300 text-neutral-600 px-4 py-2 rounded font-medium hover:bg-neutral-50 transition-colors duration-200 cursor-pointer text-sm active:scale-95 active:bg-neutral-100" onclick="handleExport()">导出明细</button>
+                        <button class="border border-neutral-300 text-neutral-600 px-4 py-2 rounded font-medium hover:bg-neutral-50 transition-colors duration-200 cursor-pointer text-sm active:scale-95 active:bg-neutral-100" onclick="handleAppeal('SET-20260426-001')">发起申诉</button>
+                        <button class="btn-primary px-4 py-2 rounded font-medium text-sm transition-colors duration-200 cursor-pointer hover:bg-primary-dark active:scale-95 active:bg-primary-darker" onclick="handleConfirmSettlement()">确认结算</button>
+                    </div>
+                </div>
+
+                <!-- 流程流转图与状态区 -->
+                <div class="bg-white rounded-lg p-6 border border-neutral-200 mb-6">
+                    <div class="flex items-center justify-center max-w-3xl mx-auto mb-4">
+                        <div class="flex flex-col items-center">
+                            <div class="step-node w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center font-bold">1</div>
+                            <div class="text-xs mt-2 text-primary font-medium">账单生成</div>
+                        </div>
+                        <div class="flex-1 h-0.5 bg-primary mx-2"></div>
+                        <div class="flex flex-col items-center">
+                            <div class="step-node w-10 h-10 rounded-full bg-primary-light text-primary border-2 border-primary flex items-center justify-center font-bold">2</div>
+                            <div class="text-xs mt-2 text-primary font-medium">等待确认</div>
+                        </div>
+                        <div class="flex-1 h-0.5 bg-neutral-200 mx-2"></div>
+                        <div class="flex flex-col items-center">
+                            <div class="step-node w-10 h-10 rounded-full bg-neutral-100 text-neutral-400 flex items-center justify-center font-bold">3</div>
+                            <div class="text-xs mt-2 text-neutral-400">平台审核</div>
+                        </div>
+                        <div class="flex-1 h-0.5 bg-neutral-200 mx-2"></div>
+                        <div class="flex flex-col items-center">
+                            <div class="step-node w-10 h-10 rounded-full bg-neutral-100 text-neutral-400 flex items-center justify-center font-bold">4</div>
+                            <div class="text-xs mt-2 text-neutral-400">结算打款</div>
+                        </div>
+                        <div class="flex-1 h-0.5 bg-neutral-200 mx-2"></div>
+                        <div class="flex flex-col items-center">
+                            <div class="step-node w-10 h-10 rounded-full bg-neutral-100 text-neutral-400 flex items-center justify-center font-bold">5</div>
+                            <div class="text-xs mt-2 text-neutral-400">完成</div>
+                        </div>
+                    </div>
+                    <!-- 状态信息 -->
+                    <div class="flex items-center justify-center gap-3 pt-4 border-t border-neutral-100">
+                        <span class="px-3 py-1 bg-primary-light text-primary text-sm rounded-full">等待店铺确认</span>
+                        <span class="text-xs text-neutral-500">请在2026-04-30前确认账单，逾期将自动审核</span>
+                    </div>
+                </div>
+
+                <!-- 结算金额公式区 -->
+                <div class="bg-white rounded-lg p-4 border border-neutral-200 mb-6">
+                    <h3 class="text-lg font-semibold mb-3">结算金额计算</h3>
+                    <div class="bg-neutral-50 rounded p-3">
+                        <div class="text-sm text-neutral-700 font-medium">
+                            结算金额 <span class="text-primary font-bold">¥11,245.00</span> = 
+                            <span class="text-neutral-900">订单金额 ¥12,500.00</span> - 
+                            <span class="text-neutral-900">商户优惠 ¥300.00</span> - 
+                            <span class="text-neutral-900">平台券码 ¥150.00</span> - 
+                            <span class="text-neutral-900">平台佣金 ¥605.00</span> - 
+                            <span class="text-neutral-900">退款金额 ¥200.00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 结算明细列表区 -->
+                <div class="bg-white rounded-lg p-6 border border-neutral-200 mb-6">
+                    <h3 class="text-lg font-semibold mb-4">结算明细</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr class="bg-neutral-50 border-b border-neutral-200">
+                                    <th class="text-left py-2 px-3 font-semibold text-neutral-700">订单号</th>
+                                    <th class="text-left py-2 px-3 font-semibold text-neutral-700">业务类型</th>
+                                    <th class="text-left py-2 px-3 font-semibold text-neutral-700">下单时间</th>
+                                    <th class="text-right py-2 px-3 font-semibold text-neutral-700">原始交易金额</th>
+                                    <th class="text-right py-2 px-3 font-semibold text-neutral-700">商户优惠</th>
+                                    <th class="text-right py-2 px-3 font-semibold text-neutral-700">商户积分成本</th>
+                                    <th class="text-right py-2 px-3 font-semibold text-neutral-700">平台优惠补贴</th>
+                                    <th class="text-right py-2 px-3 font-semibold text-neutral-700">平台积分补贴</th>
+                                    <th class="text-right py-2 px-3 font-semibold text-neutral-700">平台佣金</th>
+                                    <th class="text-right py-2 px-3 font-semibold text-neutral-700">退款抵扣</th>
+                                    <th class="text-right py-2 px-3 font-semibold text-neutral-700">本次结算</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b border-neutral-100">
+                                    <td class="py-2 px-3 font-mono text-xs">ORD-20260426-001</td>
+                                    <td class="py-2 px-3">商城</td>
+                                    <td class="py-2 px-3 text-neutral-600">2026-04-26 10:30</td>
+                                    <td class="py-2 px-3 text-right">¥300.00</td>
+                                    <td class="py-2 px-3 text-right text-neutral-500">-¥30.00</td>
+                                    <td class="py-2 px-3 text-right text-neutral-500">-¥5.00</td>
+                                    <td class="py-2 px-3 text-right text-success">+¥15.00</td>
+                                    <td class="py-2 px-3 text-right text-success">+¥5.00</td>
+                                    <td class="py-2 px-3 text-right text-neutral-500">-¥15.00</td>
+                                    <td class="py-2 px-3 text-right text-error">-¥0.00</td>
+                                    <td class="py-2 px-3 text-right font-medium">¥270.00</td>
+                                </tr>
+                                <tr class="border-b border-neutral-100 bg-neutral-50">
+                                    <td class="py-2 px-3 font-mono text-xs">ORD-20260426-002</td>
+                                    <td class="py-2 px-3">加油</td>
+                                    <td class="py-2 px-3 text-neutral-600">2026-04-26 14:20</td>
+                                    <td class="py-2 px-3 text-right">¥450.00</td>
+                                    <td class="py-2 px-3 text-right text-neutral-500">-¥45.00</td>
+                                    <td class="py-2 px-3 text-right text-neutral-500">-¥7.50</td>
+                                    <td class="py-2 px-3 text-right text-success">+¥22.50</td>
+                                    <td class="py-2 px-3 text-right text-success">+¥7.50</td>
+                                    <td class="py-2 px-3 text-right text-neutral-500">-¥22.50</td>
+                                    <td class="py-2 px-3 text-right text-error">-¥0.00</td>
+                                    <td class="py-2 px-3 text-right font-medium">¥405.00</td>
+                                </tr>
+                                <tr class="border-b border-neutral-100">
+                                    <td class="py-2 px-3 font-mono text-xs">ORD-20260426-003</td>
+                                    <td class="py-2 px-3">充电</td>
+                                    <td class="py-2 px-3 text-neutral-600">2026-04-26 16:45</td>
+                                    <td class="py-2 px-3 text-right">¥200.00</td>
+                                    <td class="py-2 px-3 text-right text-neutral-500">-¥20.00</td>
+                                    <td class="py-2 px-3 text-right text-neutral-500">-¥3.33</td>
+                                    <td class="py-2 px-3 text-right text-success">+¥10.00</td>
+                                    <td class="py-2 px-3 text-right text-success">+¥3.33</td>
+                                    <td class="py-2 px-3 text-right text-neutral-500">-¥10.00</td>
+                                    <td class="py-2 px-3 text-right text-error">-¥0.00</td>
+                                    <td class="py-2 px-3 text-right font-medium">¥180.00</td>
+                                </tr>
+                                <tr class="border-b border-neutral-100 bg-neutral-50">
+                                    <td class="py-2 px-3 font-mono text-xs">ORD-20260426-004</td>
+                                    <td class="py-2 px-3">停车</td>
+                                    <td class="py-2 px-3 text-neutral-600">2026-04-26 18:15</td>
+                                    <td class="py-2 px-3 text-right">¥180.00</td>
+                                    <td class="py-2 px-3 text-right text-neutral-500">-¥18.00</td>
+                                    <td class="py-2 px-3 text-right text-neutral-500">-¥3.00</td>
+                                    <td class="py-2 px-3 text-right text-success">+¥9.00</td>
+                                    <td class="py-2 px-3 text-right text-success">+¥3.00</td>
+                                    <td class="py-2 px-3 text-right text-neutral-500">-¥9.00</td>
+                                    <td class="py-2 px-3 text-right text-error">-¥0.00</td>
+                                    <td class="py-2 px-3 text-right font-medium">¥162.00</td>
+                                </tr>
+                                <tr class="border-b border-neutral-100">
+                                    <td class="py-2 px-3 font-mono text-xs">ORD-20260426-005</td>
+                                    <td class="py-2 px-3">洗车</td>
+                                    <td class="py-2 px-3 text-neutral-600">2026-04-26 19:30</td>
+                                    <td class="py-2 px-3 text-right">¥120.00</td>
+                                    <td class="py-2 px-3 text-right text-neutral-500">-¥12.00</td>
+                                    <td class="py-2 px-3 text-right text-neutral-500">-¥2.00</td>
+                                    <td class="py-2 px-3 text-right text-success">+¥6.00</td>
+                                    <td class="py-2 px-3 text-right text-success">+¥2.00</td>
+                                    <td class="py-2 px-3 text-right text-neutral-500">-¥6.00</td>
+                                    <td class="py-2 px-3 text-right text-error">-¥0.00</td>
+                                    <td class="py-2 px-3 text-right font-medium">¥108.00</td>
+                                </tr>
+                                <tr class="border-b border-neutral-100 bg-neutral-50">
+                                    <td class="py-2 px-3 font-mono text-xs">ORD-20260426-006</td>
+                                    <td class="py-2 px-3">商城</td>
+                                    <td class="py-2 px-3 text-neutral-600">2026-04-26 20:45</td>
+                                    <td class="py-2 px-3 text-right">¥280.00</td>
+                                    <td class="py-2 px-3 text-right text-neutral-500">-¥28.00</td>
+                                    <td class="py-2 px-3 text-right text-neutral-500">-¥4.67</td>
+                                    <td class="py-2 px-3 text-right text-success">+¥14.00</td>
+                                    <td class="py-2 px-3 text-right text-success">+¥4.67</td>
+                                    <td class="py-2 px-3 text-right text-neutral-500">-¥14.00</td>
+                                    <td class="py-2 px-3 text-right text-error">-¥25.00</td>
+                                    <td class="py-2 px-3 text-right font-medium">¥227.00</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <!-- Reconciliation Page -->
+            <div id="page-reconciliation" class="page">
+                <!-- 模块1：页面标题与操作区 -->
+                <div class="flex justify-between items-center mb-6">
+                    <h1 class="text-lg font-bold text-neutral-900">交易对账</h1>
+                    <div class="flex gap-3">
+                        <button class="border border-primary text-primary px-4 py-2 rounded text-sm font-medium hover:bg-primary-light transition-colors" onclick="handleGenerateReconciliation()">生成对账文件</button>
+                        <button class="border border-primary text-primary px-4 py-2 rounded text-sm font-medium hover:bg-primary-light transition-colors">导出</button>
+                    </div>
+                </div>
+
+                <!-- 筛选区 -->
+                <div class="bg-white rounded-lg p-4 border border-neutral-200 mb-6">
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+                        <div>
+                            <label class="block text-sm text-neutral-600 mb-1">对账日期</label>
+                            <input type="date" class="w-full px-3 py-2 border border-neutral-200 rounded text-sm focus:outline-none focus:border-primary">
+                        </div>
+                        <div>
+                            <label class="block text-sm text-neutral-600 mb-1">商户名称</label>
+                            <input type="text" placeholder="请输入店铺" class="w-full px-3 py-2 border border-neutral-200 rounded text-sm focus:outline-none focus:border-primary">
+                        </div>
+                        <div>
+                            <label class="block text-sm text-neutral-600 mb-1">支付渠道</label>
+                            <select class="w-full px-3 py-2 border border-neutral-200 rounded text-sm bg-white focus:outline-none focus:border-primary">
+                                <option>全部</option>
+                                <option>微信支付</option>
+                                <option>支付宝</option>
+                                <option>ETC支付</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm text-neutral-600 mb-1">对账状态</label>
+                            <select class="w-full px-3 py-2 border border-neutral-200 rounded text-sm bg-white focus:outline-none focus:border-primary">
+                                <option>全部</option>
+                                <option>对账成功</option>
+                                <option>存在差异</option>
+                                <option>处理中</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="flex gap-3 justify-end">
+                        <button class="btn-secondary px-4 py-2 rounded text-sm font-medium">重置</button>
+                        <button class="btn-primary px-4 py-2 rounded text-sm font-medium">查询</button>
+                    </div>
+                </div>
+
+                <!-- 状态标签区 -->
+                <div class="flex gap-3 mb-6">
+                    <button class="px-3 py-1.5 bg-primary-light text-primary text-sm rounded-full font-medium border border-primary/20">全部</button>
+                    <button class="px-3 py-1.5 bg-white text-neutral-600 text-sm rounded-full border border-neutral-200 hover:bg-neutral-50 transition-colors">对账成功</button>
+                    <button class="px-3 py-1.5 bg-white text-neutral-600 text-sm rounded-full border border-neutral-200 hover:bg-neutral-50 transition-colors">存在差异</button>
+                    <button class="px-3 py-1.5 bg-white text-neutral-600 text-sm rounded-full border border-neutral-200 hover:bg-neutral-50 transition-colors">处理中</button>
+                </div>
+
+                <!-- 对账列表区 -->
+                <div class="bg-white rounded-lg border border-neutral-200 mb-6">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr class="bg-neutral-50 border-b border-neutral-200">
+                                    <th class="text-left py-3 px-4 font-semibold text-neutral-700">对账编号</th>
+                                    <th class="text-left py-3 px-4 font-semibold text-neutral-700">商户名称</th>
+                                    <th class="text-left py-3 px-4 font-semibold text-neutral-700">支付渠道</th>
+                                    <th class="text-left py-3 px-4 font-semibold text-neutral-700">对账日期</th>
+                                    <th class="text-right py-3 px-4 font-semibold text-neutral-700">交易笔数</th>
+                                    <th class="text-right py-3 px-4 font-semibold text-neutral-700">平台金额</th>
+                                    <th class="text-right py-3 px-4 font-semibold text-neutral-700">渠道金额</th>
+                                    <th class="text-right py-3 px-4 font-semibold text-neutral-700">差异金额</th>
+                                    <th class="text-center py-3 px-4 font-semibold text-neutral-700">状态</th>
+                                    <th class="text-center py-3 px-4 font-semibold text-neutral-700">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="table-row border-b border-neutral-100 transition-colors">
+                                    <td class="py-3 px-4 font-mono">DZ-20260427-001</td>
+                                    <td class="py-3 px-4">合肥服务区</td>
+                                    <td class="py-3 px-4">微信支付</td>
+                                    <td class="py-3 px-4 text-neutral-600">2026-04-27</td>
+                                    <td class="py-3 px-4 text-right">120</td>
+                                    <td class="py-3 px-4 text-right">¥15,000.00</td>
+                                    <td class="py-3 px-4 text-right">¥15,000.00</td>
+                                    <td class="py-3 px-4 text-right text-success">¥0.00</td>
+                                    <td class="py-3 px-4 text-center"><span class="px-2 py-1 bg-success/10 text-success text-xs rounded-full">对账成功</span></td>
+                                    <td class="py-3 px-4 text-center">
+                                        <button class="text-primary hover:underline">下载</button>
+                                        <span class="mx-1 text-neutral-300">|</span>
+                                        <button class="text-primary hover:underline" onclick="showPage('reconciliation-detail')">查看详情</button>
+                                    </td>
+                                </tr>
+                                <tr class="table-row border-b border-neutral-100 bg-neutral-50 transition-colors">
+                                    <td class="py-3 px-4 font-mono">DZ-20260427-002</td>
+                                    <td class="py-3 px-4">安庆加油站</td>
+                                    <td class="py-3 px-4">支付宝</td>
+                                    <td class="py-3 px-4 text-neutral-600">2026-04-27</td>
+                                    <td class="py-3 px-4 text-right">85</td>
+                                    <td class="py-3 px-4 text-right">¥9,500.00</td>
+                                    <td class="py-3 px-4 text-right">¥9,480.00</td>
+                                    <td class="py-3 px-4 text-right text-error">¥20.00</td>
+                                    <td class="py-3 px-4 text-center"><span class="px-2 py-1 bg-error/10 text-error text-xs rounded-full">存在差异</span></td>
+                                    <td class="py-3 px-4 text-center">
+                                        <button class="text-primary hover:underline">下载</button>
+                                        <span class="mx-1 text-neutral-300">|</span>
+                                        <button class="text-primary hover:underline" onclick="showPage('reconciliation-diff')">查看差异</button>
+                                    </td>
+                                </tr>
+                                <tr class="table-row border-b border-neutral-100 transition-colors">
+                                    <td class="py-3 px-4 font-mono">DZ-20260427-003</td>
+                                    <td class="py-3 px-4">芜湖充电站</td>
+                                    <td class="py-3 px-4">ETC支付</td>
+                                    <td class="py-3 px-4 text-neutral-600">2026-04-27</td>
+                                    <td class="py-3 px-4 text-right">60</td>
+                                    <td class="py-3 px-4 text-right">¥3,600.00</td>
+                                    <td class="py-3 px-4 text-right">¥3,600.00</td>
+                                    <td class="py-3 px-4 text-right text-success">¥0.00</td>
+                                    <td class="py-3 px-4 text-center"><span class="px-2 py-1 bg-success/10 text-success text-xs rounded-full">对账成功</span></td>
+                                    <td class="py-3 px-4 text-center">
+                                        <button class="text-primary hover:underline">下载</button>
+                                        <span class="mx-1 text-neutral-300">|</span>
+                                        <button class="text-primary hover:underline" onclick="showPage('reconciliation-detail')">查看详情</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 批量操作区 -->
+                <div class="flex justify-between items-center mb-6">
+                    <div class="flex items-center gap-3">
+                        <input type="checkbox" class="w-4 h-4 rounded border-neutral-300 text-primary focus:ring-primary">
+                        <span class="text-sm text-neutral-600">已选择 <span class="font-medium text-neutral-900">0</span> 条记录</span>
+                        <div class="h-4 w-px bg-neutral-200 mx-2"></div>
+                        <button class="text-sm text-primary hover:underline">批量下载</button>
+                    </div>
+                </div>
+
+                <!-- 分页区 -->
+                <div class="flex justify-between items-center">
+                    <span class="text-sm text-neutral-600">共 <span class="font-semibold">3</span> 条记录</span>
+                    <div class="flex items-center gap-2">
+                        <button class="px-3 py-1 border border-neutral-200 rounded text-neutral-400 cursor-not-allowed" disabled>上一页</button>
+                        <button class="px-3 py-1 border border-primary bg-primary text-white rounded">1</button>
+                        <button class="px-3 py-1 border border-neutral-200 rounded hover:bg-neutral-50 cursor-pointer">下一页</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settlement Account Page -->
+            <div id="page-account" class="page">
+                <!-- 模块4：页面标题与操作区 -->
+                <div class="flex justify-between items-center mb-6">
+                    <h1 class="text-lg font-bold text-neutral-900">结算账号</h1>
+                    <div class="flex gap-3">
+                        <button class="btn-primary px-4 py-2 rounded text-sm font-medium" onclick="openAccountAdd()">新增账号</button>
+                    </div>
+                </div>
+
+                <!-- 模块6：账号列表区 -->
+                <div class="bg-white rounded-lg border border-neutral-200 mb-6">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr class="bg-neutral-50 border-b border-neutral-200">
+                                    <th class="text-left py-3 px-4 font-semibold text-neutral-700">序号</th>
+                                    <th class="text-left py-3 px-4 font-semibold text-neutral-700">银行开户名</th>
+                                    <th class="text-left py-3 px-4 font-semibold text-neutral-700">公司银行账号</th>
+                                    <th class="text-left py-3 px-4 font-semibold text-neutral-700">开户银行</th>
+                                    <th class="text-left py-3 px-4 font-semibold text-neutral-700">开户行所在地</th>
+                                    <th class="text-center py-3 px-4 font-semibold text-neutral-700">是否默认</th>
+                                    <th class="text-center py-3 px-4 font-semibold text-neutral-700">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="table-row border-b border-neutral-100 transition-colors">
+                                    <td class="py-3 px-4 text-neutral-600">1</td>
+                                    <td class="py-3 px-4">中石化安徽分公司结算账户</td>
+                                    <td class="py-3 px-4 font-mono">6222****1234</td>
+                                    <td class="py-3 px-4">中国工商银行</td>
+                                    <td class="py-3 px-4">合肥市庐阳区</td>
+                                    <td class="py-3 px-4 text-center">
+                                        <span class="px-2 py-1 bg-success/10 text-success text-xs rounded-full">是</span>
+                                    </td>
+                                    <td class="py-3 px-4 text-center">
+                                        <button class="text-primary hover:underline" onclick="openAccountView(1)">查看</button>
+                                        <span class="mx-1 text-neutral-300">|</span>
+                                        <button class="text-primary hover:underline" onclick="openAccountEdit(1)">编辑</button>
+                                        <span class="mx-1 text-neutral-300">|</span>
+                                        <button class="text-error hover:underline" onclick="openDeleteAccount('中石化安徽分公司结算账户')">删除</button>
+                                    </td>
+                                </tr>
+                                <tr class="table-row border-b border-neutral-100 bg-neutral-50 transition-colors">
+                                    <td class="py-3 px-4 text-neutral-600">2</td>
+                                    <td class="py-3 px-4">驿达石化能源结算账户</td>
+                                    <td class="py-3 px-4 font-mono">6227****5678</td>
+                                    <td class="py-3 px-4">中国建设银行</td>
+                                    <td class="py-3 px-4">合肥市蜀山区</td>
+                                    <td class="py-3 px-4 text-center">
+                                        <span class="px-2 py-1 bg-neutral-100 text-neutral-600 text-xs rounded-full">否</span>
+                                    </td>
+                                    <td class="py-3 px-4 text-center">
+                                        <button class="text-primary hover:underline" onclick="openAccountView(2)">查看</button>
+                                        <span class="mx-1 text-neutral-300">|</span>
+                                        <button class="text-primary hover:underline" onclick="openAccountEdit(2)">编辑</button>
+                                        <span class="mx-1 text-neutral-300">|</span>
+                                        <button class="text-error hover:underline" onclick="openDeleteAccount('驿达石化能源结算账户')">删除</button>
+                                    </td>
+                                </tr>
+                                <tr class="table-row border-b border-neutral-100 transition-colors">
+                                    <td class="py-3 px-4 text-neutral-600">3</td>
+                                    <td class="py-3 px-4">交控新能源结算账户</td>
+                                    <td class="py-3 px-4 font-mono">6228****9012</td>
+                                    <td class="py-3 px-4">中国农业银行</td>
+                                    <td class="py-3 px-4">合肥市包河区</td>
+                                    <td class="py-3 px-4 text-center">
+                                        <span class="px-2 py-1 bg-neutral-100 text-neutral-600 text-xs rounded-full">否</span>
+                                    </td>
+                                    <td class="py-3 px-4 text-center">
+                                        <button class="text-primary hover:underline" onclick="openAccountView(3)">查看</button>
+                                        <span class="mx-1 text-neutral-300">|</span>
+                                        <button class="text-primary hover:underline" onclick="openAccountEdit(3)">编辑</button>
+                                        <span class="mx-1 text-neutral-300">|</span>
+                                        <button class="text-error hover:underline" onclick="openDeleteAccount('交控新能源结算账户')">删除</button>
+                                    </td>
+                                </tr>
+                                <tr class="table-row border-b border-neutral-100 bg-neutral-50 transition-colors">
+                                    <td class="py-3 px-4 text-neutral-600">4</td>
+                                    <td class="py-3 px-4">皖美酒店管理备用账户</td>
+                                    <td class="py-3 px-4 font-mono">6216****3456</td>
+                                    <td class="py-3 px-4">中国银行</td>
+                                    <td class="py-3 px-4">合肥市瑶海区</td>
+                                    <td class="py-3 px-4 text-center">
+                                        <span class="px-2 py-1 bg-neutral-100 text-neutral-600 text-xs rounded-full">否</span>
+                                    </td>
+                                    <td class="py-3 px-4 text-center">
+                                        <button class="text-primary hover:underline" onclick="openAccountView(4)">查看</button>
+                                        <span class="mx-1 text-neutral-300">|</span>
+                                        <button class="text-primary hover:underline" onclick="openAccountEdit(4)">编辑</button>
+                                        <span class="mx-1 text-neutral-300">|</span>
+                                        <button class="text-error hover:underline" onclick="openDeleteAccount('皖美酒店管理备用账户')">删除</button>
+                                    </td>
+                                </tr>
+                                <tr class="table-row border-b border-neutral-100 transition-colors">
+                                    <td class="py-3 px-4 text-neutral-600">5</td>
+                                    <td class="py-3 px-4">安徽高速能源结算账户</td>
+                                    <td class="py-3 px-4 font-mono">6225****7890</td>
+                                    <td class="py-3 px-4">招商银行</td>
+                                    <td class="py-3 px-4">合肥市政务区</td>
+                                    <td class="py-3 px-4 text-center">
+                                        <span class="px-2 py-1 bg-neutral-100 text-neutral-600 text-xs rounded-full">否</span>
+                                    </td>
+                                    <td class="py-3 px-4 text-center">
+                                        <button class="text-primary hover:underline" onclick="openAccountView(5)">查看</button>
+                                        <span class="mx-1 text-neutral-300">|</span>
+                                        <button class="text-primary hover:underline" onclick="openAccountEdit(5)">编辑</button>
+                                        <span class="mx-1 text-neutral-300">|</span>
+                                        <button class="text-error hover:underline" onclick="openDeleteAccount('安徽高速能源结算账户')">删除</button>
+                                    </td>
+                                </tr>
+                                <tr class="table-row border-b border-neutral-100 bg-neutral-50 transition-colors">
+                                    <td class="py-3 px-4 text-neutral-600">6</td>
+                                    <td class="py-3 px-4">皖通科技结算账户</td>
+                                    <td class="py-3 px-4 font-mono">6223****2345</td>
+                                    <td class="py-3 px-4">中国工商银行</td>
+                                    <td class="py-3 px-4">合肥市高新区</td>
+                                    <td class="py-3 px-4 text-center">
+                                        <span class="px-2 py-1 bg-neutral-100 text-neutral-600 text-xs rounded-full">否</span>
+                                    </td>
+                                    <td class="py-3 px-4 text-center">
+                                        <button class="text-primary hover:underline" onclick="openAccountView(6)">查看</button>
+                                        <span class="mx-1 text-neutral-300">|</span>
+                                        <button class="text-primary hover:underline" onclick="openAccountEdit(6)">编辑</button>
+                                        <span class="mx-1 text-neutral-300">|</span>
+                                        <button class="text-error hover:underline" onclick="openDeleteAccount('皖通科技结算账户')">删除</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reconciliation Detail Page -->
+            <div id="page-reconciliation-detail" class="page">
+                <div class="flex items-center justify-between mb-6">
+                    <div class="flex items-center gap-4">
+                        <button onclick="showPage('reconciliation')" class="flex items-center gap-1 text-neutral-600 hover:text-primary cursor-pointer">
+                            <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                            <span class="text-sm">返回</span>
+                        </button>
+                        <h1 class="text-2xl font-bold text-neutral-900">对账详情</h1>
+                    </div>
+                    <div class="flex gap-3">
+                        <button class="border border-neutral-300 text-neutral-600 px-4 py-2 rounded font-medium hover:bg-neutral-50 transition-colors duration-200 cursor-pointer text-sm">下载</button>
+                    </div>
+                </div>
+
+                <!-- 对账概要 -->
+                <div class="bg-white rounded-lg p-6 border border-neutral-200 mb-6">
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+                        <div>
+                            <div class="text-sm text-neutral-500 mb-1">对账编号</div>
+                            <div class="font-mono text-neutral-900 font-medium">DZ-20260427-001</div>
+                        </div>
+                        <div>
+                            <div class="text-sm text-neutral-500 mb-1">商户名称</div>
+                            <div class="text-neutral-900 font-medium">合肥服务区</div>
+                        </div>
+                        <div>
+                            <div class="text-sm text-neutral-500 mb-1">支付渠道</div>
+                            <div class="text-neutral-900 font-medium">微信支付</div>
+                        </div>
+                        <div>
+                            <div class="text-sm text-neutral-500 mb-1">对账日期</div>
+                            <div class="text-neutral-900 font-medium">2026-04-27</div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-6 border-t border-neutral-200">
+                        <div class="text-center">
+                            <div class="text-sm text-neutral-500 mb-2">交易总笔数</div>
+                            <div class="text-3xl font-bold text-neutral-900">120</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-sm text-neutral-500 mb-2">平台交易金额</div>
+                            <div class="text-3xl font-bold text-neutral-900">¥15,000.00</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-sm text-neutral-500 mb-2">渠道交易金额</div>
+                            <div class="text-3xl font-bold text-success">¥15,000.00</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 交易明细列表 -->
+                <div class="bg-white rounded-lg p-6 border border-neutral-200">
+                    <h3 class="text-lg font-semibold mb-4">交易明细</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr class="bg-neutral-50 border-b border-neutral-200">
+                                    <th class="text-left py-3 px-4 font-semibold text-neutral-700">订单编号</th>
+                                    <th class="text-left py-3 px-4 font-semibold text-neutral-700">交易时间</th>
+                                    <th class="text-right py-3 px-4 font-semibold text-neutral-700">平台金额</th>
+                                    <th class="text-right py-3 px-4 font-semibold text-neutral-700">渠道金额</th>
+                                    <th class="text-right py-3 px-4 font-semibold text-neutral-700">差异金额</th>
+                                    <th class="text-center py-3 px-4 font-semibold text-neutral-700">对账状态</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b border-neutral-100">
+                                    <td class="py-3 px-4 font-mono text-xs">ORD-20260427-001</td>
+                                    <td class="py-3 px-4 text-neutral-600">2026-04-27 10:30:15</td>
+                                    <td class="py-3 px-4 text-right">¥150.00</td>
+                                    <td class="py-3 px-4 text-right">¥150.00</td>
+                                    <td class="py-3 px-4 text-right text-success">¥0.00</td>
+                                    <td class="py-3 px-4 text-center"><span class="px-2 py-1 bg-success/10 text-success text-xs rounded-full">匹配成功</span></td>
+                                </tr>
+                                <tr class="border-b border-neutral-100 bg-neutral-50">
+                                    <td class="py-3 px-4 font-mono text-xs">ORD-20260427-002</td>
+                                    <td class="py-3 px-4 text-neutral-600">2026-04-27 10:35:42</td>
+                                    <td class="py-3 px-4 text-right">¥280.00</td>
+                                    <td class="py-3 px-4 text-right">¥280.00</td>
+                                    <td class="py-3 px-4 text-right text-success">¥0.00</td>
+                                    <td class="py-3 px-4 text-center"><span class="px-2 py-1 bg-success/10 text-success text-xs rounded-full">匹配成功</span></td>
+                                </tr>
+                                <tr class="border-b border-neutral-100">
+                                    <td class="py-3 px-4 font-mono text-xs">ORD-20260427-003</td>
+                                    <td class="py-3 px-4 text-neutral-600">2026-04-27 10:42:18</td>
+                                    <td class="py-3 px-4 text-right">¥85.00</td>
+                                    <td class="py-3 px-4 text-right">¥85.00</td>
+                                    <td class="py-3 px-4 text-right text-success">¥0.00</td>
+                                    <td class="py-3 px-4 text-center"><span class="px-2 py-1 bg-success/10 text-success text-xs rounded-full">匹配成功</span></td>
+                                </tr>
+                                <tr class="border-b border-neutral-100 bg-neutral-50">
+                                    <td class="py-3 px-4 font-mono text-xs">ORD-20260427-004</td>
+                                    <td class="py-3 px-4 text-neutral-600">2026-04-27 10:48:55</td>
+                                    <td class="py-3 px-4 text-right">¥320.00</td>
+                                    <td class="py-3 px-4 text-right">¥320.00</td>
+                                    <td class="py-3 px-4 text-right text-success">¥0.00</td>
+                                    <td class="py-3 px-4 text-center"><span class="px-2 py-1 bg-success/10 text-success text-xs rounded-full">匹配成功</span></td>
+                                </tr>
+                                <tr class="border-b border-neutral-100">
+                                    <td class="py-3 px-4 font-mono text-xs">ORD-20260427-005</td>
+                                    <td class="py-3 px-4 text-neutral-600">2026-04-27 10:55:32</td>
+                                    <td class="py-3 px-4 text-right">¥195.00</td>
+                                    <td class="py-3 px-4 text-right">¥195.00</td>
+                                    <td class="py-3 px-4 text-right text-success">¥0.00</td>
+                                    <td class="py-3 px-4 text-center"><span class="px-2 py-1 bg-success/10 text-success text-xs rounded-full">匹配成功</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- 分页区 -->
+                    <div class="flex justify-between items-center mt-6">
+                        <span class="text-sm text-neutral-600">共 <span class="font-semibold">120</span> 条记录</span>
+                        <div class="flex items-center gap-2">
+                            <select class="px-2 py-1 border border-neutral-200 rounded text-sm">
+                                <option>10条/页</option>
+                                <option>20条/页</option>
+                            </select>
+                            <button class="px-3 py-1 border border-neutral-200 rounded text-neutral-400 cursor-not-allowed" disabled>
+                                <i data-lucide="chevron-left" class="w-4 h-4"></i>
+                            </button>
+                            <button class="px-3 py-1 border border-primary bg-primary text-white rounded">1</button>
+                            <button class="px-3 py-1 border border-neutral-200 rounded hover:bg-neutral-50 cursor-pointer">2</button>
+                            <button class="px-3 py-1 border border-neutral-200 rounded hover:bg-neutral-50 cursor-pointer">3</button>
+                            <button class="px-3 py-1 border border-neutral-200 rounded hover:bg-neutral-50 cursor-pointer">
+                                <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reconciliation Diff Page -->
+            <div id="page-reconciliation-diff" class="page">
+                <div class="flex items-center justify-between mb-6">
+                    <div class="flex items-center gap-4">
+                        <button onclick="showPage('reconciliation')" class="flex items-center gap-1 text-neutral-600 hover:text-primary cursor-pointer">
+                            <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                            <span class="text-sm">返回</span>
+                        </button>
+                        <h1 class="text-2xl font-bold text-neutral-900">差异详情</h1>
+                    </div>
+                    <div class="flex gap-3">
+                        <button class="border border-neutral-300 text-neutral-600 px-4 py-2 rounded font-medium hover:bg-neutral-50 transition-colors duration-200 cursor-pointer text-sm" onclick="handleExportDiff()">导出差异报告</button>
+                        <button class="btn-primary px-4 py-2 rounded font-medium text-sm" onclick="handleManualAdjust()">手动调账</button>
+                    </div>
+                </div>
+
+                <!-- 对账概要 -->
+                <div class="bg-white rounded-lg p-6 border border-neutral-200 mb-6">
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+                        <div>
+                            <div class="text-sm text-neutral-500 mb-1">对账编号</div>
+                            <div class="font-mono text-neutral-900 font-medium">DZ-20260427-002</div>
+                        </div>
+                        <div>
+                            <div class="text-sm text-neutral-500 mb-1">商户名称</div>
+                            <div class="text-neutral-900 font-medium">安庆加油站</div>
+                        </div>
+                        <div>
+                            <div class="text-sm text-neutral-500 mb-1">支付渠道</div>
+                            <div class="text-neutral-900 font-medium">支付宝</div>
+                        </div>
+                        <div>
+                            <div class="text-sm text-neutral-500 mb-1">对账日期</div>
+                            <div class="text-neutral-900 font-medium">2026-04-27</div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 pt-6 border-t border-neutral-200">
+                        <div class="text-center">
+                            <div class="text-sm text-neutral-500 mb-2">交易总笔数</div>
+                            <div class="text-3xl font-bold text-neutral-900">85</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-sm text-neutral-500 mb-2">平台交易金额</div>
+                            <div class="text-3xl font-bold text-neutral-900">¥9,500.00</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-sm text-neutral-500 mb-2">渠道交易金额</div>
+                            <div class="text-3xl font-bold text-neutral-900">¥9,480.00</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-sm text-neutral-500 mb-2">差异金额</div>
+                            <div class="text-3xl font-bold text-error">¥20.00</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 差异明细列表 -->
+                <div class="bg-white rounded-lg p-6 border border-neutral-200">
+                    <h3 class="text-lg font-semibold mb-4">差异明细</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr class="bg-neutral-50 border-b border-neutral-200">
+                                    <th class="text-left py-3 px-4 font-semibold text-neutral-700">订单编号</th>
+                                    <th class="text-left py-3 px-4 font-semibold text-neutral-700">交易时间</th>
+                                    <th class="text-right py-3 px-4 font-semibold text-neutral-700">平台金额</th>
+                                    <th class="text-right py-3 px-4 font-semibold text-neutral-700">渠道金额</th>
+                                    <th class="text-right py-3 px-4 font-semibold text-neutral-700">差异金额</th>
+                                    <th class="text-left py-3 px-4 font-semibold text-neutral-700">差异原因</th>
+                                    <th class="text-center py-3 px-4 font-semibold text-neutral-700">处理状态</th>
+                                    <th class="text-center py-3 px-4 font-semibold text-neutral-700">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b border-neutral-100">
+                                    <td class="py-3 px-4 font-mono text-xs">ORD-20260427-086</td>
+                                    <td class="py-3 px-4 text-neutral-600">2026-04-27 21:15:30</td>
+                                    <td class="py-3 px-4 text-right">¥20.00</td>
+                                    <td class="py-3 px-4 text-right">¥0.00</td>
+                                    <td class="py-3 px-4 text-right text-error">¥20.00</td>
+                                    <td class="py-3 px-4 text-neutral-600">渠道漏记</td>
+                                    <td class="py-3 px-4 text-center"><span class="px-2 py-1 bg-warning/10 text-warning text-xs rounded-full">待处理</span></td>
+                                    <td class="py-3 px-4 text-center">
+                                        <button class="text-primary hover:underline" onclick="openDiffHandle('ORD-20260427-086', '2026-04-27 21:15:30', '20.00', '渠道漏记')">处理</button>
+                                    </td>
+                                </tr>
+                                <tr class="border-b border-neutral-100 bg-neutral-50">
+                                    <td class="py-3 px-4 font-mono text-xs">ORD-20260427-001</td>
+                                    <td class="py-3 px-4 text-neutral-600">2026-04-27 10:30:15</td>
+                                    <td class="py-3 px-4 text-right">¥150.00</td>
+                                    <td class="py-3 px-4 text-right">¥150.00</td>
+                                    <td class="py-3 px-4 text-right text-success">¥0.00</td>
+                                    <td class="py-3 px-4 text-neutral-600">-</td>
+                                    <td class="py-3 px-4 text-center"><span class="px-2 py-1 bg-success/10 text-success text-xs rounded-full">已匹配</span></td>
+                                    <td class="py-3 px-4 text-center">
+                                        <button class="text-neutral-400 cursor-not-allowed">-</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- 分页区 -->
+                    <div class="flex justify-between items-center mt-6">
+                        <span class="text-sm text-neutral-600">共 <span class="font-semibold">85</span> 条记录</span>
+                        <div class="flex items-center gap-2">
+                            <select class="px-2 py-1 border border-neutral-200 rounded text-sm">
+                                <option>10条/页</option>
+                                <option>20条/页</option>
+                            </select>
+                            <button class="px-3 py-1 border border-neutral-200 rounded text-neutral-400 cursor-not-allowed" disabled>
+                                <i data-lucide="chevron-left" class="w-4 h-4"></i>
+                            </button>
+                            <button class="px-3 py-1 border border-primary bg-primary text-white rounded">1</button>
+                            <button class="px-3 py-1 border border-neutral-200 rounded hover:bg-neutral-50 cursor-pointer">2</button>
+                            <button class="px-3 py-1 border border-neutral-200 rounded hover:bg-neutral-50 cursor-pointer">
+                                <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Placeholder Pages -->
+            <div id="page-goods" class="page">
+                <h1 class="text-2xl font-bold text-neutral-900 mb-6">商品管理</h1>
+                <div class="bg-white rounded-lg p-12 border border-neutral-200 text-center">
+                    <i data-lucide="package" class="w-16 h-16 text-neutral-300 mx-auto mb-4"></i>
+                    <p class="text-neutral-500">商品管理功能开发中...</p>
+                </div>
+            </div>
+
+            <div id="page-order" class="page">
+                <h1 class="text-2xl font-bold text-neutral-900 mb-6">订单管理</h1>
+                <div class="bg-white rounded-lg p-12 border border-neutral-200 text-center">
+                    <i data-lucide="shopping-cart" class="w-16 h-16 text-neutral-300 mx-auto mb-4"></i>
+                    <p class="text-neutral-500">订单管理功能开发中...</p>
+                </div>
+            </div>
+
+            <div id="page-shop" class="page">
+                <h1 class="text-2xl font-bold text-neutral-900 mb-6">店铺管理</h1>
+                <div class="bg-white rounded-lg p-12 border border-neutral-200 text-center">
+                    <i data-lucide="store" class="w-16 h-16 text-neutral-300 mx-auto mb-4"></i>
+                    <p class="text-neutral-500">店铺管理功能开发中...</p>
+                </div>
+            </div>
+
+            <div id="page-points" class="page">
+                <h1 class="text-2xl font-bold text-neutral-900 mb-6">积分商城</h1>
+                <div class="bg-white rounded-lg p-12 border border-neutral-200 text-center">
+                    <i data-lucide="gift" class="w-16 h-16 text-neutral-300 mx-auto mb-4"></i>
+                    <p class="text-neutral-500">积分商城功能开发中...</p>
+                </div>
+            </div>
+
+            <div id="page-statistics" class="page">
+                <h1 class="text-2xl font-bold text-neutral-900 mb-6">统计报表</h1>
+                <div class="bg-white rounded-lg p-12 border border-neutral-200 text-center">
+                    <i data-lucide="bar-chart" class="w-16 h-16 text-neutral-300 mx-auto mb-4"></i>
+                    <p class="text-neutral-500">统计报表功能开发中...</p>
+                </div>
+            </div>
+
+            <div id="page-app" class="page">
+                <h1 class="text-2xl font-bold text-neutral-900 mb-6">应用中心</h1>
+                <div class="bg-white rounded-lg p-12 border border-neutral-200 text-center">
+                    <i data-lucide="grid" class="w-16 h-16 text-neutral-300 mx-auto mb-4"></i>
+                    <p class="text-neutral-500">应用中心功能开发中...</p>
+                </div>
+            </div>
+
+            <div id="page-customer" class="page">
+                <h1 class="text-2xl font-bold text-neutral-900 mb-6">客服中心</h1>
+                <div class="bg-white rounded-lg p-12 border border-neutral-200 text-center">
+                    <i data-lucide="headphones" class="w-16 h-16 text-neutral-300 mx-auto mb-4"></i>
+                    <p class="text-neutral-500">客服中心功能开发中...</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal Components -->
+    <!-- Appeal Modal -->
+    <div id="modal-appeal" class="fixed inset-0 bg-black/50 z-[999] hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-md shadow-lg w-full max-w-md overflow-hidden">
+            <div class="flex items-center justify-between p-4 border-b border-neutral-200">
+                <h3 class="text-lg font-semibold text-neutral-900 flex items-center gap-2">
+                    <i data-lucide="alert-triangle" class="w-5 h-5 text-warning"></i>
+                    发起申诉
+                </h3>
+                <button onclick="closeModal('modal-appeal')" class="p-1.5 hover:bg-neutral-100 rounded-md transition-colors">
+                    <i data-lucide="x" class="w-5 h-5 text-neutral-500"></i>
+                </button>
+            </div>
+            <div class="p-4">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-neutral-700 mb-2">申诉原因</label>
+                    <textarea id="appeal-reason" class="w-full p-3 border border-neutral-300 rounded focus:ring-2 focus:ring-primary focus:border-transparent transition-colors" rows="4" placeholder="请详细描述申诉原因..."></textarea>
+                </div>
+                <div class="text-xs text-neutral-500 mb-4">
+                    <p>• 请提供具体的申诉原因，客服将在24小时内处理</p>
+                    <p>• 如有凭证，请联系客服上传相关证明材料</p>
+                </div>
+            </div>
+            <div class="flex gap-3 p-4 bg-neutral-50 border-t border-neutral-200">
+                <button onclick="closeModal('modal-appeal')" class="flex-1 px-4 py-2 border border-neutral-300 text-neutral-700 rounded font-medium hover:bg-neutral-100 transition-all duration-200 hover:opacity-90">
+                    取消
+                </button>
+                <button onclick="submitAppeal()" class="flex-1 px-4 py-2 bg-primary text-white rounded font-medium hover:opacity-90 transition-all duration-200">
+                    确认申诉
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Approve Modal -->
+    <div id="modal-approve" class="fixed inset-0 bg-black/50 z-[999] hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-md shadow-lg w-full max-w-md overflow-hidden">
+            <div class="flex items-center justify-between p-4 border-b border-neutral-200">
+                <h3 class="text-lg font-semibold text-neutral-900 flex items-center gap-2">
+                    <i data-lucide="check-circle" class="w-5 h-5 text-info"></i>
+                    审核通过确认
+                </h3>
+                <button onclick="closeModal('modal-approve')" class="p-1.5 hover:bg-neutral-100 rounded-md transition-colors">
+                    <i data-lucide="x" class="w-5 h-5 text-neutral-500"></i>
+                </button>
+            </div>
+            <div class="p-6 text-center">
+                <div class="w-16 h-16 bg-info/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i data-lucide="check-circle" class="w-8 h-8 text-info"></i>
+                </div>
+                <p class="text-neutral-700 mb-2">确定要审核通过该结算单吗？</p>
+                <p class="text-sm text-neutral-500 mb-4">此操作不可撤销，审核通过后将进入打款环节</p>
+            </div>
+            <div class="flex gap-3 p-4 bg-neutral-50 border-t border-neutral-200">
+                <button onclick="closeModal('modal-approve')" class="flex-1 px-4 py-2 border border-neutral-300 text-neutral-700 rounded font-medium hover:bg-neutral-100 transition-all duration-200 hover:opacity-90">
+                    取消
+                </button>
+                <button onclick="submitApprove()" class="flex-1 px-4 py-2 bg-primary text-white rounded font-medium hover:opacity-90 transition-all duration-200">
+                    确认通过
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment Modal -->
+    <div id="modal-payment" class="fixed inset-0 bg-black/50 z-[999] hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-md shadow-lg w-full max-w-md overflow-hidden">
+            <div class="flex items-center justify-between p-4 border-b border-neutral-200">
+                <h3 class="text-lg font-semibold text-neutral-900 flex items-center gap-2">
+                    <i data-lucide="send" class="w-5 h-5 text-success"></i>
+                    确认打款
+                </h3>
+                <button onclick="closeModal('modal-payment')" class="p-1.5 hover:bg-neutral-100 rounded-md transition-colors">
+                    <i data-lucide="x" class="w-5 h-5 text-neutral-500"></i>
+                </button>
+            </div>
+            <div class="p-6">
+                <div class="w-16 h-16 bg-success/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i data-lucide="send" class="w-8 h-8 text-success"></i>
+                </div>
+                <div class="text-center mb-6">
+                    <p class="text-neutral-700 mb-2">确定要确认打款吗？</p>
+                    <p class="text-sm text-neutral-500">请确保以下打款信息准确无误</p>
+                </div>
+                <div class="bg-neutral-50 rounded-md p-4 space-y-3">
+                    <div class="flex justify-between">
+                        <span class="text-neutral-500 text-sm">收款银行</span>
+                        <span class="text-neutral-900 font-medium">中国工商银行</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-neutral-500 text-sm">银行账号</span>
+                        <span class="text-neutral-900 font-medium">6222 **** **** 8888</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-neutral-500 text-sm">收款户名</span>
+                        <span class="text-neutral-900 font-medium">合肥服务区</span>
+                    </div>
+                    <div class="flex justify-between border-t border-neutral-200 pt-3 mt-3">
+                        <span class="text-neutral-700 font-medium">打款金额</span>
+                        <span class="text-primary font-bold text-lg" id="payment-amount">¥14,268.50</span>
+                    </div>
+                
+                </div>
+            </div>
+            <div class="flex gap-3 p-4 bg-neutral-50 border-t border-neutral-200">
+                <button onclick="closeModal('modal-payment')" class="flex-1 px-4 py-2 border border-neutral-300 text-neutral-700 rounded font-medium hover:bg-neutral-100 transition-all duration-200 hover:opacity-90">
+                    取消
+                </button>
+                <button onclick="submitPayment()" class="flex-1 px-4 py-2 bg-primary text-white rounded font-medium hover:opacity-90 transition-all duration-200">
+                    确认打款
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Export Modal -->
+    <div id="modal-export" class="fixed inset-0 bg-black/50 z-[999] hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-md shadow-lg w-full max-w-md overflow-hidden">
+            <div class="flex items-center justify-between p-4 border-b border-neutral-200">
+                <h3 class="text-lg font-semibold text-neutral-900 flex items-center gap-2">
+                    <i data-lucide="file-spreadsheet" class="w-5 h-5 text-primary"></i>
+                    导出明细
+                </h3>
+                <button onclick="closeModal('modal-export')" class="p-1.5 hover:bg-neutral-100 rounded-md transition-colors">
+                    <i data-lucide="x" class="w-5 h-5 text-neutral-500"></i>
+                </button>
+            </div>
+            <div class="p-6 text-center">
+                <div class="w-16 h-16 bg-primary-light rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i data-lucide="file-spreadsheet" class="w-8 h-8 text-primary"></i>
+                </div>
+                <p class="text-neutral-700 mb-2" id="export-status-text">正在生成结算明细Excel文件...</p>
+                <p class="text-sm text-neutral-500" id="export-status-desc">请稍候，正在处理数据</p>
+                <div class="mt-4">
+                    <div class="w-full bg-neutral-200 rounded-full h-2">
+                        <div id="export-progress" class="bg-primary h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex gap-3 p-4 bg-neutral-50 border-t border-neutral-200">
+                <button onclick="closeModal('modal-export')" id="export-cancel-btn" class="flex-1 px-4 py-2 border border-neutral-300 text-neutral-700 rounded font-medium hover:bg-neutral-100 transition-all duration-200 hover:opacity-90">
+                    取消
+                </button>
+                <button onclick="downloadExport()" id="export-download-btn" class="flex-1 px-4 py-2 bg-primary text-white rounded font-medium hover:opacity-90 transition-all duration-200 hidden">
+                    下载文件
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settlement Confirm Modal -->
+    <div id="modal-settlement" class="fixed inset-0 bg-black/50 z-[999] hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-md shadow-lg w-full max-w-md overflow-hidden">
+            <div class="flex items-center justify-between p-4 border-b border-neutral-200">
+                <h3 class="text-lg font-semibold text-neutral-900 flex items-center gap-2">
+                    <i data-lucide="check-square" class="w-5 h-5 text-primary"></i>
+                    确认结算
+                </h3>
+                <button onclick="closeModal('modal-settlement')" class="p-1.5 hover:bg-neutral-100 rounded-md transition-colors">
+                    <i data-lucide="x" class="w-5 h-5 text-neutral-500"></i>
+                </button>
+            </div>
+            <div class="p-6 text-center">
+                <div class="w-16 h-16 bg-primary-light rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i data-lucide="check-square" class="w-8 h-8 text-primary"></i>
+                </div>
+                <p class="text-neutral-700 mb-2">确定要确认该结算单吗？</p>
+                <p class="text-sm text-neutral-500 mb-4">确认后将进入平台审核环节</p>
+            </div>
+            <div class="flex gap-3 p-4 bg-neutral-50 border-t border-neutral-200">
+                <button onclick="closeModal('modal-settlement')" class="flex-1 px-4 py-2 border border-neutral-300 text-neutral-700 rounded font-medium hover:bg-neutral-100 transition-all duration-200 hover:opacity-90">
+                    取消
+                </button>
+                <button onclick="submitSettlement()" class="flex-1 px-4 py-2 bg-primary text-white rounded font-medium hover:opacity-90 transition-all duration-200">
+                    确认结算
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Generate Reconciliation Modal -->
+            <div id="modal-generate-reconciliation" class="fixed inset-0 bg-black/50 z-[999] hidden flex items-center justify-center p-4">
+                <div class="bg-white rounded-md shadow-lg w-full max-w-md overflow-hidden">
+                    <div class="flex items-center justify-between p-4 border-b border-neutral-200">
+                        <h3 class="text-lg font-semibold text-neutral-900 flex items-center gap-2">
+                            <i data-lucide="file-spreadsheet" class="w-5 h-5 text-primary"></i>
+                            生成对账文件
+                        </h3>
+                        <button onclick="closeModal('modal-generate-reconciliation')" class="p-1.5 hover:bg-neutral-100 rounded-md transition-colors">
+                            <i data-lucide="x" class="w-5 h-5 text-neutral-500"></i>
+                        </button>
+                    </div>
+                    <div class="p-6">
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-neutral-700 mb-2">对账日期</label>
+                                <input type="date" class="w-full px-3 py-2 border border-neutral-200 rounded text-sm focus:outline-none focus:border-primary" id="reconciliation-date">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-neutral-700 mb-2">支付渠道</label>
+                                <select class="w-full px-3 py-2 border border-neutral-200 rounded text-sm bg-white focus:outline-none focus:border-primary" id="reconciliation-channel">
+                                    <option value="all">全部渠道</option>
+                                    <option value="wechat">微信支付</option>
+                                    <option value="alipay">支付宝</option>
+                                    <option value="etc">ETC支付</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-neutral-700 mb-2">商户名称</label>
+                                <input type="text" placeholder="可选，不填则包含所有商户" class="w-full px-3 py-2 border border-neutral-200 rounded text-sm focus:outline-none focus:border-primary" id="reconciliation-merchant">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex gap-3 p-4 bg-neutral-50 border-t border-neutral-200">
+                        <button onclick="closeModal('modal-generate-reconciliation')" class="flex-1 px-4 py-2 border border-neutral-300 text-neutral-700 rounded font-medium hover:bg-neutral-100 transition-all duration-200 hover:opacity-90">
+                            取消
+                        </button>
+                        <button onclick="submitGenerateReconciliation()" class="flex-1 px-4 py-2 bg-primary text-white rounded font-medium hover:opacity-90 transition-all duration-200">
+                            生成
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Manual Adjust Modal -->
+            <div id="modal-manual-adjust" class="fixed inset-0 bg-black/50 z-[999] hidden flex items-center justify-center p-4">
+                <div class="bg-white rounded-md shadow-lg w-full max-w-md overflow-hidden">
+                    <div class="flex items-center justify-between p-4 border-b border-neutral-200">
+                        <h3 class="text-lg font-semibold text-neutral-900 flex items-center gap-2">
+                            <i data-lucide="settings" class="w-5 h-5 text-primary"></i>
+                            手动调账
+                        </h3>
+                        <button onclick="closeModal('modal-manual-adjust')" class="p-1.5 hover:bg-neutral-100 rounded-md transition-colors">
+                            <i data-lucide="x" class="w-5 h-5 text-neutral-500"></i>
+                        </button>
+                    </div>
+                    <div class="p-6">
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-neutral-700 mb-2">调账类型</label>
+                                <select class="w-full px-3 py-2 border border-neutral-200 rounded text-sm bg-white focus:outline-none focus:border-primary" id="adjust-type">
+                                    <option value="positive">正向调账（增加）</option>
+                                    <option value="negative">负向调账（减少）</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-neutral-700 mb-2">调账金额</label>
+                                <input type="number" placeholder="请输入调账金额" class="w-full px-3 py-2 border border-neutral-200 rounded text-sm focus:outline-none focus:border-primary" id="adjust-amount">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-neutral-700 mb-2">调账原因</label>
+                                <textarea id="adjust-reason" class="w-full p-3 border border-neutral-300 rounded focus:ring-2 focus:ring-primary focus:border-transparent transition-colors" rows="3" placeholder="请详细描述调账原因..."></textarea>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-neutral-700 mb-2">关联凭证</label>
+                                <div class="border-2 border-dashed border-neutral-300 rounded-lg p-4 text-center">
+                                    <i data-lucide="upload" class="w-8 h-8 text-neutral-400 mx-auto mb-2"></i>
+                                    <p class="text-sm text-neutral-500">点击或拖拽上传文件</p>
+                                    <p class="text-xs text-neutral-400">支持JPG、PNG、PDF格式</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex gap-3 p-4 bg-neutral-50 border-t border-neutral-200">
+                        <button onclick="closeModal('modal-manual-adjust')" class="flex-1 px-4 py-2 border border-neutral-300 text-neutral-700 rounded font-medium hover:bg-neutral-100 transition-all duration-200 hover:opacity-90">
+                            取消
+                        </button>
+                        <button onclick="submitManualAdjust()" class="flex-1 px-4 py-2 bg-primary text-white rounded font-medium hover:opacity-90 transition-all duration-200">
+                            确认调账
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Success Modal -->
+            <div id="modal-success" class="fixed inset-0 bg-black/50 z-[999] hidden flex items-center justify-center p-4">
+                <div class="bg-white rounded-md shadow-lg w-full max-w-sm overflow-hidden">
+                    <div class="p-6 text-center">
+                        <div class="w-20 h-20 bg-primary-light rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i data-lucide="check" class="w-10 h-10 text-primary"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold text-neutral-900 mb-2" id="success-title">操作成功</h3>
+                        <p class="text-neutral-500" id="success-message">您的操作已成功完成</p>
+                    </div>
+                    <div class="p-4 border-t border-neutral-200">
+                        <button onclick="closeModal('modal-success')" class="w-full px-4 py-2 bg-primary text-white rounded font-medium hover:opacity-90 transition-all duration-200">
+                            确定
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 新增结算账户弹窗 -->
+            <div id="modal-account-add" class="fixed inset-0 bg-black/50 z-[999] hidden flex items-center justify-center p-4">
+                <div class="bg-white rounded-md shadow-lg w-full max-w-xl overflow-hidden">
+                    <div class="flex items-center justify-between p-4 border-b border-neutral-200">
+                        <h3 class="text-lg font-semibold text-neutral-900 flex items-center gap-2">
+                            <i data-lucide="plus" class="w-5 h-5 text-primary"></i>
+                            新增结算账户
+                        </h3>
+                        <button onclick="closeModal('modal-account-add')" class="p-1.5 hover:bg-neutral-100 rounded-md transition-colors">
+                            <i data-lucide="x" class="w-5 h-5 text-neutral-500"></i>
+                        </button>
+                    </div>
+                    <div class="p-6">
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-neutral-700 mb-1">银行开户名 <span class="text-error">*</span></label>
+                                <input type="text" id="add-account-name" class="w-full px-3 py-2 border border-neutral-200 rounded-md text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20" placeholder="请输入银行开户名">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-neutral-700 mb-1">公司银行账号 <span class="text-error">*</span></label>
+                                <input type="text" id="add-account-number" class="w-full px-3 py-2 border border-neutral-200 rounded-md text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20" placeholder="请输入公司银行账号">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-neutral-700 mb-1">开户银行 <span class="text-error">*</span></label>
+                                <select id="add-account-bank" class="w-full px-3 py-2 border border-neutral-200 rounded-md text-sm bg-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20">
+                                    <option value="中国工商银行">中国工商银行</option>
+                                    <option value="中国建设银行">中国建设银行</option>
+                                    <option value="中国农业银行">中国农业银行</option>
+                                    <option value="中国银行">中国银行</option>
+                                    <option value="招商银行">招商银行</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-neutral-700 mb-1">开户行所在地 <span class="text-error">*</span></label>
+                                <input type="text" id="add-account-branch" class="w-full px-3 py-2 border border-neutral-200 rounded-md text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20" placeholder="请输入开户行所在地（如：合肥市庐阳区）">
+                            </div>
+                            <div>
+                                <label class="flex items-center justify-between text-sm font-medium text-neutral-700 mb-1">
+                                    <span>设为默认</span>
+                                    <div class="relative inline-block align-middle">
+                                        <input type="checkbox" id="add-set-default" class="toggle-checkbox" />
+                                        <label for="add-set-default" class="toggle-label"></label>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex gap-3 p-4 bg-neutral-50 border-t border-neutral-200">
+                        <button onclick="closeModal('modal-account-add')" class="flex-1 px-4 py-2 border border-neutral-300 text-neutral-700 rounded font-medium hover:bg-neutral-100 transition-all duration-200 hover:opacity-90">
+                            取消
+                        </button>
+                        <button onclick="submitAccountAdd()" class="flex-1 px-4 py-2 bg-primary text-white rounded font-medium hover:opacity-90 transition-all duration-200">
+                            确定
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 查看结算账户详情弹窗 -->
+            <div id="modal-account-view" class="fixed inset-0 bg-black/50 z-[999] hidden flex items-center justify-center p-4">
+                <div class="bg-white rounded-md shadow-lg w-full max-w-xl overflow-hidden">
+                    <div class="flex items-center justify-between p-4 border-b border-neutral-200">
+                        <h3 class="text-lg font-semibold text-neutral-900 flex items-center gap-2">
+                            <i data-lucide="eye" class="w-5 h-5 text-primary"></i>
+                            账户详情
+                        </h3>
+                        <button onclick="closeModal('modal-account-view')" class="p-1.5 hover:bg-neutral-100 rounded-md transition-colors">
+                            <i data-lucide="x" class="w-5 h-5 text-neutral-500"></i>
+                        </button>
+                    </div>
+                    <div class="p-6">
+                        <div class="bg-neutral-50 rounded-lg p-4 mb-4">
+                            <h4 class="text-sm font-semibold text-neutral-900 mb-3">账户信息</h4>
+                            <div class="space-y-4">
+                                <div>
+                                    <span class="text-xs text-neutral-500">银行开户名</span>
+                                    <p class="text-sm font-medium text-neutral-900" id="view-account-name">中石化安徽分公司结算账户</p>
+                                </div>
+                                <div>
+                                    <span class="text-xs text-neutral-500">公司银行账号</span>
+                                    <p class="text-sm font-mono text-neutral-900" id="view-account-number">6222****1234</p>
+                                </div>
+                                <div>
+                                    <span class="text-xs text-neutral-500">开户银行</span>
+                                    <p class="text-sm font-medium text-neutral-900" id="view-account-bank">中国工商银行</p>
+                                </div>
+                                <div>
+                                    <span class="text-xs text-neutral-500">开户行所在地</span>
+                                    <p class="text-sm font-medium text-neutral-900" id="view-account-branch">合肥市庐阳区</p>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs text-neutral-500">设为默认</span>
+                                    <p class="text-sm"><span class="px-2 py-1 bg-success/10 text-success text-xs rounded-full">是</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex gap-3 p-4 bg-neutral-50 border-t border-neutral-200">
+                        <button onclick="closeModal('modal-account-view')" class="flex-1 px-4 py-2 border border-neutral-300 text-neutral-700 rounded font-medium hover:bg-neutral-100 transition-all duration-200 hover:opacity-90">
+                            关闭
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 编辑结算账户弹窗 -->
+            <div id="modal-account-edit" class="fixed inset-0 bg-black/50 z-[999] hidden flex items-center justify-center p-4">
+                <div class="bg-white rounded-md shadow-lg w-full max-w-xl overflow-hidden">
+                    <div class="flex items-center justify-between p-4 border-b border-neutral-200">
+                        <h3 class="text-lg font-semibold text-neutral-900 flex items-center gap-2">
+                            <i data-lucide="edit-3" class="w-5 h-5 text-primary"></i>
+                            编辑结算账户
+                        </h3>
+                        <button onclick="closeModal('modal-account-edit')" class="p-1.5 hover:bg-neutral-100 rounded-md transition-colors">
+                            <i data-lucide="x" class="w-5 h-5 text-neutral-500"></i>
+                        </button>
+                    </div>
+                    <div class="p-6">
+                        <div class="bg-neutral-50 rounded-lg p-4 mb-4">
+                            <h4 class="text-xs font-semibold text-neutral-500 mb-3">不可修改信息</h4>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <span class="text-xs text-neutral-500">公司银行账号</span>
+                                    <p class="text-sm font-mono text-neutral-900">6222****1234</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-neutral-700 mb-1">银行开户名 <span class="text-error">*</span></label>
+                                <input type="text" id="edit-account-name" class="w-full px-3 py-2 border border-neutral-200 rounded-md text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20" value="中石化安徽分公司结算账户">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-neutral-700 mb-1">开户银行 <span class="text-error">*</span></label>
+                                <select id="edit-account-bank" class="w-full px-3 py-2 border border-neutral-200 rounded-md text-sm bg-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20">
+                                    <option value="中国工商银行">中国工商银行</option>
+                                    <option value="中国建设银行">中国建设银行</option>
+                                    <option value="中国农业银行">中国农业银行</option>
+                                    <option value="中国银行">中国银行</option>
+                                    <option value="招商银行">招商银行</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-neutral-700 mb-1">开户行所在地 <span class="text-error">*</span></label>
+                                <input type="text" id="edit-account-branch" class="w-full px-3 py-2 border border-neutral-200 rounded-md text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20" value="合肥市庐阳区">
+                            </div>
+                            <div>
+                                <label class="flex items-center justify-between text-sm font-medium text-neutral-700 mb-1">
+                                    <span>设为默认</span>
+                                    <div class="relative inline-block align-middle">
+                                        <input type="checkbox" id="edit-set-default" class="toggle-checkbox" checked />
+                                        <label for="edit-set-default" class="toggle-label"></label>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="border-t border-neutral-200 pt-4 mt-4">
+                            <h4 class="text-xs font-semibold text-neutral-500 mb-3">修改记录</h4>
+                            <div class="space-y-2">
+                                <div class="flex justify-between text-xs">
+                                    <span class="text-neutral-500">创建时间</span>
+                                    <span class="text-neutral-700">2026-04-01 10:30:00</span>
+                                </div>
+                                <div class="flex justify-between text-xs">
+                                    <span class="text-neutral-500">最后更新</span>
+                                    <span class="text-neutral-700">2026-04-05 09:15:00</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex gap-3 p-4 bg-neutral-50 border-t border-neutral-200">
+                        <button onclick="closeModal('modal-account-edit')" class="flex-1 px-4 py-2 border border-neutral-300 text-neutral-700 rounded font-medium hover:bg-neutral-100 transition-all duration-200 hover:opacity-90">
+                            取消
+                        </button>
+                        <button onclick="submitAccountEdit()" class="flex-1 px-4 py-2 bg-primary text-white rounded font-medium hover:opacity-90 transition-all duration-200">
+                            确定
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 设为默认账户确认弹窗 -->
+            <div id="modal-set-default" class="fixed inset-0 bg-black/50 z-[999] hidden flex items-center justify-center p-4">
+                <div class="bg-white rounded-md shadow-lg w-full max-w-sm overflow-hidden">
+                    <div class="flex items-center justify-between p-4 border-b border-neutral-200">
+                        <h3 class="text-lg font-semibold text-neutral-900 flex items-center gap-2">
+                            <i data-lucide="star" class="w-5 h-5 text-primary"></i>
+                            设为默认账户
+                        </h3>
+                        <button onclick="closeModal('modal-set-default')" class="p-1.5 hover:bg-neutral-100 rounded-md transition-colors">
+                            <i data-lucide="x" class="w-5 h-5 text-neutral-500"></i>
+                        </button>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-neutral-700">确认要将该账户设为默认结算账户吗？</p>
+                        <p class="text-sm text-neutral-500 mt-2">确认后原默认账户将自动取消默认状态。</p>
+                    </div>
+                    <div class="flex gap-3 p-4 bg-neutral-50 border-t border-neutral-200">
+                        <button onclick="closeModal('modal-set-default')" class="flex-1 px-4 py-2 border border-neutral-300 text-neutral-700 rounded font-medium hover:bg-neutral-100 transition-all duration-200 hover:opacity-90">
+                            取消
+                        </button>
+                        <button onclick="confirmSetDefault()" class="flex-1 px-4 py-2 bg-primary text-white rounded font-medium hover:opacity-90 transition-all duration-200">
+                            确认
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 禁用/启用账户确认弹窗 -->
+            <div id="modal-disable-account" class="fixed inset-0 bg-black/50 z-[999] hidden flex items-center justify-center p-4">
+                <div class="bg-white rounded-md shadow-lg w-full max-w-sm overflow-hidden">
+                    <div class="flex items-center justify-between p-4 border-b border-neutral-200">
+                        <h3 class="text-lg font-semibold text-neutral-900 flex items-center gap-2" id="disable-account-title">
+                            <i data-lucide="x-circle" class="w-5 h-5 text-error"></i>
+                            禁用账户
+                        </h3>
+                        <button onclick="closeModal('modal-disable-account')" class="p-1.5 hover:bg-neutral-100 rounded-md transition-colors">
+                            <i data-lucide="x" class="w-5 h-5 text-neutral-500"></i>
+                        </button>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-neutral-700" id="disable-account-message">确认要禁用该账户吗？</p>
+                    </div>
+                    <div class="flex gap-3 p-4 bg-neutral-50 border-t border-neutral-200">
+                        <button onclick="closeModal('modal-disable-account')" class="flex-1 px-4 py-2 border border-neutral-300 text-neutral-700 rounded font-medium hover:bg-neutral-100 transition-all duration-200 hover:opacity-90">
+                            取消
+                        </button>
+                        <button onclick="confirmDisableAccount()" class="flex-1 px-4 py-2 bg-error text-white rounded font-medium hover:opacity-90 transition-all duration-200" id="disable-account-confirm-btn">
+                            确认禁用
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 删除账户确认弹窗 -->
+            <div id="modal-delete-account" class="fixed inset-0 bg-black/50 z-[999] hidden flex items-center justify-center p-4">
+                <div class="bg-white rounded-md shadow-lg w-full max-w-sm overflow-hidden">
+                    <div class="flex items-center justify-between p-4 border-b border-neutral-200">
+                        <h3 class="text-lg font-semibold text-neutral-900 flex items-center gap-2">
+                            <i data-lucide="trash-2" class="w-5 h-5 text-error"></i>
+                            删除账户
+                        </h3>
+                        <button onclick="closeModal('modal-delete-account')" class="p-1.5 hover:bg-neutral-100 rounded-md transition-colors">
+                            <i data-lucide="x" class="w-5 h-5 text-neutral-500"></i>
+                        </button>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-neutral-700">确认要删除<span id="delete-account-name" class="font-semibold"></span>吗？</p>
+                        <p class="text-sm text-neutral-500 mt-2">删除后该账户信息将无法恢复，请谨慎操作。</p>
+                    </div>
+                    <div class="flex gap-3 p-4 bg-neutral-50 border-t border-neutral-200">
+                        <button onclick="closeModal('modal-delete-account')" class="flex-1 px-4 py-2 border border-neutral-300 text-neutral-700 rounded font-medium hover:bg-neutral-100 transition-all duration-200 hover:opacity-90">
+                            取消
+                        </button>
+                        <button onclick="confirmDeleteAccount()" class="flex-1 px-4 py-2 bg-error text-white rounded font-medium hover:opacity-90 transition-all duration-200">
+                            确认删除
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 处理差异弹窗 -->
+            <div id="modal-diff-handle" class="fixed inset-0 bg-black/50 z-[999] hidden flex items-center justify-center p-4">
+                <div class="bg-white rounded-md shadow-lg w-full max-w-xl overflow-hidden">
+                    <div class="flex items-center justify-between p-4 border-b border-neutral-200">
+                        <h3 class="text-lg font-semibold text-neutral-900">处理差异</h3>
+                        <button onclick="closeModal('modal-diff-handle')" class="p-1.5 hover:bg-neutral-100 rounded-md transition-colors">
+                            <i data-lucide="x" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                    <div class="p-6">
+                        <!-- 差异信息 -->
+                        <div class="bg-neutral-50 rounded-lg p-4 mb-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs text-neutral-500 mb-1">订单编号</label>
+                                    <p class="text-sm font-mono text-neutral-900 font-medium" id="diff-order-no">-</p>
+                                </div>
+                                <div>
+                                    <label class="block text-xs text-neutral-500 mb-1">交易时间</label>
+                                    <p class="text-sm text-neutral-900" id="diff-time">-</p>
+                                </div>
+                                <div>
+                                    <label class="block text-xs text-neutral-500 mb-1">差异金额</label>
+                                    <p class="text-sm font-bold text-error" id="diff-amount">-</p>
+                                </div>
+                                <div>
+                                    <label class="block text-xs text-neutral-500 mb-1">差异原因</label>
+                                    <p class="text-sm text-neutral-900" id="diff-reason">-</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-neutral-700 mb-1">处理方式 <span class="text-error">*</span></label>
+                                <select id="diff-handle-type" class="w-full px-3 py-2 border border-neutral-200 rounded-md text-sm bg-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20">
+                                    <option value="">请选择处理方式</option>
+                                    <option value="adjust">手动调账</option>
+                                    <option value="ignore">忽略差异</option>
+                                    <option value="reconcile">重新对账</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-neutral-700 mb-1">处理说明 <span class="text-error">*</span></label>
+                                <textarea id="diff-handle-remark" rows="4" class="w-full px-3 py-2 border border-neutral-200 rounded-md text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20" placeholder="请输入处理说明"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex gap-3 p-4 border-t border-neutral-200">
+                        <button onclick="closeModal('modal-diff-handle')" class="flex-1 px-4 py-2 border border-neutral-300 text-neutral-700 rounded font-medium hover:bg-neutral-100 transition-all duration-200 hover:opacity-90">
+                            取消
+                        </button>
+                        <button onclick="submitDiffHandle()" class="flex-1 px-4 py-2 bg-primary text-white rounded font-medium hover:opacity-90 transition-all duration-200">
+                            提交处理
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Show default page on load
+        showPage('settlement-list');
+
+        // Page navigation function
+        function showPage(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+
+            // Show target page
+            const targetPage = document.getElementById('page-' + pageId);
+            if (targetPage) {
+                targetPage.classList.add('active');
+            }
+
+            // Update navigation states
+            document.querySelectorAll('.nav-item').forEach(nav => {
+                nav.classList.remove('bg-primary-light', 'text-primary', 'border-primary', 'font-medium');
+                nav.classList.add('text-neutral-600', 'border-transparent');
+            });
+
+            // Highlight current nav item
+            const navMap = {
+                'dashboard': ['nav-dashboard', 'nav-settlement'],
+                'settlement-list': ['nav-settlement-list', 'nav-settlement'],
+                'settlement-detail': ['nav-settlement-list', 'nav-settlement'],
+                'reconciliation': ['nav-reconciliation', 'nav-settlement'],
+                'account': ['nav-account', 'nav-settlement'],
+                'goods': ['nav-goods'],
+                'order': ['nav-order'],
+                'shop': ['nav-shop'],
+                'points': ['nav-points'],
+                'statistics': ['nav-statistics'],
+                'app': ['nav-app'],
+                'customer': ['nav-customer']
+            };
+
+            if (navMap[pageId]) {
+                navMap[pageId].forEach(navId => {
+                    const navElement = document.getElementById(navId);
+                    if (navElement) {
+                        navElement.classList.remove('text-neutral-600', 'border-transparent');
+                        navElement.classList.add('bg-primary-light', 'text-primary', 'border-primary', 'font-medium');
+                    }
+                });
+            }
+
+            // Re-initialize icons for dynamically shown content
+            lucide.createIcons();
+
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+
+        // Make showPage globally available
+        window.showPage = showPage;
+
+        // Global variables
+        let currentBillId = '';
+        let currentBillAmount = '';
+
+        // Modal functions
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.remove('hidden');
+                lucide.createIcons();
+            }
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.add('hidden');
+            }
+        }
+
+        function showSuccessModal(title, message) {
+            document.getElementById('success-title').textContent = title;
+            document.getElementById('success-message').textContent = message;
+            openModal('modal-success');
+        }
+
+        // Button interaction handlers
+        function handleAppeal(billId) {
+            console.log('发起申诉:', billId);
+            currentBillId = billId;
+            document.getElementById('appeal-reason').value = '';
+            openModal('modal-appeal');
+        }
+
+        function submitAppeal() {
+            const reason = document.getElementById('appeal-reason').value.trim();
+            if (!reason) {
+                alert('请填写申诉原因');
+                return;
+            }
+            closeModal('modal-appeal');
+            showSuccessModal('申诉已提交', `已为结算单 ${currentBillId} 发起申诉，客服将在24小时内处理。`);
+        }
+
+        function handleApprove(billId) {
+            console.log('审核通过:', billId);
+            currentBillId = billId;
+            openModal('modal-approve');
+        }
+
+        function submitApprove() {
+            closeModal('modal-approve');
+            showSuccessModal('审核通过', `结算单 ${currentBillId} 已审核通过，进入打款环节。`);
+        }
+
+        function handlePayment(billId) {
+            console.log('确认打款:', billId);
+            currentBillId = billId;
+            document.getElementById('payment-amount').textContent = '¥9,357.50';
+            openModal('modal-payment');
+        }
+
+        function submitPayment() {
+            closeModal('modal-payment');
+            showSuccessModal('打款确认完成', `结算单 ${currentBillId} 打款确认完成，资金将在1-3个工作日内到账。`);
+        }
+
+        function handleExport() {
+            console.log('导出明细');
+            openModal('modal-export');
+            simulateExport();
+        }
+
+        function simulateExport() {
+            const progressBar = document.getElementById('export-progress');
+            const statusText = document.getElementById('export-status-text');
+            const statusDesc = document.getElementById('export-status-desc');
+            const cancelBtn = document.getElementById('export-cancel-btn');
+            const downloadBtn = document.getElementById('export-download-btn');
+            
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.random() * 20 + 5;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                    statusText.textContent = '文件生成成功！';
+                    statusDesc.textContent = '点击下方按钮下载文件';
+                    cancelBtn.classList.add('hidden');
+                    downloadBtn.classList.remove('hidden');
+                } else if (progress > 50) {
+                    statusText.textContent = '正在处理数据...';
+                    statusDesc.textContent = '即将完成，请稍候';
+                }
+                progressBar.style.width = progress + '%';
+            }, 300);
+        }
+
+        function downloadExport() {
+            closeModal('modal-export');
+            showSuccessModal('下载成功', '结算明细Excel文件已成功下载');
+        }
+
+        function handleConfirmSettlement() {
+            console.log('确认结算');
+            openModal('modal-settlement');
+        }
+
+        function submitSettlement() {
+            closeModal('modal-settlement');
+            showSuccessModal('结算确认成功', '结算确认成功，等待平台审核');
+        }
+
+        // Generate reconciliation file functions
+        function handleGenerateReconciliation() {
+            console.log('生成对账文件');
+            const today = new Date().toISOString().split('T')[0];
+            const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+            document.getElementById('reconciliation-date').value = yesterday;
+            document.getElementById('reconciliation-channel').value = 'all';
+            document.getElementById('reconciliation-merchant').value = '';
+            openModal('modal-generate-reconciliation');
+        }
+
+        function submitGenerateReconciliation() {
+            const date = document.getElementById('reconciliation-date').value;
+            const channel = document.getElementById('reconciliation-channel').value;
+            const merchant = document.getElementById('reconciliation-merchant').value;
+            
+            if (!date) {
+                alert('请选择对账日期');
+                return;
+            }
+            
+            closeModal('modal-generate-reconciliation');
+            
+            let message = `对账文件已开始生成`;
+            if (merchant) {
+                message += `，商户：${merchant}`;
+            }
+            showSuccessModal('对账文件生成中', message);
+        }
+
+        // Manual adjust functions
+        function handleManualAdjust() {
+            console.log('手动调账');
+            document.getElementById('adjust-type').value = 'positive';
+            document.getElementById('adjust-amount').value = '';
+            document.getElementById('adjust-reason').value = '';
+            openModal('modal-manual-adjust');
+        }
+
+        function submitManualAdjust() {
+            const type = document.getElementById('adjust-type').value;
+            const amount = document.getElementById('adjust-amount').value;
+            const reason = document.getElementById('adjust-reason').value;
+            
+            if (!amount || !reason) {
+                alert('请填写调账金额和原因');
+                return;
+            }
+            
+            closeModal('modal-manual-adjust');
+            
+            const typeText = type === 'positive' ? '正向调账' : '负向调账';
+            showSuccessModal('调账成功', `${typeText}操作已完成，金额：¥${amount}`);
+        }
+
+        // Export diff function
+        function handleExportDiff() {
+            console.log('导出差异报告');
+            openModal('modal-export');
+            simulateExport();
+        }
+
+        // Settlement account functions
+        let currentAccount = {};
+        let defaultAccountName = '中石化安徽分公司结算账户';
+
+        function openAccountAdd() {
+            document.getElementById('add-account-bank').value = '中国工商银行';
+            document.getElementById('add-account-name').value = '';
+            document.getElementById('add-account-branch').value = '';
+            document.getElementById('add-account-number').value = '';
+            document.getElementById('add-set-default').checked = false;
+            openModal('modal-account-add');
+        }
+
+        function submitAccountAdd() {
+            const name = document.getElementById('add-account-name').value;
+            const bank = document.getElementById('add-account-bank').value;
+            const branch = document.getElementById('add-account-branch').value;
+            const number = document.getElementById('add-account-number').value;
+            const isDefault = document.getElementById('add-set-default').checked;
+            
+            if (!name || !bank || !branch || !number) {
+                alert('请填写必填项');
+                return;
+            }
+            
+            // 如果设置为默认，更新默认账户
+            if (isDefault) {
+                defaultAccountName = name;
+            }
+            
+            closeModal('modal-account-add');
+            showSuccessModal('账户添加成功', `${name}的结算账户已成功添加`);
+        }
+
+        function openAccountView(accountId) {
+            openModal('modal-account-view');
+        }
+
+        function openAccountEdit(accountId) {
+            document.getElementById('edit-account-name').value = '中石化安徽分公司结算账户';
+            document.getElementById('edit-account-bank').value = '中国工商银行';
+            document.getElementById('edit-account-branch').value = '合肥市庐阳区';
+            document.getElementById('edit-set-default').checked = true;
+            openModal('modal-account-edit');
+        }
+
+        function submitAccountEdit() {
+            const name = document.getElementById('edit-account-name').value;
+            const bank = document.getElementById('edit-account-bank').value;
+            const branch = document.getElementById('edit-account-branch').value;
+            const isDefault = document.getElementById('edit-set-default').checked;
+            
+            if (!name || !bank || !branch) {
+                alert('请填写必填项');
+                return;
+            }
+            
+            // 如果设置为默认，更新默认账户（以最新编辑为准）
+            if (isDefault) {
+                defaultAccountName = name;
+            } else if (defaultAccountName === name) {
+                // 如果当前是默认账户但取消了默认，保持不变（防止没有默认账户）
+                // 这里可以根据需求调整，比如强制要求有一个默认账户
+            }
+            
+            closeModal('modal-account-edit');
+            showSuccessModal('账户信息更新成功', `${name}的结算账户信息已成功更新`);
+        }
+
+        function setDefaultAccount(accountName) {
+            currentAccount = { name: accountName };
+            document.getElementById('set-default-message').textContent = `确定要将${accountName}设为默认结算账户吗？`;
+            document.getElementById('set-default-description').textContent = '设置后，该账户将成为自动打款的首选账户';
+            openModal('modal-set-default');
+        }
+
+        function confirmSetDefault() {
+            // 更新默认账户（以最新操作为准）
+            defaultAccountName = currentAccount.name;
+            closeModal('modal-set-default');
+            showSuccessModal('设置成功', `${currentAccount.name}已设为默认结算账户`);
+        }
+
+        function openDisableAccount(accountName, isDisabled) {
+            currentAccount = { name: accountName, isDisabled: isDisabled };
+            
+            const title = document.getElementById('disable-account-title');
+            const message = document.getElementById('disable-account-message');
+            const description = document.getElementById('disable-account-description');
+            const confirmBtn = document.getElementById('disable-account-confirm-btn');
+            
+            if (isDisabled) {
+                title.innerHTML = '<i data-lucide="check-circle" class="w-5 h-5 text-success"></i> 启用账户';
+                message.textContent = `确定要启用${accountName}吗？`;
+                description.textContent = '启用后该账户可以进行结算打款操作';
+                confirmBtn.textContent = '确定启用';
+                confirmBtn.className = 'flex-1 px-4 py-2 bg-success text-white rounded font-medium hover:opacity-90 transition-all duration-200';
+            } else {
+                title.innerHTML = '<i data-lucide="x-circle" class="w-5 h-5 text-error"></i> 禁用账户';
+                message.textContent = `确定要禁用${accountName}吗？`;
+                description.textContent = '禁用后该账户不可进行结算打款操作';
+                confirmBtn.textContent = '确定禁用';
+                confirmBtn.className = 'flex-1 px-4 py-2 bg-error text-white rounded font-medium hover:opacity-90 transition-all duration-200';
+            }
+            
+            openModal('modal-disable-account');
+            
+            // 重新渲染图标
+            setTimeout(() => {
+                if (window.lucide) {
+                    lucide.createIcons();
+                }
+            }, 100);
+        }
+
+        function confirmDisableAccount() {
+            closeModal('modal-disable-account');
+            const action = currentAccount.isDisabled ? '启用' : '禁用';
+            showSuccessModal(`${action}成功`, `${currentAccount.name}已${action}`);
+        }
+
+        // 删除账户功能
+        function openDeleteAccount(accountName) {
+            currentAccount = { name: accountName };
+            document.getElementById('delete-account-name').textContent = accountName;
+            openModal('modal-delete-account');
+        }
+
+        function confirmDeleteAccount() {
+            closeModal('modal-delete-account');
+            showSuccessModal('删除成功', `${currentAccount.name}已删除`);
+        }
+
+        // 处理差异功能
+        function openDiffHandle(orderNo, time, amount, reason) {
+            document.getElementById('diff-order-no').textContent = orderNo;
+            document.getElementById('diff-time').textContent = time;
+            document.getElementById('diff-amount').textContent = `¥${amount}`;
+            document.getElementById('diff-reason').textContent = reason;
+            document.getElementById('diff-handle-type').value = '';
+            document.getElementById('diff-handle-remark').value = '';
+            openModal('modal-diff-handle');
+        }
+
+        function submitDiffHandle() {
+            const handleType = document.getElementById('diff-handle-type').value;
+            const remark = document.getElementById('diff-handle-remark').value;
+            const orderNo = document.getElementById('diff-order-no').textContent;
+            
+            if (!handleType) {
+                alert('请选择处理方式');
+                return;
+            }
+            if (!remark) {
+                alert('请输入处理说明');
+                return;
+            }
+            
+            closeModal('modal-diff-handle');
+            
+            let typeText = '';
+            switch (handleType) {
+                case 'adjust':
+                    typeText = '手动调账';
+                    break;
+                case 'ignore':
+                    typeText = '忽略差异';
+                    break;
+                case 'reconcile':
+                    typeText = '重新对账';
+                    break;
+            }
+            
+            showSuccessModal('差异处理成功', `订单${orderNo}已${typeText}处理`);
+        }
+
+        // Make all new functions globally available
+        window.handleGenerateReconciliation = handleGenerateReconciliation;
+        window.submitGenerateReconciliation = submitGenerateReconciliation;
+        window.handleManualAdjust = handleManualAdjust;
+        window.submitManualAdjust = submitManualAdjust;
+        window.handleExportDiff = handleExportDiff;
+        window.openDiffHandle = openDiffHandle;
+        window.submitDiffHandle = submitDiffHandle;
+        window.handleAppeal = handleAppeal;
+        window.handleApprove = handleApprove;
+        window.handlePayment = handlePayment;
+        window.handleExport = handleExport;
+        window.handleConfirmSettlement = handleConfirmSettlement;
+        window.openModal = openModal;
+        window.closeModal = closeModal;
+        window.submitAppeal = submitAppeal;
+        window.submitApprove = submitApprove;
+        window.submitPayment = submitPayment;
+        window.downloadExport = downloadExport;
+        window.submitSettlement = submitSettlement;
+        window.openAccountAdd = openAccountAdd;
+        window.submitAccountAdd = submitAccountAdd;
+        window.openAccountView = openAccountView;
+        window.openAccountEdit = openAccountEdit;
+        window.submitAccountEdit = submitAccountEdit;
+        window.setDefaultAccount = setDefaultAccount;
+        window.confirmSetDefault = confirmSetDefault;
+        window.openDisableAccount = openDisableAccount;
+        window.confirmDisableAccount = confirmDisableAccount;
+        window.openDeleteAccount = openDeleteAccount;
+        window.confirmDeleteAccount = confirmDeleteAccount;
+    </script>
+</body>
+</html>
