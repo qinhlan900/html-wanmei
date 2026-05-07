@@ -42,17 +42,23 @@
         }
     </script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
 
         .page { display: none; }
         .page.active { display: block; }
 
-        .nav-item { cursor: pointer; }
-        .nav-item:hover { background-color: #F9FAFB; }
+        /* 顶部导航样式 */
+        .nav-item { cursor: pointer; transition: all 0.2s; }
+        .nav-item:hover { background-color: #374151; }
+        .nav-item.active { background-color: #FF6B35; color: white; }
+        
+        /* 左侧导航样式 */
+        .sidebar-nav-item { cursor: pointer; transition: all 0.2s; }
+        .sidebar-nav-item:hover { background-color: #374151; }
+        .sidebar-nav-item.active { background-color: #FF6B35; color: white; }
+        .sidebar-nav-item:not(.active) { color: #9CA3AF; background-color: transparent; }
 
         .table-row:hover { background-color: #FFF7E6 !important; }
 
@@ -64,15 +70,31 @@
             background-color: #FF6B35;
             color: white;
             transition: all 0.2s ease;
+            height: 32px;
+            font-size: 14px;
         }
         .btn-primary:hover { opacity: 0.9; }
 
         .btn-secondary {
-            background-color: #94A3B8;
-            color: white;
+            background-color: white;
+            border: 1px solid #D1D5DB;
+            color: #6B7280;
             transition: all 0.2s ease;
+            height: 32px;
+            font-size: 14px;
         }
-        .btn-secondary:hover { opacity: 0.9; }
+        .btn-secondary:hover { background-color: #F3F4F6; }
+        
+        /* 批量操作按钮 */
+        .btn-batch {
+            background-color: white;
+            border: 1px solid #FF6B35;
+            color: #FF6B35;
+            transition: all 0.2s ease;
+            height: 32px;
+            font-size: 14px;
+        }
+        .btn-batch:hover { background-color: #FFF7E6; }
 
         /* 开关组件样式 */
         .toggle-checkbox {
@@ -113,50 +135,20 @@
     </style>
 </head>
 <body class="bg-neutral-100 min-h-screen">
-    <!-- Top Navigation -->
-    <header class="bg-primary text-white fixed top-0 left-0 right-0 z-50">
-        <div class="h-14 flex items-center px-4">
-            <div class="flex items-center gap-3">
-                <i data-lucide="car" class="w-6 h-6"></i>
-                <span class="text-lg font-bold">皖美e行</span>
-                <span class="text-xs bg-white/20 px-2 py-0.5 rounded">运营管理平台</span>
-            </div>
-            <nav class="hidden md:flex items-center gap-1 ml-8">
-                <a onclick="showPage('dashboard')" class="nav-item px-4 py-2 rounded hover:bg-white/10 transition-colors">概况</a>
-                <a onclick="showPage('goods')" class="nav-item px-4 py-2 rounded hover:bg-white/10 transition-colors">商品</a>
-                <a onclick="showPage('order')" class="nav-item px-4 py-2 rounded hover:bg-white/10 transition-colors">订单</a>
-                <a onclick="showPage('shop')" class="nav-item px-4 py-2 rounded hover:bg-white/10 transition-colors">店铺</a>
-                <a onclick="showPage('points')" class="nav-item px-4 py-2 rounded hover:bg-white/10 transition-colors">积分商城</a>
-                <a onclick="showPage('statistics')" class="nav-item px-4 py-2 rounded hover:bg-white/10 transition-colors">统计</a>
-                <a onclick="showPage('app')" class="nav-item px-4 py-2 rounded hover:bg-white/10 transition-colors">应用</a>
-                <a onclick="showPage('settlement-list')" id="nav-settlement" class="nav-item px-4 py-2 bg-white/20 rounded font-semibold transition-colors">结算</a>
-                <a onclick="showPage('customer')" class="nav-item px-4 py-2 rounded hover:bg-white/10 transition-colors">客服</a>
-            </nav>
-            <div class="ml-auto flex items-center gap-3">
-                <button class="p-2 hover:bg-white/10 rounded">
-                    <i data-lucide="bell" class="w-5 h-5"></i>
-                </button>
-                <button class="p-2 hover:bg-white/10 rounded">
-                    <i data-lucide="user" class="w-5 h-5"></i>
-                </button>
-            </div>
-        </div>
-    </header>
-
-    <div class="flex pt-14">
-        <!-- Sidebar -->
-        <aside class="w-56 bg-white border-r border-neutral-200 fixed left-0 top-14 bottom-0 overflow-y-auto">
-            <nav class="py-4">
-                <div class="px-4 py-2 text-xs text-neutral-500 uppercase tracking-wider">结算管理</div>
-                <a onclick="showPage('settlement-list')" id="nav-settlement-list" class="nav-item flex items-center gap-3 px-4 py-2.5 bg-primary-light text-primary border-l-4 border-primary font-medium">
+    <div class="flex">
+        <!-- Sidebar (深色导航) -->
+        <aside class="w-36 bg-neutral-800 fixed left-0 top-0 bottom-0 overflow-y-auto">
+            <nav class="py-3">
+                <div class="px-3 py-2 text-xs text-neutral-500 uppercase tracking-wider">结算管理</div>
+                <a onclick="showPage('settlement-list')" id="nav-settlement-list" class="sidebar-nav-item flex items-center gap-2 px-3 py-2.5 text-sm active">
                     <i data-lucide="file-text" class="w-5 h-5"></i>
                     <span>结算账单</span>
                 </a>
-                <a onclick="showPage('reconciliation')" id="nav-reconciliation" class="nav-item flex items-center gap-3 px-4 py-2.5 text-neutral-600 hover:bg-neutral-50 border-l-4 border-transparent">
+                <a onclick="showPage('reconciliation')" id="nav-reconciliation" class="sidebar-nav-item flex items-center gap-2 px-3 py-2.5 text-sm">
                     <i data-lucide="file-check" class="w-5 h-5"></i>
                     <span>交易对账</span>
                 </a>
-                <a onclick="showPage('account')" id="nav-account" class="nav-item flex items-center gap-3 px-4 py-2.5 text-neutral-600 hover:bg-neutral-50 border-l-4 border-transparent">
+                <a onclick="showPage('account')" id="nav-account" class="sidebar-nav-item flex items-center gap-2 px-3 py-2.5 text-sm">
                     <i data-lucide="wallet" class="w-5 h-5"></i>
                     <span>结算账号</span>
                 </a>
@@ -164,7 +156,7 @@
         </aside>
 
         <!-- Main Content -->
-        <main class="flex-1 ml-56 p-6">
+        <main class="flex-1 ml-36 p-6">
             <!-- Dashboard Page -->
             <div id="page-dashboard" class="page">
                 <div class="text-center py-20">
@@ -176,43 +168,68 @@
 
             <!-- Settlement List Page -->
             <div id="page-settlement-list" class="page">
-                <!-- 模块1：页面标题与操作区 -->
-                <div class="flex justify-between items-center mb-6">
-                    <h1 class="text-lg font-bold text-neutral-900">结算账单</h1>
-                    <div class="flex gap-3">
-                        <button class="border border-primary text-primary px-4 py-2 rounded text-sm font-medium hover:bg-primary-light transition-colors">导出</button>
+                <!-- 标题与操作区 -->
+                <div class="flex justify-between items-center mb-4">
+                    <h1 class="text-lg font-bold text-neutral-900 flex items-center gap-2">
+                        结算账单管理
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FF6B35" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-info w-4 h-4"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+                    </h1>
+                    <div class="flex gap-2">
+                        <button class="bg-primary text-white px-4 py-1.5 rounded text-sm font-medium flex items-center gap-2 hover:opacity-90 transition-opacity">
+                            <i data-lucide="download" class="w-4 h-4"></i>
+                            结算单导出
+                        </button>
+                        <button class="bg-primary text-white px-4 py-1.5 rounded text-sm font-medium flex items-center gap-2 hover:opacity-90 transition-opacity">
+                            <i data-lucide="list" class="w-4 h-4"></i>
+                            查看已导出列表
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 温馨提示 -->
+                <div class="bg-orange-50 rounded-lg p-4 mb-4 border border-orange-100">
+                    <div class="text-primary font-semibold text-sm mb-1">温馨提示</div>
+                    <div class="text-xs text-neutral-600 space-y-1">
+                        <div>· 计算公式：结算金额 = 订单金额 - 平台佣金 - 退还佣金 - 退单金额 + 平台优惠 + 积分抵扣金额 + 定金赔偿金额 - 供应商应扣金额(供应商应扣总额：代扣预存款扣总额)</div>
+                        <div>· 结算流程：生成结算单 → 平台审核 → 打款完成</div>
                     </div>
                 </div>
 
                 <!-- 筛选区 -->
-                <div class="bg-white rounded-lg p-4 border border-neutral-200 mb-6">
-                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
-                        <div>
-                            <label class="block text-sm text-neutral-600 mb-1">结算单号</label>
-                            <input type="text" placeholder="请输入单号" class="w-full px-3 py-2 border border-neutral-200 rounded text-sm focus:outline-none focus:border-primary">
+                <div class="mb-6">
+                    <div class="flex flex-wrap gap-4 mb-4">
+                        <!-- 店铺名称 -->
+                        <div class="flex items-center border border-neutral-200 rounded-sm h-8 bg-white overflow-hidden flex-1 min-w-[200px]">
+                            <span class="text-sm text-neutral-600 px-3 whitespace-nowrap border-r border-neutral-200">店铺名称</span>
+                            <input type="text" placeholder="请输入店铺名称" class="flex-1 h-full px-3 border-0 text-sm focus:outline-none bg-transparent placeholder:text-neutral-400">
                         </div>
-                        <div>
-                            <label class="block text-sm text-neutral-600 mb-1">店铺名称</label>
-                            <input type="text" placeholder="请输入店铺" class="w-full px-3 py-2 border border-neutral-200 rounded text-sm focus:outline-none focus:border-primary">
+                        <!-- 结算单号 -->
+                        <div class="flex items-center border border-neutral-200 rounded-sm h-8 bg-white overflow-hidden flex-1 min-w-[200px]">
+                            <span class="text-sm text-neutral-600 px-3 whitespace-nowrap border-r border-neutral-200">结算单号</span>
+                            <input type="text" placeholder="请输入结算单号" class="flex-1 h-full px-3 border-0 text-sm focus:outline-none bg-transparent placeholder:text-neutral-400">
                         </div>
-                        <div>
-                            <label class="block text-sm text-neutral-600 mb-1">结算状态</label>
-                            <select class="w-full px-3 py-2 border border-neutral-200 rounded text-sm bg-white focus:outline-none focus:border-primary">
-                                <option>全部</option>
-                                <option>待确认</option>
-                                <option>待审核</option>
-                                <option>待打款</option>
-                                <option>已打款</option>
+                        <!-- 结算状态 -->
+                        <div class="flex items-center border border-neutral-200 rounded-sm h-8 bg-white overflow-hidden flex-1 min-w-[200px]">
+                            <span class="text-sm text-neutral-600 px-3 whitespace-nowrap border-r border-neutral-200">结算状态</span>
+                            <select class="flex-1 h-full px-3 border-0 text-sm focus:outline-none bg-transparent text-neutral-900">
+                                <option value="" class="text-neutral-400">请选择结算状态</option>
+                                <option class="text-neutral-900">待确认</option>
+                                <option class="text-neutral-900">待审核</option>
+                                <option class="text-neutral-900">待打款</option>
+                                <option class="text-neutral-900">已打款</option>
                             </select>
                         </div>
-                        <div>
-                            <label class="block text-sm text-neutral-600 mb-1">结算周期</label>
-                            <input type="date" class="w-full px-3 py-2 border border-neutral-200 rounded text-sm focus:outline-none focus:border-primary">
+                        <!-- 结算日范围 -->
+                        <div class="flex items-center border border-neutral-200 rounded-sm h-8 bg-white overflow-hidden flex-1 min-w-[280px]">
+                            <span class="text-sm text-neutral-600 px-3 whitespace-nowrap border-r border-neutral-200">结算日</span>
+                            <input type="text" placeholder="开始日期" class="h-full px-3 border-0 text-sm focus:outline-none bg-transparent rounded-none flex-1 min-w-0">
+                            <span class="text-neutral-400 px-1 text-sm whitespace-nowrap">→</span>
+                            <input type="text" placeholder="结束日期" class="h-full px-3 border-0 text-sm focus:outline-none bg-transparent rounded-none flex-1 min-w-0">
                         </div>
                     </div>
-                    <div class="flex gap-3 justify-end">
-                        <button class="btn-secondary px-4 py-2 rounded text-sm font-medium">重置</button>
-                        <button class="btn-primary px-4 py-2 rounded text-sm font-medium">查询</button>
+                    <div class="flex justify-end">
+                        <button class="bg-white border border-neutral-200 text-neutral-600 px-4 py-1.5 rounded-sm text-sm font-medium mr-2 hover:bg-neutral-50 transition-colors h-8">重置</button>
+                        <button class="bg-primary text-white px-4 py-1.5 rounded-sm text-sm font-medium hover:opacity-90 transition-opacity h-8">查询</button>
                     </div>
                 </div>
 
@@ -1720,19 +1737,18 @@
                 targetPage.classList.add('active');
             }
 
-            // Update navigation states
-            document.querySelectorAll('.nav-item').forEach(nav => {
-                nav.classList.remove('bg-primary-light', 'text-primary', 'border-primary', 'font-medium');
-                nav.classList.add('text-neutral-600', 'border-transparent');
+            // Update sidebar navigation states
+            document.querySelectorAll('.sidebar-nav-item').forEach(nav => {
+                nav.classList.remove('active');
             });
 
             // Highlight current nav item
             const navMap = {
-                'dashboard': ['nav-dashboard', 'nav-settlement'],
-                'settlement-list': ['nav-settlement-list', 'nav-settlement'],
-                'settlement-detail': ['nav-settlement-list', 'nav-settlement'],
-                'reconciliation': ['nav-reconciliation', 'nav-settlement'],
-                'account': ['nav-account', 'nav-settlement'],
+                'dashboard': ['nav-settlement-list'],
+                'settlement-list': ['nav-settlement-list'],
+                'settlement-detail': ['nav-settlement-list'],
+                'reconciliation': ['nav-reconciliation'],
+                'account': ['nav-account'],
                 'goods': ['nav-goods'],
                 'order': ['nav-order'],
                 'shop': ['nav-shop'],
@@ -1746,8 +1762,7 @@
                 navMap[pageId].forEach(navId => {
                     const navElement = document.getElementById(navId);
                     if (navElement) {
-                        navElement.classList.remove('text-neutral-600', 'border-transparent');
-                        navElement.classList.add('bg-primary-light', 'text-primary', 'border-primary', 'font-medium');
+                        navElement.classList.add('active');
                     }
                 });
             }
