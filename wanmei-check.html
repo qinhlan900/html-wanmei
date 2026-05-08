@@ -170,16 +170,15 @@
             <div id="page-settlement-list" class="page">
                 <!-- 标题与操作区 -->
                 <div class="flex justify-between items-center mb-4">
-                    <h1 class="text-lg font-bold text-neutral-900 flex items-center gap-2">
+                    <h1 class="text-lg font-bold text-neutral-900">
                         结算账单管理
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FF6B35" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-info w-4 h-4"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
                     </h1>
                     <div class="flex gap-2">
-                        <button class="bg-primary text-white px-4 py-1.5 rounded text-sm font-medium flex items-center gap-2 hover:opacity-90 transition-opacity">
+                        <button class="bg-primary text-white px-4 py-1.5 rounded text-sm font-medium flex items-center gap-2 hover:opacity-90 transition-opacity cursor-pointer" onclick="openModal('modal-settlement-export')">
                             <i data-lucide="download" class="w-4 h-4"></i>
                             结算单导出
                         </button>
-                        <button class="bg-primary text-white px-4 py-1.5 rounded text-sm font-medium flex items-center gap-2 hover:opacity-90 transition-opacity">
+                        <button class="bg-primary text-white px-4 py-1.5 rounded text-sm font-medium flex items-center gap-2 hover:opacity-90 transition-opacity cursor-pointer" onclick="openModal('modal-export-history')">
                             <i data-lucide="list" class="w-4 h-4"></i>
                             查看已导出列表
                         </button>
@@ -269,10 +268,10 @@
                                     <td class="py-3 px-3 text-neutral-400 text-xs">-</td>
                                     <td class="py-3 px-3 text-neutral-400 text-xs">-</td>
                                     <td class="py-3 px-3 text-center">
-                                        <button class="text-primary hover:underline transition-colors duration-200 cursor-pointer" onclick="event.stopPropagation(); showPage('settlement-detail')">查看</button>
+                                        <button class="text-primary hover:underline transition-colors duration-200 cursor-pointer" onclick="event.stopPropagation(); showSettlementDetail('pending-confirm', 'SET-20260401-001')">查看</button>
                                     </td>
                                 </tr>
-                                <tr class="table-row border-b border-neutral-100 bg-neutral-50 transition-colors cursor-pointer" style="height: 56px;" onclick="showPage('settlement-detail')">
+                                <tr class="table-row border-b border-neutral-100 bg-neutral-50 transition-colors cursor-pointer" style="height: 56px;" onclick="showSettlementDetail('pending-payment', 'SET-20260401-002')">
                                     <td class="py-3 px-3 text-center text-neutral-500">2</td>
                                     <td class="py-3 px-3 font-mono text-primary cursor-pointer hover:underline">SET-20260401-002</td>
                                     <td class="py-3 px-3">中石化安徽分公司</td>
@@ -284,10 +283,10 @@
                                     <td class="py-3 px-3 text-neutral-600 text-xs">2026-04-07 15:20:00</td>
                                     <td class="py-3 px-3 text-neutral-400 text-xs">-</td>
                                     <td class="py-3 px-3 text-center">
-                                        <button class="text-primary hover:underline transition-colors duration-200 cursor-pointer" onclick="event.stopPropagation(); showPage('settlement-detail')">查看</button>
+                                        <button class="text-primary hover:underline transition-colors duration-200 cursor-pointer" onclick="event.stopPropagation(); showSettlementDetail('pending-payment', 'SET-20260401-002')">查看</button>
                                     </td>
                                 </tr>
-                                <tr class="table-row border-b border-neutral-100 transition-colors cursor-pointer" style="height: 56px;" onclick="showPage('settlement-detail')">
+                                <tr class="table-row border-b border-neutral-100 transition-colors cursor-pointer" style="height: 56px;" onclick="showSettlementDetail('paid', 'SET-20260401-003')">
                                     <td class="py-3 px-3 text-center text-neutral-500">3</td>
                                     <td class="py-3 px-3 font-mono text-primary cursor-pointer hover:underline">SET-20260401-003</td>
                                     <td class="py-3 px-3">驿达石化能源</td>
@@ -299,10 +298,10 @@
                                     <td class="py-3 px-3 text-neutral-600 text-xs">2026-04-04 10:30:00</td>
                                     <td class="py-3 px-3 text-neutral-600 text-xs">2026-04-08 10:30:00</td>
                                     <td class="py-3 px-3 text-center">
-                                        <button class="text-primary hover:underline transition-colors duration-200 cursor-pointer" onclick="event.stopPropagation(); showPage('settlement-detail')">查看</button>
+                                        <button class="text-primary hover:underline transition-colors duration-200 cursor-pointer" onclick="event.stopPropagation(); showSettlementDetail('paid', 'SET-20260401-003')">查看</button>
                                     </td>
                                 </tr>
-                                <tr class="table-row border-b border-neutral-100 bg-neutral-50 transition-colors cursor-pointer" style="height: 56px;" onclick="showPage('settlement-detail')">
+                                <tr class="table-row border-b border-neutral-100 bg-neutral-50 transition-colors cursor-pointer" style="height: 56px;" onclick="showSettlementDetail('pending-confirm', 'SET-20260401-004')">
                                     <td class="py-3 px-3 text-center text-neutral-500">4</td>
                                     <td class="py-3 px-3 font-mono text-primary cursor-pointer hover:underline">SET-20260401-004</td>
                                     <td class="py-3 px-3">交控新能源</td>
@@ -314,10 +313,10 @@
                                     <td class="py-3 px-3 text-neutral-400 text-xs">-</td>
                                     <td class="py-3 px-3 text-neutral-400 text-xs">-</td>
                                     <td class="py-3 px-3 text-center">
-                                        <button class="text-primary hover:underline transition-colors duration-200 cursor-pointer" onclick="event.stopPropagation(); showPage('settlement-detail')">查看</button>
+                                        <button class="text-primary hover:underline transition-colors duration-200 cursor-pointer" onclick="event.stopPropagation(); showSettlementDetail('pending-confirm', 'SET-20260401-004')">查看</button>
                                     </td>
                                 </tr>
-                                <tr class="table-row border-b border-neutral-100 transition-colors cursor-pointer" style="height: 56px;" onclick="showPage('settlement-detail')">
+                                <tr class="table-row border-b border-neutral-100 transition-colors cursor-pointer" style="height: 56px;" onclick="showSettlementDetail('appealing', 'SET-20260401-005')">
                                     <td class="py-3 px-3 text-center text-neutral-500">5</td>
                                     <td class="py-3 px-3 font-mono text-primary cursor-pointer hover:underline">SET-20260401-005</td>
                                     <td class="py-3 px-3">安徽高速能源</td>
@@ -329,7 +328,7 @@
                                     <td class="py-3 px-3 text-neutral-400 text-xs">-</td>
                                     <td class="py-3 px-3 text-neutral-400 text-xs">-</td>
                                     <td class="py-3 px-3 text-center">
-                                        <button class="text-primary hover:underline transition-colors duration-200 cursor-pointer" onclick="event.stopPropagation(); showPage('settlement-detail')">查看</button>
+                                        <button class="text-primary hover:underline transition-colors duration-200 cursor-pointer" onclick="event.stopPropagation(); showSettlementDetail('appealing', 'SET-20260401-005')">查看</button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -380,42 +379,42 @@
                     <h3 class="text-sm font-semibold text-neutral-700 mb-6">结算流程</h3>
                     <div class="flex items-center justify-center max-w-3xl mx-auto mb-4">
                         <!-- 步骤1：生成结算单 -->
-                        <div class="flex flex-col items-center">
-                            <div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center">
+                        <div class="flex flex-col items-center" id="timeline-step1">
+                            <div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center timeline-dot">
                                 <i data-lucide="check" class="w-5 h-5 text-white"></i>
                             </div>
-                            <div class="text-xs mt-2 text-primary font-medium">生成结算单</div>
-                            <div class="text-xs text-neutral-500 mt-1">2026-04-01 01:00:00</div>
+                            <div class="text-xs mt-2 text-primary font-medium timeline-name">生成结算单</div>
+                            <div class="text-xs text-neutral-500 mt-1 timeline-time">2026-04-01 01:00:00</div>
                         </div>
                         <!-- 连接线 -->
-                        <div class="flex-1 h-0.5 bg-primary mx-4 mb-8"></div>
+                        <div class="flex-1 h-0.5 bg-primary mx-4 mb-8 timeline-line"></div>
                         <!-- 步骤2：店铺审核 -->
-                        <div class="flex flex-col items-center">
-                            <div class="w-10 h-10 rounded-full border-2 border-primary flex items-center justify-center">
+                        <div class="flex flex-col items-center" id="timeline-step2">
+                            <div class="w-10 h-10 rounded-full border-2 border-primary flex items-center justify-center timeline-dot">
                                 <div class="w-3 h-3 rounded-full bg-primary"></div>
                             </div>
-                            <div class="text-xs mt-2 text-primary font-medium">店铺审核</div>
-                            <div class="text-xs text-primary mt-1">等待店铺审核</div>
+                            <div class="text-xs mt-2 text-primary font-medium timeline-name">店铺审核</div>
+                            <div class="text-xs text-primary mt-1 timeline-time">等待店铺审核</div>
                         </div>
                         <!-- 连接线 -->
-                        <div class="flex-1 h-0.5 bg-neutral-200 mx-4 mb-8"></div>
+                        <div class="flex-1 h-0.5 bg-neutral-200 mx-4 mb-8 timeline-line"></div>
                         <!-- 步骤3：结算打款 -->
-                        <div class="flex flex-col items-center">
-                            <div class="w-10 h-10 rounded-full border-2 border-neutral-300 flex items-center justify-center">
+                        <div class="flex flex-col items-center" id="timeline-step3">
+                            <div class="w-10 h-10 rounded-full border-2 border-neutral-300 flex items-center justify-center timeline-dot">
                                 <div class="w-3 h-3 rounded-full bg-neutral-300"></div>
                             </div>
-                            <div class="text-xs mt-2 text-neutral-400">结算打款</div>
-                            <div class="text-xs text-neutral-400 mt-1">-</div>
+                            <div class="text-xs mt-2 text-neutral-400 timeline-name">结算打款</div>
+                            <div class="text-xs text-neutral-400 mt-1 timeline-time">-</div>
                         </div>
                         <!-- 连接线 -->
-                        <div class="flex-1 h-0.5 bg-neutral-200 mx-4 mb-8"></div>
+                        <div class="flex-1 h-0.5 bg-neutral-200 mx-4 mb-8 timeline-line"></div>
                         <!-- 步骤4：完成 -->
-                        <div class="flex flex-col items-center">
-                            <div class="w-10 h-10 rounded-full border-2 border-neutral-300 flex items-center justify-center">
+                        <div class="flex flex-col items-center" id="timeline-step4">
+                            <div class="w-10 h-10 rounded-full border-2 border-neutral-300 flex items-center justify-center timeline-dot">
                                 <div class="w-3 h-3 rounded-full bg-neutral-300"></div>
                             </div>
-                            <div class="text-xs mt-2 text-neutral-400">完成</div>
-                            <div class="text-xs text-neutral-400 mt-1">-</div>
+                            <div class="text-xs mt-2 text-neutral-400 timeline-name">完成</div>
+                            <div class="text-xs text-neutral-400 mt-1 timeline-time">-</div>
                         </div>
                     </div>
 
@@ -445,10 +444,6 @@
                         <div class="mt-4 bg-error/5 border border-error/20 rounded-sm p-4">
                             <div class="space-y-3">
                                 <div class="flex justify-between">
-                                    <span class="text-xs text-neutral-500">申诉类型</span>
-                                    <span class="text-xs text-neutral-800 font-medium">整张账单申诉</span>
-                                </div>
-                                <div class="flex justify-between">
                                     <span class="text-xs text-neutral-500">申诉原因</span>
                                     <span class="text-xs text-neutral-800">核销数量与实际不符，有10笔订单未核销但被纳入结算</span>
                                 </div>
@@ -466,30 +461,9 @@
 
                     <!-- 操作按钮区（位于时间轴下方） -->
                     <div class="mt-6 pt-6 border-t border-neutral-200">
-                        <div class="flex items-center justify-center gap-3">
-                            <!-- 确认结算按钮（商户角色，待确认状态显示） -->
-                            <button class="btn-primary px-4 py-2 rounded-sm text-sm font-medium flex items-center gap-1.5 cursor-pointer transition-all duration-200" onclick="openModal('modal-settlement')">
-                                <i data-lucide="check-circle" class="w-4 h-4"></i>
-                                确认结算
-                            </button>
-                            <!-- 打款登记按钮（财务角色，待打款状态显示） -->
-                            <button class="btn-primary px-4 py-2 rounded-sm text-sm font-medium flex items-center gap-1.5 cursor-pointer transition-all duration-200" onclick="openModal('modal-payment')">
-                                <i data-lucide="send" class="w-4 h-4"></i>
-                                打款登记
-                            </button>
-                            <!-- 发起申诉按钮（商户角色，待确认状态显示） -->
-                            <button class="btn-secondary px-4 py-2 rounded-sm text-sm font-medium flex items-center gap-1.5 cursor-pointer transition-all duration-200" onclick="openModal('modal-appeal')">
-                                <i data-lucide="alert-circle" class="w-4 h-4"></i>
-                                发起申诉
-                            </button>
-                            <!-- 申诉处理按钮（平台管理员，申诉中状态显示） -->
-                            <button class="px-4 py-2 rounded-sm text-sm font-medium flex items-center gap-1.5 cursor-pointer transition-all duration-200" style="background-color: #7c3aed; color: white;" onclick="openModal('modal-appeal-process')">
-                                <i data-lucide="shield-check" class="w-4 h-4"></i>
-                                申诉处理
-                            </button>
+                        <div id="action-buttons-container" class="flex items-center justify-center gap-3">
+                            <!-- 按钮将根据状态动态生成 -->
                         </div>
-                        <!-- 操作说明小字 -->
-                        <p class="text-xs text-neutral-400 mt-3 text-center">注：实际场景中只会存在一种操作按钮，根据角色和账单状态动态显示</p>
                     </div>
                 </div>
 
@@ -503,23 +477,35 @@
                             <div class="space-y-3">
                                 <div class="flex justify-between">
                                     <span class="text-xs text-neutral-500">结算单号</span>
-                                    <span class="text-xs font-mono text-neutral-800">SET-20260401-001</span>
+                                    <span class="text-xs font-mono text-neutral-800" id="detail-bill-no">SET-20260401-001</span>
                                 </div>
                                 <div class="flex justify-between">
                                     <span class="text-xs text-neutral-500">商户名称</span>
-                                    <span class="text-xs text-neutral-800">中国石油安徽分公司</span>
+                                    <span class="text-xs text-neutral-800" id="detail-merchant-name">中国石油安徽分公司</span>
                                 </div>
                                 <div class="flex justify-between">
                                     <span class="text-xs text-neutral-500">结算周期</span>
-                                    <span class="text-xs text-neutral-800">T+7（2026-03-25 ~ 2026-04-01）</span>
+                                    <span class="text-xs text-neutral-800" id="detail-settlement-cycle">T+7（2026-03-25 ~ 2026-04-01）</span>
                                 </div>
                                 <div class="flex justify-between">
                                     <span class="text-xs text-neutral-500">结算状态</span>
-                                    <span class="inline-block px-3 py-0.5 bg-orange-50 text-orange-500 text-xs" style="border-radius: 12px; height: 20px; line-height: 12px;">待确认</span>
+                                    <span class="inline-block px-3 py-0.5 bg-orange-50 text-orange-500 text-xs" id="settlement-detail-status" style="border-radius: 12px; height: 20px; line-height: 12px;">待确认</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-xs text-neutral-500">生成时间</span>
+                                    <span class="text-xs text-neutral-800" id="detail-generated-time">2026-04-01 01:00:00</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-xs text-neutral-500">确认时间</span>
+                                    <span class="text-xs text-neutral-800" id="detail-confirmed-time">-</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-xs text-neutral-500">打款时间</span>
+                                    <span class="text-xs text-neutral-800" id="detail-payment-time">-</span>
                                 </div>
                                 <div class="flex justify-between">
                                     <span class="text-xs text-neutral-500">核销券码数量</span>
-                                    <span class="text-xs font-semibold text-neutral-800">156</span>
+                                    <span class="text-xs font-semibold text-neutral-800" id="detail-voucher-count">156</span>
                                 </div>
                             </div>
                         </div>
@@ -531,11 +517,11 @@
                                 <div class="bg-primary/5 px-4 py-3 border-b border-neutral-200">
                                     <div class="flex justify-between items-center">
                                         <span class="text-xs font-medium text-neutral-700">结算总金额</span>
-                                        <span class="text-xl font-bold text-primary">¥15,230.00</span>
+                                        <span class="text-xl font-bold text-primary" id="detail-total-amount">¥15,230.00</span>
                                     </div>
                                 </div>
                                 <!-- 发行方分摊行 -->
-                                <div class="divide-y divide-neutral-100">
+                                <div class="divide-y divide-neutral-100" id="generators-list">
                                     <div class="px-4 py-2.5 flex justify-between items-center hover:bg-neutral-50 transition-colors">
                                         <span class="text-sm text-neutral-800">数科公司</span>
                                         <div class="flex items-center gap-6">
@@ -569,12 +555,6 @@
                             <span class="text-sm text-neutral-600 px-3 whitespace-nowrap border-r border-neutral-200">订单号</span>
                             <input type="text" placeholder="请输入订单号" class="flex-1 h-full px-3 border-0 text-sm focus:outline-none bg-transparent placeholder:text-neutral-400">
                         </div>
-                        <div class="flex items-center border border-neutral-200 rounded-sm h-8 bg-white overflow-hidden flex-1 min-w-[280px]">
-                            <span class="text-sm text-neutral-600 px-3 whitespace-nowrap border-r border-neutral-200">核销时间</span>
-                            <input type="text" placeholder="开始日期" class="h-full px-3 border-0 text-sm focus:outline-none bg-transparent rounded-none flex-1 min-w-0">
-                            <span class="text-neutral-400 px-1 text-sm whitespace-nowrap">→</span>
-                            <input type="text" placeholder="结束日期" class="h-full px-3 border-0 text-sm focus:outline-none bg-transparent rounded-none flex-1 min-w-0">
-                        </div>
                         <div class="flex items-center border border-neutral-200 rounded-sm h-8 bg-white overflow-hidden flex-1 min-w-[200px]">
                             <span class="text-sm text-neutral-600 px-3 whitespace-nowrap border-r border-neutral-200">订单状态</span>
                             <select class="flex-1 h-full px-3 border-0 text-sm focus:outline-none bg-transparent text-neutral-800">
@@ -582,6 +562,23 @@
                                 <option class="text-neutral-800">已完成</option>
                                 <option class="text-neutral-800">已退货</option>
                             </select>
+                        </div>
+                        <div class="flex items-center border border-neutral-200 rounded-sm h-8 bg-white overflow-hidden flex-1 min-w-[200px]">
+                            <span class="text-sm text-neutral-600 px-3 whitespace-nowrap border-r border-neutral-200">业务类型</span>
+                            <select class="flex-1 h-full px-3 border-0 text-sm focus:outline-none bg-transparent text-neutral-800">
+                                <option value="" class="text-neutral-400">全部</option>
+                                <option class="text-neutral-800">商城</option>
+                                <option class="text-neutral-800">加油</option>
+                                <option class="text-neutral-800">加气</option>
+                                <option class="text-neutral-800">充电</option>
+                                <option class="text-neutral-800">其他</option>
+                            </select>
+                        </div>
+                        <div class="flex items-center border border-neutral-200 rounded-sm h-8 bg-white overflow-hidden flex-1 min-w-[280px]">
+                            <span class="text-sm text-neutral-600 px-3 whitespace-nowrap border-r border-neutral-200">核销时间</span>
+                            <input type="text" placeholder="开始日期" class="h-full px-3 border-0 text-sm focus:outline-none bg-transparent rounded-none flex-1 min-w-0">
+                            <span class="text-neutral-400 px-1 text-sm whitespace-nowrap">→</span>
+                            <input type="text" placeholder="结束日期" class="h-full px-3 border-0 text-sm focus:outline-none bg-transparent rounded-none flex-1 min-w-0">
                         </div>
                     </div>
                     <div class="flex justify-end mb-4">
@@ -594,10 +591,10 @@
                             <thead>
                                 <tr class="bg-neutral-50 border-b border-neutral-200">
                                     <th class="text-center py-2 px-2 font-semibold text-neutral-600" style="height: 36px;">序号</th>
-                                    <th class="text-left py-2 px-2 font-semibold text-neutral-600">券码 ID</th>
                                     <th class="text-left py-2 px-2 font-semibold text-neutral-600">订单号</th>
+                                    <th class="text-left py-2 px-2 font-semibold text-neutral-600">券码 ID</th>
+                                    <th class="text-center py-2 px-2 font-semibold text-neutral-600">业务类型</th>
                                     <th class="text-left py-2 px-2 font-semibold text-neutral-600">核销时间</th>
-                                    <th class="text-left py-2 px-2 font-semibold text-neutral-600">核销商户</th>
                                     <th class="text-right py-2 px-2 font-semibold text-neutral-600">券码面额</th>
                                     <th class="text-center py-2 px-2 font-semibold text-neutral-600">活动发行方分摊</th>
                                     <th class="text-center py-2 px-2 font-semibold text-neutral-600">订单状态</th>
@@ -607,10 +604,10 @@
                             <tbody>
                                 <tr class="border-b border-neutral-100 transition-colors" style="height: 40px;">
                                     <td class="py-2 px-2 text-center text-neutral-500">1</td>
-                                    <td class="py-2 px-2 font-mono text-primary cursor-pointer hover:underline">VC-20260401-001</td>
                                     <td class="py-2 px-2 font-mono text-neutral-800">ORD-20260401-001</td>
+                                    <td class="py-2 px-2 font-mono text-primary cursor-pointer hover:underline">VC-20260401-001</td>
+                                    <td class="py-2 px-2 text-center"><span class="inline-block px-2 py-0.5 bg-blue-50 text-blue-600 text-xs" style="border-radius: 10px; height: 20px; line-height: 12px;">加油</span></td>
                                     <td class="py-2 px-2 text-neutral-600">2026-04-01 10:30:00</td>
-                                    <td class="py-2 px-2">中国石油安徽分公司</td>
                                     <td class="py-2 px-2 text-right font-semibold text-neutral-800">¥100.00</td>
                                     <td class="py-2 px-2 text-center">
                                         <span class="text-neutral-600">数科 ¥65.70 | 联网 ¥34.30</span>
@@ -620,10 +617,10 @@
                                 </tr>
                                 <tr class="border-b border-neutral-100 bg-neutral-50 transition-colors" style="height: 40px;">
                                     <td class="py-2 px-2 text-center text-neutral-500">2</td>
-                                    <td class="py-2 px-2 font-mono text-primary cursor-pointer hover:underline">VC-20260401-002</td>
                                     <td class="py-2 px-2 font-mono text-neutral-800">ORD-20260401-002</td>
+                                    <td class="py-2 px-2 font-mono text-primary cursor-pointer hover:underline">VC-20260401-002</td>
+                                    <td class="py-2 px-2 text-center"><span class="inline-block px-2 py-0.5 bg-purple-50 text-purple-600 text-xs" style="border-radius: 10px; height: 20px; line-height: 12px;">商城</span></td>
                                     <td class="py-2 px-2 text-neutral-600">2026-04-01 11:15:00</td>
-                                    <td class="py-2 px-2">中国石油安徽分公司</td>
                                     <td class="py-2 px-2 text-right font-semibold text-neutral-800">¥50.00</td>
                                     <td class="py-2 px-2 text-center">
                                         <span class="text-neutral-600">数科 ¥32.85 | 联网 ¥17.15</span>
@@ -633,10 +630,10 @@
                                 </tr>
                                 <tr class="border-b border-neutral-100 transition-colors" style="height: 40px;">
                                     <td class="py-2 px-2 text-center text-neutral-500">3</td>
-                                    <td class="py-2 px-2 font-mono text-primary cursor-pointer hover:underline">VC-20260401-003</td>
                                     <td class="py-2 px-2 font-mono text-neutral-800">ORD-20260401-003</td>
+                                    <td class="py-2 px-2 font-mono text-primary cursor-pointer hover:underline">VC-20260401-003</td>
+                                    <td class="py-2 px-2 text-center"><span class="inline-block px-2 py-0.5 bg-orange-50 text-orange-600 text-xs" style="border-radius: 10px; height: 20px; line-height: 12px;">加气</span></td>
                                     <td class="py-2 px-2 text-neutral-600">2026-04-01 14:20:00</td>
-                                    <td class="py-2 px-2">中国石油安徽分公司</td>
                                     <td class="py-2 px-2 text-right font-semibold text-neutral-800">¥200.00</td>
                                     <td class="py-2 px-2 text-center">
                                         <span class="text-neutral-600">数科 ¥131.40 | 联网 ¥68.60</span>
@@ -646,10 +643,10 @@
                                 </tr>
                                 <tr class="border-b border-neutral-100 bg-neutral-50 transition-colors" style="height: 40px;">
                                     <td class="py-2 px-2 text-center text-neutral-500">4</td>
-                                    <td class="py-2 px-2 font-mono text-primary cursor-pointer hover:underline">VC-20260401-004</td>
                                     <td class="py-2 px-2 font-mono text-neutral-800">ORD-20260401-004</td>
+                                    <td class="py-2 px-2 font-mono text-primary cursor-pointer hover:underline">VC-20260401-004</td>
+                                    <td class="py-2 px-2 text-center"><span class="inline-block px-2 py-0.5 bg-green-50 text-green-600 text-xs" style="border-radius: 10px; height: 20px; line-height: 12px;">充电</span></td>
                                     <td class="py-2 px-2 text-neutral-600">2026-04-01 16:45:00</td>
-                                    <td class="py-2 px-2">中国石油安徽分公司</td>
                                     <td class="py-2 px-2 text-right font-semibold text-neutral-800">¥80.00</td>
                                     <td class="py-2 px-2 text-center">
                                         <span class="text-neutral-600">数科 ¥52.56 | 联网 ¥27.44</span>
@@ -659,10 +656,10 @@
                                 </tr>
                                 <tr class="border-b border-neutral-100 transition-colors" style="height: 40px;">
                                     <td class="py-2 px-2 text-center text-neutral-500">5</td>
-                                    <td class="py-2 px-2 font-mono text-primary cursor-pointer hover:underline">VC-20260401-005</td>
                                     <td class="py-2 px-2 font-mono text-neutral-800">ORD-20260401-005</td>
+                                    <td class="py-2 px-2 font-mono text-primary cursor-pointer hover:underline">VC-20260401-005</td>
+                                    <td class="py-2 px-2 text-center"><span class="inline-block px-2 py-0.5 bg-neutral-100 text-neutral-600 text-xs" style="border-radius: 10px; height: 20px; line-height: 12px;">其他</span></td>
                                     <td class="py-2 px-2 text-neutral-600">2026-04-01 18:10:00</td>
-                                    <td class="py-2 px-2">中国石油安徽分公司</td>
                                     <td class="py-2 px-2 text-right font-semibold text-neutral-800">¥150.00</td>
                                     <td class="py-2 px-2 text-center">
                                         <span class="text-neutral-600">数科 ¥98.55 | 联网 ¥51.45</span>
@@ -708,10 +705,6 @@
                             <i data-lucide="file-plus" class="w-3.5 h-3.5"></i>
                             生成对账文件
                         </button>
-                        <button class="btn-primary px-4 py-1.5 rounded-sm text-sm font-medium flex items-center gap-1.5 cursor-pointer transition-opacity duration-200" onclick="handleExport()">
-                            <i data-lucide="download" class="w-3.5 h-3.5"></i>
-                            导出
-                        </button>
                     </div>
                 </div>
 
@@ -723,26 +716,41 @@
                             <i data-lucide="info" class="w-4 h-4 text-primary mt-0.5 flex-shrink-0"></i>
                             <div class="text-xs text-neutral-600 space-y-1">
                                 <div class="font-semibold text-primary text-sm mb-2">温馨提示</div>
-                                <div>· 核心对账逻辑：<span class="font-medium text-neutral-800">订单记录的券码金额（订单模块） vs 券码核销金额（券码核销模块）</span></div>
-                                <div>· 差异判定：<span class="font-medium text-neutral-800">订单记录的券码金额 - 券码核销金额 ≠ 0</span> 则存在差异</div>
-                                <div>· 对账方式：每日凌晨 02:00 自动对账，按订单维度进行比对</div>
-                                <div>· 差异类型：金额不一致 / 订单状态不一致 / 核销记录缺失 / 基础信息不一致</div>
+                                <div>· 核心对账逻辑：<span class="font-medium text-neutral-800">按"商户 + 业务类型"维度聚合对账，每日自动核对每个商户的每种业务类型下所有订单和券码的汇总金额</span></div>
+                                <div>· 差异判定：<span class="font-medium text-neutral-800">订单券码总金额 - 券码核销总金额 ≠ 0</span> 则存在差异，可下钻查看具体差异明细</div>
+                                <div>· 对账方式：每日凌晨 02:00 自动对账，按商户+业务类型维度聚合比对</div>
+                                <div>· 差异类型：金额不一致 / 订单状态不一致 / 核销记录缺失 / 业务类型分类错误</div>
                             </div>
                         </div>
                     </div>
 
                     <div class="flex flex-wrap gap-4 mb-4">
-                        <div class="flex items-center border border-neutral-200 rounded-sm h-8 bg-white overflow-hidden flex-1 min-w-[280px]">
+                        <div class="flex items-center border border-neutral-200 rounded-sm h-8 bg-white overflow-hidden flex-1 min-w-[200px]">
                             <span class="text-sm text-neutral-600 px-3 whitespace-nowrap border-r border-neutral-200">对账日期</span>
                             <input type="text" placeholder="开始日期" class="h-full px-3 border-0 text-sm focus:outline-none bg-transparent rounded-none flex-1 min-w-0">
                             <span class="text-neutral-400 px-1 text-sm whitespace-nowrap">→</span>
                             <input type="text" placeholder="结束日期" class="h-full px-3 border-0 text-sm focus:outline-none bg-transparent rounded-none flex-1 min-w-0">
                         </div>
                         <div class="flex items-center border border-neutral-200 rounded-sm h-8 bg-white overflow-hidden flex-1 min-w-[200px]">
+                            <span class="text-sm text-neutral-600 px-3 whitespace-nowrap border-r border-neutral-200">商户名称</span>
+                            <input type="text" placeholder="请输入商户名称" class="h-full px-3 border-0 text-sm focus:outline-none bg-transparent rounded-none flex-1 min-w-0">
+                        </div>
+                        <div class="flex items-center border border-neutral-200 rounded-sm h-8 bg-white overflow-hidden flex-1 min-w-[200px]">
+                            <span class="text-sm text-neutral-600 px-3 whitespace-nowrap border-r border-neutral-200">业务类型</span>
+                            <select class="flex-1 h-full px-3 border-0 text-sm focus:outline-none bg-transparent text-neutral-800">
+                                <option value="" class="text-neutral-400">全部</option>
+                                <option class="text-neutral-800">商城</option>
+                                <option class="text-neutral-800">加油</option>
+                                <option class="text-neutral-800">加气</option>
+                                <option class="text-neutral-800">充电</option>
+                                <option class="text-neutral-800">其他</option>
+                            </select>
+                        </div>
+                        <div class="flex items-center border border-neutral-200 rounded-sm h-8 bg-white overflow-hidden flex-1 min-w-[200px]">
                             <span class="text-sm text-neutral-600 px-3 whitespace-nowrap border-r border-neutral-200">对账状态</span>
                             <select class="flex-1 h-full px-3 border-0 text-sm focus:outline-none bg-transparent text-neutral-800">
                                 <option value="" class="text-neutral-400">全部</option>
-                                <option class="text-neutral-800">处理中</option>
+                                <option class="text-neutral-800">重新生成中</option>
                                 <option class="text-neutral-800">对账成功</option>
                                 <option class="text-neutral-800">存在差异</option>
                                 <option class="text-neutral-800">已处理</option>
@@ -764,13 +772,17 @@
                                     <th class="text-center py-2.5 px-3 font-semibold text-neutral-600" style="height: 40px;">序号</th>
                                     <th class="text-left py-2.5 px-3 font-semibold text-neutral-600">对账记录号</th>
                                     <th class="text-left py-2.5 px-3 font-semibold text-neutral-600">对账日期</th>
-                                    <th class="text-left py-2.5 px-3 font-semibold text-neutral-600">订单号</th>
-                                    <th class="text-right py-2.5 px-3 font-semibold text-neutral-600">订单记录的券码金额</th>
-                                    <th class="text-right py-2.5 px-3 font-semibold text-neutral-600">券码核销金额</th>
+                                    <th class="text-left py-2.5 px-3 font-semibold text-neutral-600">商户名称</th>
+                                    <th class="text-left py-2.5 px-3 font-semibold text-neutral-600">业务类型</th>
+                                    <th class="text-center py-2.5 px-3 font-semibold text-neutral-600">订单券码总数</th>
+                                    <th class="text-center py-2.5 px-3 font-semibold text-neutral-600">核销券码总数</th>
+                                    <th class="text-right py-2.5 px-3 font-semibold text-neutral-600">订单券码总金额</th>
+                                    <th class="text-right py-2.5 px-3 font-semibold text-neutral-600">券码核销总金额</th>
                                     <th class="text-right py-2.5 px-3 font-semibold text-neutral-600">差异金额</th>
+                                    <th class="text-center py-2.5 px-3 font-semibold text-neutral-600">差异订单数</th>
                                     <th class="text-center py-2.5 px-3 font-semibold text-neutral-600">对账状态</th>
                                     <th class="text-left py-2.5 px-3 font-semibold text-neutral-600">对账时间</th>
-                                    <th class="text-center py-2.5 px-3 font-semibold text-neutral-600" style="width: 140px;">操作</th>
+                                    <th class="text-center py-2.5 px-3 font-semibold text-neutral-600" style="width: 100px;">操作</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -778,10 +790,14 @@
                                     <td class="py-3 px-3 text-center text-neutral-500">1</td>
                                     <td class="py-3 px-3 font-mono text-primary cursor-pointer hover:underline">REC-20260401-001</td>
                                     <td class="py-3 px-3 text-neutral-600">2026-04-01</td>
-                                    <td class="py-3 px-3 font-mono text-neutral-800">ORD-20260401-001</td>
-                                    <td class="py-3 px-3 text-right font-semibold text-neutral-800">¥100.00</td>
-                                    <td class="py-3 px-3 text-right font-semibold text-neutral-800">¥100.00</td>
+                                    <td class="py-3 px-3 text-neutral-800">中国石油安徽分公司</td>
+                                    <td class="py-3 px-3"><span class="inline-block px-2 py-0.5 bg-blue-50 text-blue-600 text-xs" style="border-radius: 10px; height: 20px; line-height: 12px;">加油</span></td>
+                                    <td class="py-3 px-3 text-center text-neutral-600">156</td>
+                                    <td class="py-3 px-3 text-center text-neutral-600">156</td>
+                                    <td class="py-3 px-3 text-right font-semibold text-neutral-800">¥15,600.00</td>
+                                    <td class="py-3 px-3 text-right font-semibold text-neutral-800">¥15,600.00</td>
                                     <td class="py-3 px-3 text-right text-green-600">¥0.00</td>
+                                    <td class="py-3 px-3 text-center text-neutral-600">0</td>
                                     <td class="py-3 px-3 text-center"><span class="inline-block px-3 py-0.5 bg-green-50 text-green-600 text-xs" style="border-radius: 12px; height: 24px; line-height: 16px;">对账成功</span></td>
                                     <td class="py-3 px-3 text-neutral-600 text-xs">2026-04-02 02:00:15</td>
                                     <td class="py-3 px-3 text-center">
@@ -792,10 +808,14 @@
                                     <td class="py-3 px-3 text-center text-neutral-500">2</td>
                                     <td class="py-3 px-3 font-mono text-primary cursor-pointer hover:underline">REC-20260401-002</td>
                                     <td class="py-3 px-3 text-neutral-600">2026-04-01</td>
-                                    <td class="py-3 px-3 font-mono text-neutral-800">ORD-20260401-002</td>
-                                    <td class="py-3 px-3 text-right font-semibold text-neutral-800">¥50.00</td>
-                                    <td class="py-3 px-3 text-right font-semibold text-neutral-800">¥45.00</td>
-                                    <td class="py-3 px-3 text-right text-red-600 font-semibold">¥5.00</td>
+                                    <td class="py-3 px-3 text-neutral-800">驿达石化能源</td>
+                                    <td class="py-3 px-3"><span class="inline-block px-2 py-0.5 bg-green-50 text-green-600 text-xs" style="border-radius: 10px; height: 20px; line-height: 12px;">充电</span></td>
+                                    <td class="py-3 px-3 text-center text-neutral-600">89</td>
+                                    <td class="py-3 px-3 text-center text-neutral-600">87</td>
+                                    <td class="py-3 px-3 text-right font-semibold text-neutral-800">¥8,900.00</td>
+                                    <td class="py-3 px-3 text-right font-semibold text-neutral-800">¥8,450.00</td>
+                                    <td class="py-3 px-3 text-right text-red-600 font-semibold">¥450.00</td>
+                                    <td class="py-3 px-3 text-center text-red-600 font-semibold">3</td>
                                     <td class="py-3 px-3 text-center"><span class="inline-block px-3 py-0.5 bg-red-50 text-red-600 text-xs" style="border-radius: 12px; height: 24px; line-height: 16px;">存在差异</span></td>
                                     <td class="py-3 px-3 text-neutral-600 text-xs">2026-04-02 02:01:30</td>
                                     <td class="py-3 px-3 text-center">
@@ -806,10 +826,14 @@
                                     <td class="py-3 px-3 text-center text-neutral-500">3</td>
                                     <td class="py-3 px-3 font-mono text-primary cursor-pointer hover:underline">REC-20260401-003</td>
                                     <td class="py-3 px-3 text-neutral-600">2026-04-01</td>
-                                    <td class="py-3 px-3 font-mono text-neutral-800">ORD-20260401-003</td>
-                                    <td class="py-3 px-3 text-right font-semibold text-neutral-800">¥200.00</td>
-                                    <td class="py-3 px-3 text-right font-semibold text-neutral-800">¥200.00</td>
+                                    <td class="py-3 px-3 text-neutral-800">交控新能源</td>
+                                    <td class="py-3 px-3"><span class="inline-block px-2 py-0.5 bg-orange-50 text-orange-600 text-xs" style="border-radius: 10px; height: 20px; line-height: 12px;">加气</span></td>
+                                    <td class="py-3 px-3 text-center text-neutral-600">45</td>
+                                    <td class="py-3 px-3 text-center text-neutral-600">45</td>
+                                    <td class="py-3 px-3 text-right font-semibold text-neutral-800">¥4,500.00</td>
+                                    <td class="py-3 px-3 text-right font-semibold text-neutral-800">¥4,500.00</td>
                                     <td class="py-3 px-3 text-right text-green-600">¥0.00</td>
+                                    <td class="py-3 px-3 text-center text-neutral-600">0</td>
                                     <td class="py-3 px-3 text-center"><span class="inline-block px-3 py-0.5 bg-green-50 text-green-600 text-xs" style="border-radius: 12px; height: 24px; line-height: 16px;">对账成功</span></td>
                                     <td class="py-3 px-3 text-neutral-600 text-xs">2026-04-02 02:02:45</td>
                                     <td class="py-3 px-3 text-center">
@@ -820,24 +844,32 @@
                                     <td class="py-3 px-3 text-center text-neutral-500">4</td>
                                     <td class="py-3 px-3 font-mono text-primary cursor-pointer hover:underline">REC-20260401-004</td>
                                     <td class="py-3 px-3 text-neutral-600">2026-04-01</td>
-                                    <td class="py-3 px-3 font-mono text-neutral-800">ORD-20260401-004</td>
-                                    <td class="py-3 px-3 text-right font-semibold text-neutral-800">¥80.00</td>
-                                    <td class="py-3 px-3 text-right font-semibold text-neutral-800">¥80.00</td>
+                                    <td class="py-3 px-3 text-neutral-800">中国石油安徽分公司</td>
+                                    <td class="py-3 px-3"><span class="inline-block px-2 py-0.5 bg-purple-50 text-purple-600 text-xs" style="border-radius: 10px; height: 20px; line-height: 12px;">商城</span></td>
+                                    <td class="py-3 px-3 text-center text-neutral-600">67</td>
+                                    <td class="py-3 px-3 text-center text-neutral-600">67</td>
+                                    <td class="py-3 px-3 text-right font-semibold text-neutral-800">¥6,700.00</td>
+                                    <td class="py-3 px-3 text-right font-semibold text-neutral-800">¥6,700.00</td>
                                     <td class="py-3 px-3 text-right text-green-600">¥0.00</td>
-                                    <td class="py-3 px-3 text-center"><span class="inline-block px-3 py-0.5 bg-blue-50 text-blue-600 text-xs" style="border-radius: 12px; height: 24px; line-height: 16px;">处理中</span></td>
+                                    <td class="py-3 px-3 text-center text-neutral-600">0</td>
+                                    <td class="py-3 px-3 text-center"><span class="inline-block px-3 py-0.5 bg-blue-50 text-blue-600 text-xs" style="border-radius: 12px; height: 24px; line-height: 16px;">重新生成中</span></td>
                                     <td class="py-3 px-3 text-neutral-600 text-xs">2026-04-02 02:03:00</td>
                                     <td class="py-3 px-3 text-center">
-                                        <button class="text-primary hover:underline transition-colors duration-200 cursor-pointer" onclick="showReconciliationDetail('processing')">详情</button>
+                                        <button class="text-primary hover:underline transition-colors duration-200 cursor-pointer" onclick="showReconciliationDetail('regenerating')">详情</button>
                                     </td>
                                 </tr>
                                 <tr class="table-row border-b border-neutral-100 transition-colors" style="height: 56px;">
                                     <td class="py-3 px-3 text-center text-neutral-500">5</td>
                                     <td class="py-3 px-3 font-mono text-primary cursor-pointer hover:underline">REC-20260331-005</td>
                                     <td class="py-3 px-3 text-neutral-600">2026-03-31</td>
-                                    <td class="py-3 px-3 font-mono text-neutral-800">ORD-20260331-005</td>
-                                    <td class="py-3 px-3 text-right font-semibold text-neutral-800">¥150.00</td>
-                                    <td class="py-3 px-3 text-right font-semibold text-neutral-800">¥130.00</td>
-                                    <td class="py-3 px-3 text-right text-red-600 font-semibold">¥20.00</td>
+                                    <td class="py-3 px-3 text-neutral-800">驿达石化能源</td>
+                                    <td class="py-3 px-3"><span class="inline-block px-2 py-0.5 bg-green-50 text-green-600 text-xs" style="border-radius: 10px; height: 20px; line-height: 12px;">充电</span></td>
+                                    <td class="py-3 px-3 text-center text-neutral-600">120</td>
+                                    <td class="py-3 px-3 text-center text-neutral-600">115</td>
+                                    <td class="py-3 px-3 text-right font-semibold text-neutral-800">¥12,000.00</td>
+                                    <td class="py-3 px-3 text-right font-semibold text-neutral-800">¥11,300.00</td>
+                                    <td class="py-3 px-3 text-right text-red-600 font-semibold">¥700.00</td>
+                                    <td class="py-3 px-3 text-center text-red-600 font-semibold">5</td>
                                     <td class="py-3 px-3 text-center"><span class="inline-block px-3 py-0.5 bg-neutral-100 text-neutral-600 text-xs" style="border-radius: 12px; height: 24px; line-height: 16px;">已处理</span></td>
                                     <td class="py-3 px-3 text-neutral-600 text-xs">2026-04-01 02:00:10</td>
                                     <td class="py-3 px-3 text-center">
@@ -988,7 +1020,10 @@
                     <h1 class="text-base font-bold text-neutral-800">对账详情</h1>
                     <div class="flex gap-2">
                         <button class="btn-secondary px-4 py-1.5 rounded-sm text-sm font-medium cursor-pointer transition-colors duration-200" onclick="showPage('reconciliation')">返回上级页面</button>
-                        <button class="btn-primary px-4 py-1.5 rounded-sm text-sm font-medium cursor-pointer transition-opacity duration-200">下载</button>
+                        <button class="btn-primary px-4 py-1.5 rounded-sm text-sm font-medium flex items-center gap-1.5 cursor-pointer transition-opacity duration-200 hidden" id="detail-download-btn" onclick="handleExport()">
+                            <i data-lucide="download" class="w-3.5 h-3.5"></i>
+                            差异明细导出
+                        </button>
                     </div>
                 </div>
 
@@ -1008,12 +1043,12 @@
                                     <span class="text-xs text-neutral-800" id="detail-date">2026-04-01</span>
                                 </div>
                                 <div class="flex justify-between">
-                                    <span class="text-xs text-neutral-500">订单号</span>
-                                    <span class="text-xs font-mono text-neutral-800" id="detail-order-no">ORD-20260401-002</span>
+                                    <span class="text-xs text-neutral-500">商户名称</span>
+                                    <span class="text-xs text-neutral-800" id="detail-merchant">驿达石化能源</span>
                                 </div>
                                 <div class="flex justify-between">
-                                    <span class="text-xs text-neutral-500">券码 ID</span>
-                                    <span class="text-xs font-mono text-neutral-800" id="detail-voucher-id">VC-20260401-002</span>
+                                    <span class="text-xs text-neutral-500">业务类型</span>
+                                    <span class="inline-block px-2 py-0.5 bg-green-50 text-green-600 text-xs" id="detail-biz-type" style="border-radius: 10px; height: 20px; line-height: 12px;">充电</span>
                                 </div>
                                 <div class="flex justify-between">
                                     <span class="text-xs text-neutral-500">对账状态</span>
@@ -1024,29 +1059,29 @@
                         <!-- 右侧：金额对比 -->
                         <div>
                             <div class="bg-white border border-neutral-200 rounded-sm overflow-hidden">
-                                <!-- 订单记录的券码金额 -->
+                                <!-- 订单券码总金额 -->
                                 <div class="px-4 py-3 border-b border-neutral-200">
                                     <div class="flex justify-between items-center">
-                                        <span class="text-xs font-medium text-neutral-700">订单记录的券码金额</span>
-                                        <span class="text-lg font-bold text-neutral-800" id="detail-order-amount">¥50.00</span>
+                                        <span class="text-xs font-medium text-neutral-700">订单券码总金额</span>
+                                        <span class="text-lg font-bold text-neutral-800" id="detail-order-amount">¥8,900.00</span>
                                     </div>
-                                    <div class="text-xs text-neutral-400 mt-1">数据来源：订单模块</div>
+                                    <div class="text-xs text-neutral-400 mt-1">数据来源：订单模块，汇总该商户该业务类型下所有订单</div>
                                 </div>
-                                <!-- 券码核销金额 -->
+                                <!-- 券码核销总金额 -->
                                 <div class="px-4 py-3 border-b border-neutral-200">
                                     <div class="flex justify-between items-center">
-                                        <span class="text-xs font-medium text-neutral-700">券码核销金额</span>
-                                        <span class="text-lg font-bold text-neutral-800" id="detail-verification-amount">¥45.00</span>
+                                        <span class="text-xs font-medium text-neutral-700">券码核销总金额</span>
+                                        <span class="text-lg font-bold text-neutral-800" id="detail-verification-amount">¥8,450.00</span>
                                     </div>
-                                    <div class="text-xs text-neutral-400 mt-1">数据来源：券码核销模块</div>
+                                    <div class="text-xs text-neutral-400 mt-1">数据来源：券码核销模块，汇总该商户该业务类型下所有券码</div>
                                 </div>
                                 <!-- 差异金额 -->
                                 <div class="bg-red-50 px-4 py-3 border-t border-red-100">
                                     <div class="flex justify-between items-center">
                                         <span class="text-xs font-semibold text-red-600">差异金额</span>
-                                        <span class="text-lg font-bold text-red-600" id="detail-diff-amount">¥5.00</span>
+                                        <span class="text-lg font-bold text-red-600" id="detail-diff-amount">¥450.00</span>
                                     </div>
-                                    <div class="text-xs text-red-400 mt-1" id="detail-diff-type">差异类型：金额不一致</div>
+                                    <div class="text-xs text-red-400 mt-1">差异订单数：<span id="detail-diff-count">3</span></div>
                                 </div>
                             </div>
                         </div>
@@ -1070,29 +1105,83 @@
                         <table class="w-full text-xs">
                             <thead>
                                 <tr class="bg-neutral-50 border-b border-neutral-200">
+                                    <th class="text-center py-2 px-2 font-semibold text-neutral-600" style="height: 36px;">
+                                        <input type="checkbox" id="diff-select-all" class="cursor-pointer" onclick="toggleDiffSelectAll()">
+                                    </th>
                                     <th class="text-center py-2 px-2 font-semibold text-neutral-600" style="height: 36px;">序号</th>
                                     <th class="text-left py-2 px-2 font-semibold text-neutral-600">订单号</th>
                                     <th class="text-left py-2 px-2 font-semibold text-neutral-600">券码 ID</th>
-                                    <th class="text-center py-2 px-2 font-semibold text-neutral-600">差异类型</th>
-                                    <th class="text-left py-2 px-2 font-semibold text-neutral-600">差异描述</th>
+                                    <th class="text-center py-2 px-2 font-semibold text-neutral-600">订单状态</th>
+                                    <th class="text-center py-2 px-2 font-semibold text-neutral-600">核销状态</th>
                                     <th class="text-right py-2 px-2 font-semibold text-neutral-600">订单券码金额</th>
                                     <th class="text-right py-2 px-2 font-semibold text-neutral-600">核销金额</th>
                                     <th class="text-right py-2 px-2 font-semibold text-neutral-600">差异金额</th>
+                                    <th class="text-center py-2 px-2 font-semibold text-neutral-600">差异类型</th>
                                     <th class="text-center py-2 px-2 font-semibold text-neutral-600">处理状态</th>
                                 </tr>
                             </thead>
                             <tbody id="diff-detail-body">
-                                <tr class="border-b border-neutral-100 transition-colors" style="height: 40px;">
+                                <tr class="border-b border-neutral-100 transition-colors diff-detail-row" style="height: 40px;">
+                                    <td class="py-2 px-2 text-center"><input type="checkbox" class="diff-checkbox cursor-pointer" onclick="updateDiffSelectAllState()"></td>
                                     <td class="py-2 px-2 text-center text-neutral-500">1</td>
-                                    <td class="py-2 px-2 font-mono text-neutral-800">ORD-20260401-002</td>
-                                    <td class="py-2 px-2 font-mono text-neutral-800">VC-20260401-002</td>
+                                    <td class="py-2 px-2 font-mono text-neutral-800">ORD-20260401-015</td>
+                                    <td class="py-2 px-2 font-mono text-neutral-800">VC-20260401-015</td>
+                                    <td class="py-2 px-2 text-center"><span class="inline-block px-2 py-0.5 bg-green-50 text-green-600 text-xs" style="border-radius: 10px; height: 20px; line-height: 12px;">已完成</span></td>
+                                    <td class="py-2 px-2 text-center"><span class="inline-block px-2 py-0.5 bg-blue-50 text-blue-600 text-xs" style="border-radius: 10px; height: 20px; line-height: 12px;">已核销</span></td>
+                                    <td class="py-2 px-2 text-right font-semibold text-neutral-800">¥150.00</td>
+                                    <td class="py-2 px-2 text-right font-semibold text-neutral-800">¥100.00</td>
+                                    <td class="py-2 px-2 text-right font-semibold text-red-600">¥50.00</td>
                                     <td class="py-2 px-2 text-center"><span class="inline-block px-2 py-0.5 bg-red-50 text-red-600 text-xs" style="border-radius: 10px; height: 20px; line-height: 12px;">金额不一致</span></td>
-                                    <td class="py-2 px-2 text-neutral-600">订单记录金额¥50.00，实际核销金额¥45.00，差异¥5.00</td>
-                                    <td class="py-2 px-2 text-right font-semibold text-neutral-800">¥50.00</td>
-                                    <td class="py-2 px-2 text-right font-semibold text-neutral-800">¥45.00</td>
-                                    <td class="py-2 px-2 text-right font-semibold text-red-600">¥5.00</td>
                                     <td class="py-2 px-2 text-center"><span class="inline-block px-2 py-0.5 bg-orange-50 text-orange-500 text-xs" style="border-radius: 10px; height: 20px; line-height: 12px;">待处理</span></td>
                                 </tr>
+                                <tr class="border-b border-neutral-100 bg-neutral-50 transition-colors diff-detail-row" style="height: 40px;">
+                                    <td class="py-2 px-2 text-center"><input type="checkbox" class="diff-checkbox cursor-pointer" onclick="updateDiffSelectAllState()"></td>
+                                    <td class="py-2 px-2 text-center text-neutral-500">2</td>
+                                    <td class="py-2 px-2 font-mono text-neutral-800">ORD-20260401-023</td>
+                                    <td class="py-2 px-2 font-mono text-neutral-800">VC-20260401-023</td>
+                                    <td class="py-2 px-2 text-center"><span class="inline-block px-2 py-0.5 bg-green-50 text-green-600 text-xs" style="border-radius: 10px; height: 20px; line-height: 12px;">已完成</span></td>
+                                    <td class="py-2 px-2 text-center"><span class="inline-block px-2 py-0.5 bg-blue-50 text-blue-600 text-xs" style="border-radius: 10px; height: 20px; line-height: 12px;">已核销</span></td>
+                                    <td class="py-2 px-2 text-right font-semibold text-neutral-800">¥200.00</td>
+                                    <td class="py-2 px-2 text-right font-semibold text-neutral-800">¥150.00</td>
+                                    <td class="py-2 px-2 text-right font-semibold text-red-600">¥50.00</td>
+                                    <td class="py-2 px-2 text-center"><span class="inline-block px-2 py-0.5 bg-red-50 text-red-600 text-xs" style="border-radius: 10px; height: 20px; line-height: 12px;">金额不一致</span></td>
+                                    <td class="py-2 px-2 text-center"><span class="inline-block px-2 py-0.5 bg-orange-50 text-orange-500 text-xs" style="border-radius: 10px; height: 20px; line-height: 12px;">待处理</span></td>
+                                </tr>
+                                <tr class="border-b border-neutral-100 transition-colors diff-detail-row" style="height: 40px;">
+                                    <td class="py-2 px-2 text-center"><input type="checkbox" class="diff-checkbox cursor-pointer" onclick="updateDiffSelectAllState()"></td>
+                                    <td class="py-2 px-2 text-center text-neutral-500">3</td>
+                                    <td class="py-2 px-2 font-mono text-neutral-800">ORD-20260401-031</td>
+                                    <td class="py-2 px-2 font-mono text-neutral-800">VC-20260401-031</td>
+                                    <td class="py-2 px-2 text-center"><span class="inline-block px-2 py-0.5 bg-green-50 text-green-600 text-xs" style="border-radius: 10px; height: 20px; line-height: 12px;">已完成</span></td>
+                                    <td class="py-2 px-2 text-center"><span class="inline-block px-2 py-0.5 bg-orange-50 text-orange-500 text-xs" style="border-radius: 10px; height: 20px; line-height: 12px;">已冻结</span></td>
+                                    <td class="py-2 px-2 text-right font-semibold text-neutral-800">¥100.00</td>
+                                    <td class="py-2 px-2 text-right font-semibold text-neutral-800">¥0.00</td>
+                                    <td class="py-2 px-2 text-right font-semibold text-red-600">¥100.00</td>
+                                    <td class="py-2 px-2 text-center"><span class="inline-block px-2 py-0.5 bg-orange-50 text-orange-600 text-xs" style="border-radius: 10px; height: 20px; line-height: 12px;">状态不一致</span></td>
+                                    <td class="py-2 px-2 text-center"><span class="inline-block px-2 py-0.5 bg-orange-50 text-orange-500 text-xs" style="border-radius: 10px; height: 20px; line-height: 12px;">待处理</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 差异处理日志（重新生成中/已处理状态显示） -->
+                <div class="bg-white rounded-sm border border-neutral-200 p-6 mt-6 hidden" id="process-log-section">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-sm font-semibold text-neutral-700">差异处理日志</h3>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-xs">
+                            <thead>
+                                <tr class="bg-neutral-50 border-b border-neutral-200">
+                                    <th class="text-center py-2 px-2 font-semibold text-neutral-600" style="height: 36px;">序号</th>
+                                    <th class="text-left py-2 px-2 font-semibold text-neutral-600">操作时间</th>
+                                    <th class="text-left py-2 px-2 font-semibold text-neutral-600">操作人</th>
+                                    <th class="text-left py-2 px-2 font-semibold text-neutral-600">操作动作</th>
+                                    <th class="text-left py-2 px-2 font-semibold text-neutral-600">处理结果</th>
+                                </tr>
+                            </thead>
+                            <tbody id="process-log-body">
                             </tbody>
                         </table>
                     </div>
@@ -1118,10 +1207,10 @@
                         <i data-lucide="info" class="w-4 h-4 text-primary mt-0.5 flex-shrink-0"></i>
                         <div class="text-xs text-neutral-600 space-y-1">
                             <div class="font-semibold text-primary text-sm mb-2">差异类型说明</div>
-                            <div>· <span class="font-medium text-neutral-800">金额不一致（P0）</span>：订单记录的券码金额与券码核销金额不一致</div>
+                            <div>· <span class="font-medium text-neutral-800">金额不一致（P0）</span>：聚合汇总后，订单券码总金额与券码核销总金额不一致</div>
                             <div>· <span class="font-medium text-neutral-800">订单状态不一致（P0）</span>：订单模块显示已完成，券码核销模块显示已冻结</div>
                             <div>· <span class="font-medium text-neutral-800">核销记录缺失（P1）</span>：订单模块有券码记录，券码核销模块无核销记录</div>
-                            <div>· <span class="font-medium text-neutral-800">基础信息不一致（P2）</span>：订单号、券码 ID、核销商户、核销时间不一致</div>
+                            <div>· <span class="font-medium text-neutral-800">业务类型分类错误（P2）</span>：订单与券码的业务类型分类不一致</div>
                         </div>
                     </div>
                 </div>
@@ -1141,12 +1230,12 @@
                                     <span class="text-xs text-neutral-800">2026-04-01</span>
                                 </div>
                                 <div class="flex justify-between">
-                                    <span class="text-xs text-neutral-500">订单号</span>
-                                    <span class="text-xs font-mono text-neutral-800">ORD-20260401-002</span>
+                                    <span class="text-xs text-neutral-500">商户名称</span>
+                                    <span class="text-xs text-neutral-800">驿达石化能源</span>
                                 </div>
                                 <div class="flex justify-between">
-                                    <span class="text-xs text-neutral-500">券码 ID</span>
-                                    <span class="text-xs font-mono text-neutral-800">VC-20260401-002</span>
+                                    <span class="text-xs text-neutral-500">业务类型</span>
+                                    <span class="inline-block px-2 py-0.5 bg-green-50 text-green-600 text-xs" style="border-radius: 10px; height: 20px; line-height: 12px;">充电</span>
                                 </div>
                             </div>
                         </div>
@@ -1162,7 +1251,11 @@
                                 </div>
                                 <div class="text-center bg-red-50 rounded-sm p-3 border border-red-100">
                                     <div class="text-xs text-red-500 mb-1">差异金额</div>
-                                    <div class="text-base font-bold text-red-600">¥5.00</div>
+                                    <div class="text-base font-bold text-red-600">¥450.00</div>
+                                </div>
+                                <div class="text-center bg-orange-50 rounded-sm p-3 border border-orange-100">
+                                    <div class="text-xs text-orange-500 mb-1">差异订单数</div>
+                                    <div class="text-base font-bold text-orange-600">3 笔</div>
                                 </div>
                             </div>
                         </div>
@@ -1488,6 +1581,162 @@
         </div>
     </div>
 
+    <!-- 结算单导出确认弹窗 -->
+    <div id="modal-settlement-export" class="fixed inset-0 bg-black/50 z-[999] hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-sm shadow-lg w-full max-w-lg overflow-hidden">
+            <div class="flex items-center justify-between p-4 border-b border-neutral-200">
+                <h3 class="text-base font-semibold text-neutral-900 flex items-center gap-2">
+                    <i data-lucide="download" class="w-4 h-4 text-primary"></i>
+                    结算单导出
+                </h3>
+                <button onclick="closeModal('modal-settlement-export')" class="p-1.5 hover:bg-neutral-100 rounded-sm transition-colors">
+                    <i data-lucide="x" class="w-4 h-4 text-neutral-500"></i>
+                </button>
+            </div>
+            <div class="p-6">
+                <!-- 导出条件摘要 -->
+                <div class="bg-neutral-50 border border-neutral-200 rounded-sm p-4 mb-6">
+                    <h4 class="text-sm font-medium text-neutral-700 mb-3">导出范围</h4>
+                    <div class="grid grid-cols-2 gap-3 text-xs">
+                        <div class="flex justify-between">
+                            <span class="text-neutral-500">商户名称</span>
+                            <span class="text-neutral-800 font-medium">全部</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-neutral-500">结算状态</span>
+                            <span class="text-neutral-800 font-medium">全部</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-neutral-500">结算周期</span>
+                            <span class="text-neutral-800 font-medium">全部</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-neutral-500">预计数据量</span>
+                            <span class="text-neutral-800 font-medium">4 条</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- 导出格式 -->
+                <div class="mb-4">
+                    <label class="block text-sm text-neutral-600 mb-2">导出格式 <span class="text-error">*</span></label>
+                    <div class="flex gap-4">
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="radio" name="export-format" value="xlsx" checked class="cursor-pointer">
+                            <span class="text-sm text-neutral-800">Excel（.xlsx）</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="radio" name="export-format" value="csv" class="cursor-pointer">
+                            <span class="text-sm text-neutral-800">CSV（.csv）</span>
+                        </label>
+                    </div>
+                </div>
+                <!-- 导出字段说明 -->
+                <div class="bg-orange-50 rounded-sm p-3 border border-orange-100">
+                    <p class="text-xs text-neutral-600 space-y-1">
+                        <span class="text-xs font-medium text-primary">导出字段：</span><br>
+                        结算单号、商户名称、结算周期、核销券码数量、结算金额、数科分摊金额、联网分摊金额、状态、生成时间、确认时间、打款时间
+                    </p>
+                </div>
+            </div>
+            <div class="flex gap-3 p-4 bg-neutral-50 border-t border-neutral-200">
+                <button onclick="closeModal('modal-settlement-export')" class="flex-1 px-4 py-2 border border-neutral-300 text-neutral-700 rounded-sm font-medium hover:bg-neutral-100 transition-all duration-200 cursor-pointer">
+                    取消
+                </button>
+                <button onclick="submitSettlementExport()" class="flex-1 px-4 py-2 bg-primary text-white rounded-sm font-medium hover:opacity-90 transition-all duration-200 cursor-pointer">
+                    确认导出
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 已导出列表弹窗 -->
+    <div id="modal-export-history" class="fixed inset-0 bg-black/50 z-[999] hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-sm shadow-lg w-full max-w-3xl overflow-hidden">
+            <div class="flex items-center justify-between p-4 border-b border-neutral-200">
+                <h3 class="text-base font-semibold text-neutral-900 flex items-center gap-2">
+                    <i data-lucide="folder-open" class="w-4 h-4 text-primary"></i>
+                    已导出列表
+                </h3>
+                <button onclick="closeModal('modal-export-history')" class="p-1.5 hover:bg-neutral-100 rounded-sm transition-colors">
+                    <i data-lucide="x" class="w-4 h-4 text-neutral-500"></i>
+                </button>
+            </div>
+            <div class="p-6">
+                <!-- 提示信息 -->
+                <div class="bg-orange-50 rounded-sm p-3 border border-orange-100 mb-4 flex items-start gap-2">
+                    <i data-lucide="info" class="w-4 h-4 text-primary mt-0.5 flex-shrink-0"></i>
+                    <div class="text-xs text-neutral-600">
+                        导出记录保留 <span class="text-primary font-medium">7 天</span>，过期自动删除，请及时下载所需文件。
+                    </div>
+                </div>
+                <!-- 导出记录列表 -->
+                <div class="overflow-x-auto">
+                    <table class="w-full text-xs">
+                        <thead>
+                            <tr class="bg-neutral-50 border-b border-neutral-200">
+                                <th class="text-center py-2 px-3 font-semibold text-neutral-600" style="height: 36px;">序号</th>
+                                <th class="text-left py-2 px-3 font-semibold text-neutral-600">导出时间</th>
+                                <th class="text-left py-2 px-3 font-semibold text-neutral-600">导出类型</th>
+                                <th class="text-left py-2 px-3 font-semibold text-neutral-600">筛选条件</th>
+                                <th class="text-center py-2 px-3 font-semibold text-neutral-600">数据量</th>
+                                <th class="text-center py-2 px-3 font-semibold text-neutral-600">格式</th>
+                                <th class="text-center py-2 px-3 font-semibold text-neutral-600">状态</th>
+                                <th class="text-center py-2 px-3 font-semibold text-neutral-600">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b border-neutral-100 transition-colors" style="height: 40px;">
+                                <td class="py-2 px-3 text-center text-neutral-500">1</td>
+                                <td class="py-2 px-3 text-neutral-600">2026-04-08 14:30:00</td>
+                                <td class="py-2 px-3"><span class="inline-block px-2 py-0.5 bg-orange-50 text-orange-500 text-xs" style="border-radius: 10px; height: 20px; line-height: 12px;">结算单导出</span></td>
+                                <td class="py-2 px-3 text-neutral-600 text-xs">状态:全部, 周期:全部</td>
+                                <td class="py-2 px-3 text-center text-neutral-800 font-medium">4 条</td>
+                                <td class="py-2 px-3 text-center"><span class="inline-block px-2 py-0.5 bg-green-50 text-green-600 text-xs" style="border-radius: 10px; height: 20px; line-height: 12px;">Excel</span></td>
+                                <td class="py-2 px-3 text-center"><span class="inline-block px-2 py-0.5 bg-green-50 text-green-600 text-xs" style="border-radius: 10px; height: 20px; line-height: 12px;">可下载</span></td>
+                                <td class="py-2 px-3 text-center">
+                                    <button class="text-primary hover:underline transition-colors duration-200 cursor-pointer" onclick="downloadExportFile()">
+                                        <i data-lucide="download" class="w-3.5 h-3.5 inline mr-1"></i>下载
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-neutral-100 bg-neutral-50 transition-colors" style="height: 40px;">
+                                <td class="py-2 px-3 text-center text-neutral-500">2</td>
+                                <td class="py-2 px-3 text-neutral-600">2026-04-07 10:15:00</td>
+                                <td class="py-2 px-3"><span class="inline-block px-2 py-0.5 bg-blue-50 text-blue-600 text-xs" style="border-radius: 10px; height: 20px; line-height: 12px;">核销明细导出</span></td>
+                                <td class="py-2 px-3 text-neutral-600 text-xs">结算单:SET-20260401-001</td>
+                                <td class="py-2 px-3 text-center text-neutral-800 font-medium">156 条</td>
+                                <td class="py-2 px-3 text-center"><span class="inline-block px-2 py-0.5 bg-green-50 text-green-600 text-xs" style="border-radius: 10px; height: 20px; line-height: 12px;">Excel</span></td>
+                                <td class="py-2 px-3 text-center"><span class="inline-block px-2 py-0.5 bg-green-50 text-green-600 text-xs" style="border-radius: 10px; height: 20px; line-height: 12px;">可下载</span></td>
+                                <td class="py-2 px-3 text-center">
+                                    <button class="text-primary hover:underline transition-colors duration-200 cursor-pointer" onclick="downloadExportFile()">
+                                        <i data-lucide="download" class="w-3.5 h-3.5 inline mr-1"></i>下载
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-neutral-100 transition-colors" style="height: 40px;">
+                                <td class="py-2 px-3 text-center text-neutral-500">3</td>
+                                <td class="py-2 px-3 text-neutral-600">2026-04-05 16:45:00</td>
+                                <td class="py-2 px-3"><span class="inline-block px-2 py-0.5 bg-orange-50 text-orange-500 text-xs" style="border-radius: 10px; height: 20px; line-height: 12px;">结算单导出</span></td>
+                                <td class="py-2 px-3 text-neutral-600 text-xs">状态:已打款, 周期:2026-03</td>
+                                <td class="py-2 px-3 text-center text-neutral-800 font-medium">23 条</td>
+                                <td class="py-2 px-3 text-center"><span class="inline-block px-2 py-0.5 bg-neutral-100 text-neutral-600 text-xs" style="border-radius: 10px; height: 20px; line-height: 12px;">CSV</span></td>
+                                <td class="py-2 px-3 text-center"><span class="inline-block px-2 py-0.5 bg-neutral-100 text-neutral-500 text-xs" style="border-radius: 10px; height: 20px; line-height: 12px;">已过期</span></td>
+                                <td class="py-2 px-3 text-center">
+                                    <span class="text-neutral-400 text-xs">已过期</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="flex gap-3 p-4 bg-neutral-50 border-t border-neutral-200">
+                <button onclick="closeModal('modal-export-history')" class="flex-1 px-4 py-2 border border-neutral-300 text-neutral-700 rounded-sm font-medium hover:bg-neutral-100 transition-all duration-200 cursor-pointer">
+                    关闭
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Appeal Processing Modal (平台管理员处理申诉) -->
     <div id="modal-appeal-process" class="fixed inset-0 bg-black/50 z-[999] hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-sm shadow-lg w-full max-w-xl overflow-hidden">
@@ -1508,10 +1757,6 @@
                         <div class="flex justify-between">
                             <span class="text-xs text-neutral-500">结算单号</span>
                             <span class="text-xs font-mono text-neutral-800">SET-20260401-001</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-xs text-neutral-500">申诉类型</span>
-                            <span class="text-xs text-neutral-800 font-medium">整张账单申诉</span>
                         </div>
                         <div class="flex justify-between">
                             <span class="text-xs text-neutral-500">申诉原因</span>
@@ -1633,7 +1878,25 @@
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-neutral-700 mb-2">商户名称</label>
-                                <input type="text" placeholder="可选，不填则包含所有商户" class="w-full px-3 py-2 border border-neutral-200 rounded text-sm focus:outline-none focus:border-primary" id="reconciliation-merchant">
+                                <select class="w-full px-3 py-2 border border-neutral-200 rounded text-sm focus:outline-none focus:border-primary" id="reconciliation-merchant-select">
+                                    <option value="">全部商户</option>
+                                    <option>中国石油安徽分公司</option>
+                                    <option>中石化安徽分公司</option>
+                                    <option>驿达石化能源</option>
+                                    <option>交控新能源</option>
+                                    <option>安徽高速能源</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-neutral-700 mb-2">业务类型</label>
+                                <select class="w-full px-3 py-2 border border-neutral-200 rounded text-sm focus:outline-none focus:border-primary" id="reconciliation-biz-type">
+                                    <option value="">全部</option>
+                                    <option>商城</option>
+                                    <option>加油</option>
+                                    <option>加气</option>
+                                    <option>充电</option>
+                                    <option>其他</option>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -1957,33 +2220,21 @@
                         </button>
                     </div>
                     <div class="p-6">
-                        <!-- 差异信息 -->
+                        <!-- 差异汇总信息 -->
                         <div class="bg-neutral-50 border border-neutral-200 rounded-sm p-4 mb-6">
-                            <h4 class="text-sm font-medium text-neutral-700 mb-3">差异信息</h4>
-                            <div class="grid grid-cols-2 gap-4">
-                                <div>
-                                    <label class="block text-xs text-neutral-500 mb-1">订单号</label>
-                                    <p class="text-sm font-mono text-neutral-900 font-medium">ORD-20260401-002</p>
+                            <h4 class="text-sm font-medium text-neutral-700 mb-3">差异汇总（已勾选 <span id="diff-selected-count" class="text-primary font-bold">0</span> 笔）</h4>
+                            <div class="grid grid-cols-3 gap-4">
+                                <div class="text-center bg-white rounded-sm p-3 border border-neutral-100">
+                                    <div class="text-xs text-neutral-500 mb-1">订单券码金额</div>
+                                    <div class="text-base font-bold text-neutral-800" id="diff-total-order-amount">¥450.00</div>
                                 </div>
-                                <div>
-                                    <label class="block text-xs text-neutral-500 mb-1">券码 ID</label>
-                                    <p class="text-sm font-mono text-neutral-900">VC-20260401-002</p>
+                                <div class="text-center bg-white rounded-sm p-3 border border-neutral-100">
+                                    <div class="text-xs text-neutral-500 mb-1">券码核销金额</div>
+                                    <div class="text-base font-bold text-neutral-800" id="diff-total-verify-amount">¥250.00</div>
                                 </div>
-                                <div>
-                                    <label class="block text-xs text-neutral-500 mb-1">差异类型</label>
-                                    <p class="text-sm"><span class="inline-block px-2 py-0.5 bg-red-50 text-red-600 text-xs" style="border-radius: 10px; height: 20px; line-height: 12px;">金额不一致</span></p>
-                                </div>
-                                <div>
-                                    <label class="block text-xs text-neutral-500 mb-1">差异金额</label>
-                                    <p class="text-sm font-bold text-error">¥5.00</p>
-                                </div>
-                                <div>
-                                    <label class="block text-xs text-neutral-500 mb-1">订单券码金额</label>
-                                    <p class="text-sm text-neutral-900">¥50.00</p>
-                                </div>
-                                <div>
-                                    <label class="block text-xs text-neutral-500 mb-1">核销金额</label>
-                                    <p class="text-sm text-neutral-900">¥45.00</p>
+                                <div class="text-center bg-red-50 rounded-sm p-3 border border-red-100">
+                                    <div class="text-xs text-red-500 mb-1">差异金额</div>
+                                    <div class="text-base font-bold text-red-600" id="diff-total-diff-amount">¥200.00</div>
                                 </div>
                             </div>
                         </div>
@@ -2010,7 +2261,7 @@
                                         <input type="radio" name="diff-action" value="reconcile" class="mt-1 cursor-pointer" onchange="toggleDiffAdjustFields()">
                                         <div>
                                             <div class="text-sm text-neutral-800 font-medium">重新对账</div>
-                                            <div class="text-xs text-neutral-500">触发该订单重新对账</div>
+                                            <div class="text-xs text-neutral-500">触发该商户该业务类型重新对账</div>
                                         </div>
                                     </label>
                                 </div>
@@ -2021,12 +2272,18 @@
                                 <h4 class="text-sm font-medium text-neutral-700 mb-3">调账信息</h4>
                                 <div class="grid grid-cols-2 gap-4 mb-4">
                                     <div>
-                                        <label class="block text-xs text-neutral-500 mb-1">原订单金额</label>
-                                        <div class="text-sm font-semibold text-neutral-800">¥50.00</div>
+                                        <label class="block text-xs text-neutral-500 mb-1">订单券码金额（可修改）</label>
+                                        <input type="number" step="0.01" id="diff-adjust-order-amount" placeholder="请输入订单券码金额" class="w-full px-3 py-2 border border-neutral-200 rounded-sm text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20">
                                     </div>
                                     <div>
-                                        <label class="block text-xs text-neutral-500 mb-1">调账金额</label>
-                                        <input type="number" step="0.01" placeholder="请输入调账金额" class="w-full px-3 py-2 border border-neutral-200 rounded-sm text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20">
+                                        <label class="block text-xs text-neutral-500 mb-1">券码核销金额（可修改）</label>
+                                        <input type="number" step="0.01" id="diff-adjust-verify-amount" placeholder="请输入券码核销金额" class="w-full px-3 py-2 border border-neutral-200 rounded-sm text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20">
+                                    </div>
+                                </div>
+                                <div class="bg-blue-50 border border-blue-100 rounded-sm p-3">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-xs text-blue-600 font-medium">调整后差异金额</span>
+                                        <span class="text-sm font-bold text-blue-700" id="diff-adjust-diff-display">¥0.00</span>
                                     </div>
                                 </div>
                             </div>
@@ -2126,96 +2383,171 @@
                 'success': {
                     recordNo: 'REC-20260401-001',
                     date: '2026-04-01',
-                    orderNo: 'ORD-20260401-001',
-                    voucherId: 'VC-20260401-001',
+                    merchant: '中国石油安徽分公司',
+                    bizType: '加油',
+                    bizTypeColor: 'bg-blue-50 text-blue-600',
                     statusText: '对账成功',
                     statusColor: 'bg-green-50 text-green-600',
-                    orderAmount: '¥100.00',
-                    verificationAmount: '¥100.00',
+                    orderAmount: '¥15,600.00',
+                    verificationAmount: '¥15,600.00',
                     diffAmount: '¥0.00',
                     diffAmountColor: 'text-green-600',
-                    diffType: '-',
+                    diffCount: '0',
                     startTime: '2026-04-02 02:00:00',
                     endTime: '2026-04-02 02:00:15',
                     showDiffDetail: false,
                     showDiffButton: false,
-                    diffDetailRows: []
+                    diffDetailRows: [],
+                    showDownloadBtn: false,
+                    processLog: []
                 },
                 'diff': {
                     recordNo: 'REC-20260401-002',
                     date: '2026-04-01',
-                    orderNo: 'ORD-20260401-002',
-                    voucherId: 'VC-20260401-002',
+                    merchant: '驿达石化能源',
+                    bizType: '充电',
+                    bizTypeColor: 'bg-green-50 text-green-600',
                     statusText: '存在差异',
                     statusColor: 'bg-red-50 text-red-600',
-                    orderAmount: '¥50.00',
-                    verificationAmount: '¥45.00',
-                    diffAmount: '¥5.00',
+                    orderAmount: '¥8,900.00',
+                    verificationAmount: '¥8,450.00',
+                    diffAmount: '¥450.00',
                     diffAmountColor: 'text-red-600',
-                    diffType: '金额不一致',
+                    diffCount: '3',
                     startTime: '2026-04-02 02:00:00',
                     endTime: '2026-04-02 02:01:30',
                     showDiffDetail: true,
                     showDiffButton: true,
                     diffDetailRows: [
                         {
-                            orderNo: 'ORD-20260401-002',
-                            voucherId: 'VC-20260401-002',
+                            orderNo: 'ORD-20260401-015',
+                            voucherId: 'VC-20260401-015',
+                            orderStatus: '已完成',
+                            verifyStatus: '已核销',
+                            orderAmount: '¥150.00',
+                            verificationAmount: '¥100.00',
+                            diffAmount: '¥50.00',
                             diffType: '金额不一致',
-                            diffDesc: '订单记录金额¥50.00，实际核销金额¥45.00，差异¥5.00',
-                            orderAmount: '¥50.00',
-                            verificationAmount: '¥45.00',
-                            diffAmount: '¥5.00',
+                            processStatus: '待处理'
+                        },
+                        {
+                            orderNo: 'ORD-20260401-023',
+                            voucherId: 'VC-20260401-023',
+                            orderStatus: '已完成',
+                            verifyStatus: '已核销',
+                            orderAmount: '¥200.00',
+                            verificationAmount: '¥150.00',
+                            diffAmount: '¥50.00',
+                            diffType: '金额不一致',
+                            processStatus: '待处理'
+                        },
+                        {
+                            orderNo: 'ORD-20260401-031',
+                            voucherId: 'VC-20260401-031',
+                            orderStatus: '已完成',
+                            verifyStatus: '已冻结',
+                            orderAmount: '¥100.00',
+                            verificationAmount: '¥0.00',
+                            diffAmount: '¥100.00',
+                            diffType: '状态不一致',
                             processStatus: '待处理'
                         }
-                    ]
+                    ],
+                    showDownloadBtn: true,
+                    processLog: []
                 },
-                'processing': {
+                'regenerating': {
                     recordNo: 'REC-20260401-004',
                     date: '2026-04-01',
-                    orderNo: 'ORD-20260401-004',
-                    voucherId: 'VC-20260401-004',
-                    statusText: '处理中',
+                    merchant: '中国石油安徽分公司',
+                    bizType: '商城',
+                    bizTypeColor: 'bg-purple-50 text-purple-600',
+                    statusText: '重新生成中',
                     statusColor: 'bg-blue-50 text-blue-600',
-                    orderAmount: '¥80.00',
-                    verificationAmount: '¥80.00',
+                    orderAmount: '¥6,700.00',
+                    verificationAmount: '¥6,700.00',
                     diffAmount: '¥0.00',
                     diffAmountColor: 'text-green-600',
-                    diffType: '-',
+                    diffCount: '0',
                     startTime: '2026-04-02 02:03:00',
                     endTime: '-',
                     showDiffDetail: false,
                     showDiffButton: false,
-                    diffDetailRows: []
+                    diffDetailRows: [],
+                    showDownloadBtn: true,
+                    processLog: [
+                        {
+                            time: '2026-04-02 02:03:00',
+                            operator: '系统',
+                            action: '重新生成对账',
+                            result: '对账数据生成中'
+                        }
+                    ]
                 },
                 'processed': {
                     recordNo: 'REC-20260331-005',
                     date: '2026-03-31',
-                    orderNo: 'ORD-20260331-005',
-                    voucherId: 'VC-20260331-005',
+                    merchant: '驿达石化能源',
+                    bizType: '充电',
+                    bizTypeColor: 'bg-green-50 text-green-600',
                     statusText: '已处理',
                     statusColor: 'bg-neutral-100 text-neutral-600',
-                    orderAmount: '¥150.00',
-                    verificationAmount: '¥130.00',
-                    diffAmount: '¥20.00',
+                    orderAmount: '¥12,000.00',
+                    verificationAmount: '¥11,300.00',
+                    diffAmount: '¥700.00',
                     diffAmountColor: 'text-red-600',
-                    diffType: '金额不一致',
+                    diffCount: '5',
                     startTime: '2026-04-01 02:00:00',
                     endTime: '2026-04-01 09:30:00',
                     showDiffDetail: true,
                     showDiffButton: false,
                     diffDetailRows: [
                         {
-                            orderNo: 'ORD-20260331-005',
-                            voucherId: 'VC-20260331-005',
-                            diffType: '金额不一致',
-                            diffDesc: '订单记录金额¥150.00，实际核销金额¥130.00，差异¥20.00',
-                            orderAmount: '¥150.00',
-                            verificationAmount: '¥130.00',
+                            orderNo: 'ORD-20260331-018',
+                            voucherId: 'VC-20260331-018',
+                            orderStatus: '已完成',
+                            verifyStatus: '已核销',
+                            orderAmount: '¥200.00',
+                            verificationAmount: '¥180.00',
                             diffAmount: '¥20.00',
+                            diffType: '金额不一致',
                             processStatus: '已处理',
                             processMethod: '手动调账',
                             processResult: '已调账'
+                        },
+                        {
+                            orderNo: 'ORD-20260331-025',
+                            voucherId: 'VC-20260331-025',
+                            orderStatus: '已完成',
+                            verifyStatus: '已冻结',
+                            orderAmount: '¥150.00',
+                            verificationAmount: '¥0.00',
+                            diffAmount: '¥150.00',
+                            diffType: '状态不一致',
+                            processStatus: '已处理',
+                            processMethod: '重新对账',
+                            processResult: '已对账'
+                        }
+                    ],
+                    showDownloadBtn: true,
+                    processLog: [
+                        {
+                            time: '2026-04-01 02:00:00',
+                            operator: '系统',
+                            action: '自动对账',
+                            result: '存在差异，差异金额¥700.00，差异订单数5笔'
+                        },
+                        {
+                            time: '2026-04-01 09:15:00',
+                            operator: '张会计',
+                            action: '差异处理-手动调账',
+                            result: '已调账，调整金额¥20.00'
+                        },
+                        {
+                            time: '2026-04-01 09:30:00',
+                            operator: '张会计',
+                            action: '差异处理-重新对账',
+                            result: '已重新对账，调整金额¥150.00'
                         }
                     ]
                 }
@@ -2227,8 +2559,10 @@
             // Update basic info
             document.getElementById('detail-record-no').textContent = data.recordNo;
             document.getElementById('detail-date').textContent = data.date;
-            document.getElementById('detail-order-no').textContent = data.orderNo;
-            document.getElementById('detail-voucher-id').textContent = data.voucherId;
+            document.getElementById('detail-merchant').textContent = data.merchant;
+            const bizTypeEl = document.getElementById('detail-biz-type');
+            bizTypeEl.textContent = data.bizType;
+            bizTypeEl.className = `inline-block px-2 py-0.5 ${data.bizTypeColor} text-xs`;
             document.getElementById('detail-status').textContent = data.statusText;
             document.getElementById('detail-status').className = `inline-block px-3 py-0.5 ${data.statusColor} text-xs`;
             document.getElementById('detail-status').style.borderRadius = '12px';
@@ -2240,7 +2574,7 @@
             document.getElementById('detail-verification-amount').textContent = data.verificationAmount;
             document.getElementById('detail-diff-amount').textContent = data.diffAmount;
             document.getElementById('detail-diff-amount').className = `text-lg font-bold ${data.diffAmountColor}`;
-            document.getElementById('detail-diff-type').textContent = `差异类型：${data.diffType}`;
+            document.getElementById('detail-diff-count').textContent = data.diffCount;
             
             // Update time info
             document.getElementById('detail-start-time').textContent = `对账开始时间：${data.startTime}`;
@@ -2260,17 +2594,27 @@
                     if (index % 2 === 1) tr.classList.add('bg-neutral-50');
                     
                     const processStatusColor = row.processStatus === '待处理' ? 'bg-orange-50 text-orange-500' : 'bg-green-50 text-green-600';
+                    const orderStatusColor = row.orderStatus === '已完成' ? 'bg-green-50 text-green-600' : 'bg-neutral-100 text-neutral-600';
+                    const verifyStatusColor = row.verifyStatus === '已核销' ? 'bg-blue-50 text-blue-600' : (row.verifyStatus === '已冻结' ? 'bg-orange-50 text-orange-500' : 'bg-neutral-100 text-neutral-600');
                     
+                    let statusCellHtml = row.processMethod ? `
+                        <td class="py-2 px-2 text-center text-neutral-600">${row.processMethod || '-'}</td>
+                        <td class="py-2 px-2 text-center text-neutral-600">${row.processResult || '-'}</td>` : `
+                        <td class="py-2 px-2 text-center"><span class="inline-block px-2 py-0.5 ${processStatusColor} text-xs" style="border-radius: 10px; height: 20px; line-height: 12px;">${row.processStatus}</span></td>`;
+                    
+                    tr.classList.add('diff-detail-row');
                     tr.innerHTML = `
+                        <td class="py-2 px-2 text-center"><input type="checkbox" class="diff-checkbox cursor-pointer" onclick="updateDiffSelectAllState()"></td>
                         <td class="py-2 px-2 text-center text-neutral-500">${index + 1}</td>
                         <td class="py-2 px-2 font-mono text-neutral-800">${row.orderNo}</td>
                         <td class="py-2 px-2 font-mono text-neutral-800">${row.voucherId}</td>
-                        <td class="py-2 px-2 text-center"><span class="inline-block px-2 py-0.5 bg-red-50 text-red-600 text-xs" style="border-radius: 10px; height: 20px; line-height: 12px;">${row.diffType}</span></td>
-                        <td class="py-2 px-2 text-neutral-600">${row.diffDesc}</td>
+                        <td class="py-2 px-2 text-center"><span class="inline-block px-2 py-0.5 ${orderStatusColor} text-xs" style="border-radius: 10px; height: 20px; line-height: 12px;">${row.orderStatus || '-'}</span></td>
+                        <td class="py-2 px-2 text-center"><span class="inline-block px-2 py-0.5 ${verifyStatusColor} text-xs" style="border-radius: 10px; height: 20px; line-height: 12px;">${row.verifyStatus || '-'}</span></td>
                         <td class="py-2 px-2 text-right font-semibold text-neutral-800">${row.orderAmount}</td>
                         <td class="py-2 px-2 text-right font-semibold text-neutral-800">${row.verificationAmount}</td>
                         <td class="py-2 px-2 text-right font-semibold text-red-600">${row.diffAmount}</td>
-                        <td class="py-2 px-2 text-center"><span class="inline-block px-2 py-0.5 ${processStatusColor} text-xs" style="border-radius: 10px; height: 20px; line-height: 12px;">${row.processStatus}</span></td>
+                        <td class="py-2 px-2 text-center"><span class="inline-block px-2 py-0.5 bg-red-50 text-red-600 text-xs" style="border-radius: 10px; height: 20px; line-height: 12px;">${row.diffType}</span></td>
+                        ${statusCellHtml}
                     `;
                     diffDetailBody.appendChild(tr);
                 });
@@ -2280,10 +2624,48 @@
             
             // Show/hide diff process button
             const diffProcessBtn = document.getElementById('diff-process-btn');
-            if (data.showDiffButton) {
-                diffProcessBtn.classList.remove('hidden');
-            } else {
-                diffProcessBtn.classList.add('hidden');
+            if (diffProcessBtn) {
+                if (data.showDiffButton) {
+                    diffProcessBtn.classList.remove('hidden');
+                } else {
+                    diffProcessBtn.classList.add('hidden');
+                }
+            }
+            
+            // Show/hide download button
+            const downloadBtn = document.getElementById('detail-download-btn');
+            if (downloadBtn) {
+                if (data.showDownloadBtn) {
+                    downloadBtn.classList.remove('hidden');
+                } else {
+                    downloadBtn.classList.add('hidden');
+                }
+            }
+            
+            // Show/hide and render process log section
+            const processLogSection = document.getElementById('process-log-section');
+            if (processLogSection) {
+                if (data.processLog && data.processLog.length > 0) {
+                    processLogSection.classList.remove('hidden');
+                    const processLogBody = document.getElementById('process-log-body');
+                    processLogBody.innerHTML = '';
+                    data.processLog.forEach((log, index) => {
+                        const tr = document.createElement('tr');
+                        tr.className = 'border-b border-neutral-100 transition-colors';
+                        tr.style.height = '40px';
+                        if (index % 2 === 1) tr.classList.add('bg-neutral-50');
+                        tr.innerHTML = `
+                            <td class="py-2 px-2 text-center text-neutral-500">${index + 1}</td>
+                            <td class="py-2 px-2 text-neutral-600">${log.time}</td>
+                            <td class="py-2 px-2 text-neutral-800">${log.operator}</td>
+                            <td class="py-2 px-2 text-neutral-800">${log.action}</td>
+                            <td class="py-2 px-2 text-neutral-600">${log.result}</td>
+                        `;
+                        processLogBody.appendChild(tr);
+                    });
+                } else {
+                    processLogSection.classList.add('hidden');
+                }
             }
             
             // Re-initialize icons
@@ -2292,6 +2674,262 @@
         
         // Make showReconciliationDetail globally available
         window.showReconciliationDetail = showReconciliationDetail;
+
+        // Show settlement detail based on status
+        function showSettlementDetail(status, billNo) {
+            showPage('settlement-detail');
+            
+            const settlementDataMap = {
+                'pending-confirm': {
+                    billNo: billNo || 'SET-20260401-001',
+                    merchantName: '中国石油安徽分公司',
+                    settlementCycle: 'T+7（2026-03-25 ~ 2026-04-01）',
+                    statusText: '待确认',
+                    statusClass: 'bg-orange-50 text-orange-500',
+                    voucherCount: 156,
+                    totalAmount: '¥15,230.00',
+                    generators: [
+                        { name: '数科公司', amount: '¥10,000.00', ratio: '65.7%' },
+                        { name: '联网公司', amount: '¥5,230.00', ratio: '34.3%' }
+                    ],
+                    generatedTime: '2026-04-01 01:00:00',
+                    confirmedTime: '-',
+                    paymentTime: '-',
+                    timelineStatus: {
+                        step1: 'completed',
+                        step2: 'current',
+                        step3: 'pending',
+                        step4: 'pending'
+                    },
+                    showAppeal: false,
+                    currentStep: 2
+                },
+                'pending-payment': {
+                    billNo: billNo || 'SET-20260401-002',
+                    merchantName: '中石化安徽分公司',
+                    settlementCycle: 'T+7（2026-03-25 ~ 2026-04-01）',
+                    statusText: '待打款',
+                    statusClass: 'bg-blue-50 text-blue-600',
+                    voucherCount: 89,
+                    totalAmount: '¥9,850.00',
+                    generators: [
+                        { name: '数科公司', amount: '¥6,500.00', ratio: '66.0%' },
+                        { name: '联网公司', amount: '¥3,350.00', ratio: '34.0%' }
+                    ],
+                    generatedTime: '2026-04-01 01:00:00',
+                    confirmedTime: '2026-04-07 15:20:00',
+                    paymentTime: '-',
+                    timelineStatus: {
+                        step1: 'completed',
+                        step2: 'completed',
+                        step3: 'current',
+                        step4: 'pending'
+                    },
+                    showAppeal: false,
+                    currentStep: 3
+                },
+                'paid': {
+                    billNo: billNo || 'SET-20260401-003',
+                    merchantName: '驿达石化能源',
+                    settlementCycle: 'T+3（2026-03-29 ~ 2026-04-01）',
+                    statusText: '已打款',
+                    statusClass: 'bg-green-50 text-green-600',
+                    voucherCount: 42,
+                    totalAmount: '¥4,280.00',
+                    generators: [
+                        { name: '数科公司', amount: '¥2,800.00', ratio: '65.4%' },
+                        { name: '联网公司', amount: '¥1,480.00', ratio: '34.6%' }
+                    ],
+                    generatedTime: '2026-04-01 01:00:00',
+                    confirmedTime: '2026-04-04 10:30:00',
+                    paymentTime: '2026-04-08 10:30:00',
+                    timelineStatus: {
+                        step1: 'completed',
+                        step2: 'completed',
+                        step3: 'completed',
+                        step4: 'completed'
+                    },
+                    showAppeal: false,
+                    currentStep: 4
+                },
+                'appealing': {
+                    billNo: billNo || 'SET-20260401-005',
+                    merchantName: '安徽高速能源',
+                    settlementCycle: '月结（2026-03-01 ~ 2026-03-31）',
+                    statusText: '申诉中',
+                    statusClass: 'bg-red-50 text-red-600',
+                    voucherCount: 234,
+                    totalAmount: '¥28,560.00',
+                    generators: [
+                        { name: '数科公司', amount: '¥18,800.00', ratio: '65.8%' },
+                        { name: '联网公司', amount: '¥9,760.00', ratio: '34.2%' }
+                    ],
+                    generatedTime: '2026-04-01 01:00:00',
+                    confirmedTime: '-',
+                    paymentTime: '-',
+                    timelineStatus: {
+                        step1: 'completed',
+                        step2: 'current',
+                        step3: 'pending',
+                        step4: 'pending'
+                    },
+                    showAppeal: true,
+                    currentStep: 2
+                }
+            };
+            
+            const data = settlementDataMap[status];
+            if (!data) return;
+            
+            // Update settlement summary
+            document.getElementById('detail-bill-no').textContent = data.billNo;
+            document.getElementById('detail-merchant-name').textContent = data.merchantName;
+            document.getElementById('detail-settlement-cycle').textContent = data.settlementCycle;
+            document.getElementById('settlement-detail-status').textContent = data.statusText;
+            document.getElementById('settlement-detail-status').className = `inline-block px-3 py-0.5 ${data.statusClass} text-xs`;
+            document.getElementById('settlement-detail-status').style.borderRadius = '12px';
+            document.getElementById('settlement-detail-status').style.height = '20px';
+            document.getElementById('settlement-detail-status').style.lineHeight = '12px';
+            document.getElementById('detail-voucher-count').textContent = data.voucherCount;
+            document.getElementById('detail-total-amount').textContent = data.totalAmount;
+            document.getElementById('detail-generated-time').textContent = data.generatedTime;
+            document.getElementById('detail-confirmed-time').textContent = data.confirmedTime;
+            document.getElementById('detail-payment-time').textContent = data.paymentTime;
+            
+            // Update generators list
+            const generatorsContainer = document.getElementById('generators-list');
+            generatorsContainer.innerHTML = '';
+            data.generators.forEach((gen, index) => {
+                const div = document.createElement('div');
+                div.className = `px-4 py-2.5 flex justify-between items-center hover:bg-neutral-50 transition-colors${index > 0 ? ' border-t border-neutral-100' : ''}`;
+                div.innerHTML = `
+                    <span class="text-sm text-neutral-800">${gen.name}</span>
+                    <div class="flex items-center gap-6">
+                        <span class="text-sm font-medium text-neutral-800">${gen.amount}</span>
+                        <span class="text-xs text-neutral-500 w-12 text-right">${gen.ratio}</span>
+                    </div>
+                `;
+                generatorsContainer.appendChild(div);
+            });
+            
+            // Update timeline
+            updateTimeline(data.timelineStatus, data.generatedTime, data.confirmedTime, data.paymentTime);
+            
+            // Show/hide appeal section
+            const appealSection = document.getElementById('appeal-process-section');
+            if (data.showAppeal) {
+                appealSection.classList.remove('hidden');
+            } else {
+                appealSection.classList.add('hidden');
+            }
+            
+            // Update action buttons based on status
+            updateActionButtons(status);
+            
+            // Re-initialize icons
+            lucide.createIcons();
+        }
+        
+        // Update timeline based on status
+        function updateTimeline(timelineStatus, generatedTime, confirmedTime, paymentTime) {
+            const steps = [
+                { id: 'step1', name: '生成结算单', defaultTime: generatedTime, pendingText: '-' },
+                { id: 'step2', name: '店铺审核', defaultTime: confirmedTime, pendingText: '等待店铺审核' },
+                { id: 'step3', name: '结算打款', defaultTime: paymentTime, pendingText: '-' },
+                { id: 'step4', name: '完成', defaultTime: '-', pendingText: '-' }
+            ];
+            
+            steps.forEach((step, index) => {
+                const status = timelineStatus[step.id];
+                const stepContainer = document.getElementById(`timeline-${step.id}`);
+                if (!stepContainer) return;
+                
+                const dotElement = stepContainer.querySelector('.timeline-dot');
+                const nameElement = stepContainer.querySelector('.timeline-name');
+                const timeElement = stepContainer.querySelector('.timeline-time');
+                const lineAfter = stepContainer.nextElementSibling;
+                
+                if (status === 'completed') {
+                    dotElement.className = 'w-10 h-10 rounded-full bg-primary flex items-center justify-center timeline-dot';
+                    dotElement.innerHTML = '<i data-lucide="check" class="w-5 h-5 text-white"></i>';
+                    nameElement.className = 'text-xs mt-2 text-primary font-medium timeline-name';
+                    timeElement.className = 'text-xs text-neutral-500 mt-1 timeline-time';
+                    timeElement.textContent = step.defaultTime;
+                    if (lineAfter && lineAfter.classList.contains('timeline-line')) {
+                        lineAfter.className = 'flex-1 h-0.5 bg-primary mx-4 mb-8 timeline-line';
+                    }
+                } else if (status === 'current') {
+                    dotElement.className = 'w-10 h-10 rounded-full border-2 border-primary flex items-center justify-center timeline-dot';
+                    dotElement.innerHTML = '<div class="w-3 h-3 rounded-full bg-primary"></div>';
+                    nameElement.className = 'text-xs mt-2 text-primary font-medium timeline-name';
+                    timeElement.className = 'text-xs text-primary mt-1 timeline-time';
+                    timeElement.textContent = step.pendingText;
+                    if (lineAfter && lineAfter.classList.contains('timeline-line')) {
+                        lineAfter.className = 'flex-1 h-0.5 bg-primary mx-4 mb-8 timeline-line';
+                    }
+                } else {
+                    dotElement.className = 'w-10 h-10 rounded-full border-2 border-neutral-300 flex items-center justify-center timeline-dot';
+                    dotElement.innerHTML = '<div class="w-3 h-3 rounded-full bg-neutral-300"></div>';
+                    nameElement.className = 'text-xs mt-2 text-neutral-400 timeline-name';
+                    timeElement.className = 'text-xs text-neutral-400 mt-1 timeline-time';
+                    timeElement.textContent = step.defaultTime;
+                    if (lineAfter && lineAfter.classList.contains('timeline-line')) {
+                        lineAfter.className = 'flex-1 h-0.5 bg-neutral-200 mx-4 mb-8 timeline-line';
+                    }
+                }
+            });
+        }
+        
+        // Update action buttons based on status and role
+        function updateActionButtons(status) {
+            const buttonsContainer = document.getElementById('action-buttons-container');
+            if (!buttonsContainer) return;
+            
+            buttonsContainer.innerHTML = '';
+            
+            switch (status) {
+                case 'pending-confirm':
+                    // Merchant: confirm settlement + appeal
+                    buttonsContainer.innerHTML = `
+                        <button class="btn-primary px-4 py-2 rounded-sm text-sm font-medium flex items-center gap-1.5 cursor-pointer transition-all duration-200" onclick="openModal('modal-settlement')">
+                            <i data-lucide="check-circle" class="w-4 h-4"></i>
+                            确认结算
+                        </button>
+                        <button class="btn-secondary px-4 py-2 rounded-sm text-sm font-medium flex items-center gap-1.5 cursor-pointer transition-all duration-200" onclick="openModal('modal-appeal')">
+                            <i data-lucide="alert-circle" class="w-4 h-4"></i>
+                            发起申诉
+                        </button>
+                    `;
+                    break;
+                case 'pending-payment':
+                    // Finance: payment registration
+                    buttonsContainer.innerHTML = `
+                        <button class="btn-primary px-4 py-2 rounded-sm text-sm font-medium flex items-center gap-1.5 cursor-pointer transition-all duration-200" onclick="openModal('modal-payment')">
+                            <i data-lucide="send" class="w-4 h-4"></i>
+                            打款登记
+                        </button>
+                    `;
+                    break;
+                case 'paid':
+                    // No buttons for paid status
+                    buttonsContainer.innerHTML = `
+                        <span class="text-xs text-neutral-400">该账单已完成打款</span>
+                    `;
+                    break;
+                case 'appealing':
+                    // Platform admin: handle appeal
+                    buttonsContainer.innerHTML = `
+                        <button class="px-4 py-2 rounded-sm text-sm font-medium flex items-center gap-1.5 cursor-pointer transition-all duration-200" style="background-color: #7c3aed; color: white;" onclick="openModal('modal-appeal-process')">
+                            <i data-lucide="shield-check" class="w-4 h-4"></i>
+                            申诉处理
+                        </button>
+                    `;
+                    break;
+            }
+        }
+        
+        // Make showSettlementDetail globally available
+        window.showSettlementDetail = showSettlementDetail;
 
         // Global variables
         let currentBillId = '';
@@ -2419,6 +3057,16 @@
             showSuccessModal('下载成功', '结算明细Excel文件已成功下载');
         }
 
+        function submitSettlementExport() {
+            closeModal('modal-settlement-export');
+            showSuccessModal('导出任务已提交', '预计数据量较少，正在生成文件，请稍候下载');
+        }
+
+        function downloadExportFile() {
+            closeModal('modal-export-history');
+            showSuccessModal('下载成功', '导出文件已成功下载');
+        }
+
         function handleConfirmSettlement() {
             console.log('确认结算');
             openModal('modal-settlement');
@@ -2435,13 +3083,15 @@
             const today = new Date().toISOString().split('T')[0];
             const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
             document.getElementById('reconciliation-date').value = yesterday;
-            document.getElementById('reconciliation-merchant').value = '';
+            document.getElementById('reconciliation-merchant-select').value = '';
+            document.getElementById('reconciliation-biz-type').value = '';
             openModal('modal-generate-reconciliation');
         }
 
         function submitGenerateReconciliation() {
             const date = document.getElementById('reconciliation-date').value;
-            const merchant = document.getElementById('reconciliation-merchant').value;
+            const merchant = document.getElementById('reconciliation-merchant-select').value;
+            const bizType = document.getElementById('reconciliation-biz-type').value;
             
             if (!date) {
                 alert('请选择对账日期');
@@ -2453,6 +3103,9 @@
             let message = `对账文件已开始生成`;
             if (merchant) {
                 message += `，商户：${merchant}`;
+            }
+            if (bizType) {
+                message += `，业务类型：${bizType}`;
             }
             showSuccessModal('对账文件生成中', message);
         }
@@ -2605,6 +3258,78 @@
             openModal('modal-diff-handle');
         }
 
+        // 差异明细全选/取消全选
+        function toggleDiffSelectAll() {
+            const selectAll = document.getElementById('diff-select-all');
+            const checkboxes = document.querySelectorAll('.diff-checkbox');
+            checkboxes.forEach(cb => {
+                cb.checked = selectAll.checked;
+            });
+            updateDiffHandleSummary();
+        }
+
+        function updateDiffSelectAllState() {
+            const selectAll = document.getElementById('diff-select-all');
+            const checkboxes = document.querySelectorAll('.diff-checkbox');
+            const total = checkboxes.length;
+            const checked = Array.from(checkboxes).filter(cb => cb.checked).length;
+            selectAll.checked = total > 0 && checked === total;
+            updateDiffHandleSummary();
+        }
+
+        // 更新差异处理弹窗中的汇总信息
+        function updateDiffHandleSummary() {
+            const checkboxes = document.querySelectorAll('.diff-checkbox');
+            const checkedRows = [];
+            checkboxes.forEach((cb, index) => {
+                if (cb.checked) {
+                    const tr = cb.closest('tr');
+                    const cells = tr.querySelectorAll('td');
+                    // 列顺序：勾选框(0)、序号(1)、订单号(2)、券码ID(3)、订单状态(4)、核销状态(5)、订单券码金额(6)、核销金额(7)、差异金额(8)、差异类型(9)、处理状态(10)
+                    const orderAmount = cells[6]?.textContent?.trim() || '0';
+                    const verifyAmount = cells[7]?.textContent?.trim() || '0';
+                    const diffAmount = cells[8]?.textContent?.trim() || '0';
+                    checkedRows.push({
+                        orderNo: cells[2]?.textContent?.trim() || '',
+                        voucherId: cells[3]?.textContent?.trim() || '',
+                        orderAmount: parseFloat(orderAmount.replace('¥', '').replace(',', '')) || 0,
+                        verifyAmount: parseFloat(verifyAmount.replace('¥', '').replace(',', '')) || 0,
+                        diffAmount: parseFloat(diffAmount.replace('¥', '').replace(',', '')) || 0
+                    });
+                }
+            });
+            
+            const totalOrder = checkedRows.reduce((sum, r) => sum + r.orderAmount, 0);
+            const totalVerify = checkedRows.reduce((sum, r) => sum + r.verifyAmount, 0);
+            const totalDiff = totalOrder - totalVerify;
+            
+            document.getElementById('diff-selected-count').textContent = checkedRows.length;
+            document.getElementById('diff-total-order-amount').textContent = '¥' + totalOrder.toFixed(2);
+            document.getElementById('diff-total-verify-amount').textContent = '¥' + totalVerify.toFixed(2);
+            document.getElementById('diff-total-diff-amount').textContent = '¥' + totalDiff.toFixed(2);
+            
+            // 同步更新调账字段默认值
+            document.getElementById('diff-adjust-order-amount').value = totalOrder.toFixed(2);
+            document.getElementById('diff-adjust-verify-amount').value = totalVerify.toFixed(2);
+            document.getElementById('diff-adjust-diff-display').textContent = '¥' + totalDiff.toFixed(2);
+        }
+
+        // 调账金额实时计算
+        function updateAdjustDiffDisplay() {
+            const orderAmount = parseFloat(document.getElementById('diff-adjust-order-amount').value) || 0;
+            const verifyAmount = parseFloat(document.getElementById('diff-adjust-verify-amount').value) || 0;
+            const diff = orderAmount - verifyAmount;
+            const diffDisplay = document.getElementById('diff-adjust-diff-display');
+            diffDisplay.textContent = '¥' + diff.toFixed(2);
+            if (diff > 0) {
+                diffDisplay.className = 'text-sm font-bold text-red-600';
+            } else if (diff < 0) {
+                diffDisplay.className = 'text-sm font-bold text-blue-600';
+            } else {
+                diffDisplay.className = 'text-sm font-bold text-green-600';
+            }
+        }
+
         function toggleDiffAdjustFields() {
             const selected = document.querySelector('input[name="diff-action"]:checked');
             const adjustFields = document.getElementById('diff-adjust-fields');
@@ -2626,6 +3351,14 @@
             if (!note.trim()) {
                 alert('请输入处理说明');
                 return;
+            }
+            if (selectedAction.value === 'adjust') {
+                const orderAmount = document.getElementById('diff-adjust-order-amount').value;
+                const verifyAmount = document.getElementById('diff-adjust-verify-amount').value;
+                if (!orderAmount || !verifyAmount) {
+                    alert('请填写订单券码金额和券码核销金额');
+                    return;
+                }
             }
             
             closeModal('modal-diff-handle');
