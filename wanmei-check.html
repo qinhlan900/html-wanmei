@@ -2208,8 +2208,8 @@
             </div>
 
             <!-- 处理差异弹窗 -->
-            <div id="modal-diff-handle" class="fixed inset-0 bg-black/50 z-[999] hidden flex items-center justify-center p-4">
-                <div class="bg-white rounded-sm shadow-lg w-full max-w-xl overflow-hidden">
+            <div id="modal-diff-handle" class="fixed inset-0 bg-black/50 z-[999] hidden flex items-start justify-center p-4 overflow-y-auto">
+                <div class="bg-white rounded-sm shadow-lg w-full max-w-xl my-8">
                     <div class="flex items-center justify-between p-4 border-b border-neutral-200">
                         <h3 class="text-base font-semibold text-neutral-900 flex items-center gap-2">
                             <i data-lucide="wrench" class="w-4 h-4 text-primary"></i>
@@ -2222,7 +2222,7 @@
                     <div class="p-6">
                         <!-- 差异汇总信息 -->
                         <div class="bg-neutral-50 border border-neutral-200 rounded-sm p-4 mb-6">
-                            <h4 class="text-sm font-medium text-neutral-700 mb-3">差异汇总（已勾选 <span id="diff-selected-count" class="text-primary font-bold">0</span> 笔）</h4>
+                            <h4 class="text-sm font-medium text-neutral-700 mb-3">差异汇总（默认全选 <span id="diff-selected-count" class="text-primary font-bold">0</span> 笔）</h4>
                             <div class="grid grid-cols-3 gap-4">
                                 <div class="text-center bg-white rounded-sm p-3 border border-neutral-100">
                                     <div class="text-xs text-neutral-500 mb-1">订单券码金额</div>
@@ -2941,6 +2941,22 @@
             if (modal) {
                 modal.classList.remove('hidden');
                 lucide.createIcons();
+                
+                // 如果是差异处理弹窗，检查是否需要全选
+                if (modalId === 'modal-diff-handle') {
+                    const selectAll = document.getElementById('diff-select-all');
+                    const checkboxes = document.querySelectorAll('.diff-checkbox');
+                    const checkedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
+                    
+                    // 如果没有勾选任何明细，则默认全选
+                    if (checkedCount === 0 && checkboxes.length > 0) {
+                        selectAll.checked = true;
+                        checkboxes.forEach(cb => {
+                            cb.checked = true;
+                        });
+                    }
+                    updateDiffHandleSummary();
+                }
             }
         }
 
