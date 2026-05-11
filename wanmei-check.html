@@ -5,11 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>皖美e行 - 运营管理平台</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        button, .btn-primary, .btn-secondary {
+            border-radius: 3px !important;
+        }
+    </style>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
+                    borderRadius: {
+                        '3': '3px',
+                    },
                     colors: {
                         primary: {
                             DEFAULT: '#FF6B35',
@@ -174,11 +182,11 @@
                         结算账单管理
                     </h1>
                     <div class="flex gap-2">
-                        <button class="bg-primary text-white px-4 py-1.5 rounded text-sm font-medium flex items-center gap-2 hover:opacity-90 transition-opacity cursor-pointer" onclick="openModal('modal-settlement-export')">
+                        <button class="bg-primary text-white px-3 py-1.5 rounded text-sm font-medium flex items-center gap-2 hover:opacity-90 transition-opacity cursor-pointer h-8" onclick="openModal('modal-settlement-export')">
                             <i data-lucide="download" class="w-4 h-4"></i>
                             结算单导出
                         </button>
-                        <button class="bg-primary text-white px-4 py-1.5 rounded text-sm font-medium flex items-center gap-2 hover:opacity-90 transition-opacity cursor-pointer" onclick="openModal('modal-export-history')">
+                        <button class="bg-primary text-white px-3 py-1.5 rounded text-sm font-medium flex items-center gap-2 hover:opacity-90 transition-opacity cursor-pointer h-8" onclick="openModal('modal-export-history')">
                             <i data-lucide="list" class="w-4 h-4"></i>
                             查看已导出列表
                         </button>
@@ -186,25 +194,33 @@
                 </div>
 
                 <!-- 温馨提示 -->
-                <div class="bg-orange-50 rounded-sm p-4 mb-4 border border-orange-100">
-                    <div class="flex items-start gap-3">
+                <div class="bg-orange-50 rounded-sm px-4 py-2.5 mb-3 border border-orange-100">
+                    <div class="flex items-start gap-2">
                         <i data-lucide="info" class="w-4 h-4 text-primary mt-0.5 flex-shrink-0"></i>
-                        <div class="text-xs text-neutral-600 space-y-1">
-                            <div class="font-semibold text-primary text-sm mb-2">温馨提示</div>
-                            <div>· 结算金额计算公式：<span class="font-medium text-neutral-800">结算金额 = Σ(券码面额)</span></div>
-                            <div>· 结算流程：T日核销 → T+7 凌晨自动生成结算单 → 商户确认 → 财务打款</div>
-                            <div>· 活动发行方分摊：按行展示各活动发行方的分摊金额，支持多方分摊</div>
+                        <div class="text-xs text-neutral-600 space-y-0.5">
+                            <div class="font-semibold text-primary text-sm mb-1">温馨提示</div>
+                            <div>· 结算金额计算：<span class="font-medium text-neutral-800">无调账时 = Σ(券码实际核销金额)；有调账时 = 原结算金额 + 对账调账 + 申诉调账</span></div>
+                            <div>· 结算流程：T日核销 → 自定义结算日(如T+7)凌晨自动对账 → 对账无差异则生成结算单 → 商户确认 → 财务打款</div>
+                            <div>· 调账记录：对账调账(手动调账)/申诉调账(申诉通过)，调账金额不参与发行方分摊，分摊比例由相关方线下确认</div>
+                            <div>· 活动发行方分摊：详情页按行展示各活动发行方的分摊金额和占比，支持多方分摊</div>
                         </div>
                     </div>
                 </div>
 
                 <!-- 筛选区 -->
-                <div class="mb-6">
-                    <div class="flex flex-wrap gap-4 mb-4">
+                <div class="mb-4">
+                    <div class="flex flex-wrap gap-3 mb-3">
                         <!-- 商户名称 -->
                         <div class="flex items-center border border-neutral-200 rounded-sm h-8 bg-white overflow-hidden flex-1 min-w-[200px]">
-                            <span class="text-sm text-neutral-600 px-3 whitespace-nowrap border-r border-neutral-200">商户名称</span>
-                            <input type="text" placeholder="请输入商户名称" class="flex-1 h-full px-3 border-0 text-sm focus:outline-none bg-transparent placeholder:text-neutral-400">
+                            <span class="text-sm text-neutral-600 px-3 whitespace-nowrap border-r border-neutral-200">商户</span>
+                            <select class="flex-1 h-full px-3 border-0 text-sm focus:outline-none bg-transparent text-neutral-900">
+                                <option value="">全部商户</option>
+                                <option>中国石油安徽分公司</option>
+                                <option>中石化安徽分公司</option>
+                                <option>驿达石化能源</option>
+                                <option>安徽高速能源</option>
+                                <option>交控新能源</option>
+                            </select>
                         </div>
                         <!-- 结算单号 -->
                         <div class="flex items-center border border-neutral-200 rounded-sm h-8 bg-white overflow-hidden flex-1 min-w-[200px]">
@@ -215,11 +231,10 @@
                         <div class="flex items-center border border-neutral-200 rounded-sm h-8 bg-white overflow-hidden flex-1 min-w-[200px]">
                             <span class="text-sm text-neutral-600 px-3 whitespace-nowrap border-r border-neutral-200">状态</span>
                             <select class="flex-1 h-full px-3 border-0 text-sm focus:outline-none bg-transparent text-neutral-900">
-                                <option value="" class="text-neutral-400">请选择状态</option>
-                                <option class="text-neutral-900">待确认</option>
-                                <option class="text-neutral-900">待打款</option>
-                                <option class="text-neutral-900">已打款</option>
-                                <option class="text-neutral-900">申诉中</option>
+                                <option value="">全部状态</option>
+                                <option>待确认</option>
+                                <option>待打款</option>
+                                <option>已完成</option>
                             </select>
                         </div>
                         <!-- 结算周期范围 -->
@@ -231,13 +246,13 @@
                         </div>
                     </div>
                     <div class="flex justify-end">
-                        <button class="bg-white border border-neutral-200 text-neutral-600 px-4 py-1.5 rounded-sm text-sm font-medium mr-2 hover:bg-neutral-50 transition-colors h-8">重置</button>
-                        <button class="bg-primary text-white px-4 py-1.5 rounded-sm text-sm font-medium hover:opacity-90 transition-opacity h-8">查询</button>
+                        <button class="bg-white border border-neutral-200 text-neutral-600 px-4 py-1.5 rounded-sm text-sm font-medium mr-2 hover:bg-neutral-50 transition-colors h-8">重 置</button>
+                        <button class="bg-primary text-white px-4 py-1.5 rounded-sm text-sm font-medium hover:opacity-90 transition-opacity h-8">查 询</button>
                     </div>
                 </div>
 
                 <!-- 账单列表区 -->
-                <div class="bg-white rounded-sm border border-neutral-200 mb-6">
+                <div class="bg-white rounded-sm border border-neutral-200 mb-4">
                     <div class="overflow-x-auto">
                         <table class="w-full text-sm">
                             <thead>
@@ -250,27 +265,33 @@
                                     <th class="text-right py-2.5 px-3 font-semibold text-neutral-600">结算金额</th>
                                     <th class="text-center py-2.5 px-3 font-semibold text-neutral-600">状态</th>
                                     <th class="text-left py-2.5 px-3 font-semibold text-neutral-600">生成时间</th>
-                                    <th class="text-left py-2.5 px-3 font-semibold text-neutral-600">确认时间</th>
-                                    <th class="text-left py-2.5 px-3 font-semibold text-neutral-600">打款时间</th>
-                                    <th class="text-center py-2.5 px-3 font-semibold text-neutral-600" style="width: 160px;">操作</th>
+                                    <th class="text-left py-2.5 px-3 font-semibold text-neutral-600">最后更新时间</th>
+                                    <th class="text-left py-2.5 px-3 font-semibold text-neutral-600">调账记录</th>
+                                    <th class="text-center py-2.5 px-3 font-semibold text-neutral-600" style="width: 100px;">操作</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr class="table-row border-b border-neutral-100 transition-colors cursor-pointer" style="height: 56px;" onclick="showPage('settlement-detail')">
+                                <!-- 待确认（含对账差异已处理，手动调账） -->
+                                <tr class="table-row border-b border-neutral-100 transition-colors cursor-pointer" style="height: 56px;" onclick="showSettlementDetail('pending-confirm', 'SET-20260401-001')">
                                     <td class="py-3 px-3 text-center text-neutral-500">1</td>
                                     <td class="py-3 px-3 font-mono text-primary cursor-pointer hover:underline">SET-20260401-001</td>
                                     <td class="py-3 px-3">中国石油安徽分公司</td>
                                     <td class="py-3 px-3 text-neutral-600">T+7（2026-03-25 ~ 2026-04-01）</td>
                                     <td class="py-3 px-3 text-center">156</td>
-                                    <td class="py-3 px-3 text-right font-semibold text-neutral-800">¥15,230.00</td>
+                                    <td class="py-3 px-3 text-right font-semibold text-neutral-800">¥15,300.00</td>
                                     <td class="py-3 px-3 text-center"><span class="inline-block px-3 py-0.5 bg-orange-50 text-orange-500 text-xs" style="border-radius: 12px; height: 24px; line-height: 16px;">待确认</span></td>
-                                    <td class="py-3 px-3 text-neutral-600 text-xs">2026-04-01 01:00:00</td>
-                                    <td class="py-3 px-3 text-neutral-400 text-xs">-</td>
-                                    <td class="py-3 px-3 text-neutral-400 text-xs">-</td>
+                                    <td class="py-3 px-3 text-neutral-600 text-xs">2026-04-01 02:30:00</td>
+                                    <td class="py-3 px-3 text-neutral-600 text-xs">2026-04-01 02:30:00</td>
+                                    <td class="py-3 px-3">
+                                        <div class="flex flex-col gap-1">
+                                            <div class="inline-flex self-start px-2 py-0.5 bg-blue-100 text-blue-600 text-[11px] rounded whitespace-nowrap" style="height: 18px; line-height: 12px;">对账调账 +¥450.00</div>
+                                        </div>
+                                    </td>
                                     <td class="py-3 px-3 text-center">
                                         <button class="text-primary hover:underline transition-colors duration-200 cursor-pointer" onclick="event.stopPropagation(); showSettlementDetail('pending-confirm', 'SET-20260401-001')">查看</button>
                                     </td>
                                 </tr>
+                                <!-- 待打款（无调账） -->
                                 <tr class="table-row border-b border-neutral-100 bg-neutral-50 transition-colors cursor-pointer" style="height: 56px;" onclick="showSettlementDetail('pending-payment', 'SET-20260401-002')">
                                     <td class="py-3 px-3 text-center text-neutral-500">2</td>
                                     <td class="py-3 px-3 font-mono text-primary cursor-pointer hover:underline">SET-20260401-002</td>
@@ -279,13 +300,14 @@
                                     <td class="py-3 px-3 text-center">89</td>
                                     <td class="py-3 px-3 text-right font-semibold text-neutral-800">¥9,850.00</td>
                                     <td class="py-3 px-3 text-center"><span class="inline-block px-3 py-0.5 bg-blue-50 text-blue-600 text-xs" style="border-radius: 12px; height: 24px; line-height: 16px;">待打款</span></td>
-                                    <td class="py-3 px-3 text-neutral-600 text-xs">2026-04-01 01:00:00</td>
+                                    <td class="py-3 px-3 text-neutral-600 text-xs">2026-04-01 02:30:00</td>
                                     <td class="py-3 px-3 text-neutral-600 text-xs">2026-04-07 15:20:00</td>
                                     <td class="py-3 px-3 text-neutral-400 text-xs">-</td>
                                     <td class="py-3 px-3 text-center">
                                         <button class="text-primary hover:underline transition-colors duration-200 cursor-pointer" onclick="event.stopPropagation(); showSettlementDetail('pending-payment', 'SET-20260401-002')">查看</button>
                                     </td>
                                 </tr>
+                                <!-- 已完成（原已打款，无调账） -->
                                 <tr class="table-row border-b border-neutral-100 transition-colors cursor-pointer" style="height: 56px;" onclick="showSettlementDetail('paid', 'SET-20260401-003')">
                                     <td class="py-3 px-3 text-center text-neutral-500">3</td>
                                     <td class="py-3 px-3 font-mono text-primary cursor-pointer hover:underline">SET-20260401-003</td>
@@ -293,29 +315,35 @@
                                     <td class="py-3 px-3 text-neutral-600">T+3（2026-03-29 ~ 2026-04-01）</td>
                                     <td class="py-3 px-3 text-center">42</td>
                                     <td class="py-3 px-3 text-right font-semibold text-neutral-800">¥4,280.00</td>
-                                    <td class="py-3 px-3 text-center"><span class="inline-block px-3 py-0.5 bg-green-50 text-green-600 text-xs" style="border-radius: 12px; height: 24px; line-height: 16px;">已打款</span></td>
-                                    <td class="py-3 px-3 text-neutral-600 text-xs">2026-04-01 01:00:00</td>
-                                    <td class="py-3 px-3 text-neutral-600 text-xs">2026-04-04 10:30:00</td>
+                                    <td class="py-3 px-3 text-center"><span class="inline-block px-3 py-0.5 bg-green-50 text-green-600 text-xs" style="border-radius: 12px; height: 24px; line-height: 16px;">已完成</span></td>
+                                    <td class="py-3 px-3 text-neutral-600 text-xs">2026-04-01 02:30:00</td>
                                     <td class="py-3 px-3 text-neutral-600 text-xs">2026-04-08 10:30:00</td>
+                                    <td class="py-3 px-3 text-neutral-400 text-xs">-</td>
                                     <td class="py-3 px-3 text-center">
                                         <button class="text-primary hover:underline transition-colors duration-200 cursor-pointer" onclick="event.stopPropagation(); showSettlementDetail('paid', 'SET-20260401-003')">查看</button>
                                     </td>
                                 </tr>
-                                <tr class="table-row border-b border-neutral-100 bg-neutral-50 transition-colors cursor-pointer" style="height: 56px;" onclick="showSettlementDetail('pending-confirm', 'SET-20260401-004')">
+                                <!-- 待确认（含对账异常，差异待处理） -->
+                                <tr class="table-row border-b border-neutral-100 bg-neutral-50 transition-colors cursor-pointer" style="height: 56px;" onclick="showSettlementDetail('pending-reconciliation-confirm', 'SET-20260401-006')">
                                     <td class="py-3 px-3 text-center text-neutral-500">4</td>
-                                    <td class="py-3 px-3 font-mono text-primary cursor-pointer hover:underline">SET-20260401-004</td>
-                                    <td class="py-3 px-3">交控新能源</td>
+                                    <td class="py-3 px-3 font-mono text-primary cursor-pointer hover:underline">SET-20260401-006</td>
+                                    <td class="py-3 px-3">中国石油安徽分公司</td>
                                     <td class="py-3 px-3 text-neutral-600">T+7（2026-03-25 ~ 2026-04-01）</td>
-                                    <td class="py-3 px-3 text-center">73</td>
-                                    <td class="py-3 px-3 text-right font-semibold text-neutral-800">¥6,780.00</td>
+                                    <td class="py-3 px-3 text-center">168</td>
+                                    <td class="py-3 px-3 text-right font-semibold text-neutral-800">¥16,850.00</td>
                                     <td class="py-3 px-3 text-center"><span class="inline-block px-3 py-0.5 bg-orange-50 text-orange-500 text-xs" style="border-radius: 12px; height: 24px; line-height: 16px;">待确认</span></td>
-                                    <td class="py-3 px-3 text-neutral-600 text-xs">2026-04-01 01:00:00</td>
-                                    <td class="py-3 px-3 text-neutral-400 text-xs">-</td>
-                                    <td class="py-3 px-3 text-neutral-400 text-xs">-</td>
+                                    <td class="py-3 px-3 text-neutral-600 text-xs">2026-04-01 02:30:00</td>
+                                    <td class="py-3 px-3 text-neutral-600 text-xs">2026-04-01 02:30:00</td>
+                                    <td class="py-3 px-3">
+                                        <div class="flex flex-col gap-1">
+                                            <div class="inline-flex self-start px-2 py-0.5 bg-yellow-100 text-yellow-600 text-[11px] rounded whitespace-nowrap" style="height: 18px; line-height: 12px;">⚠ 对账差异待处理</div>
+                                        </div>
+                                    </td>
                                     <td class="py-3 px-3 text-center">
-                                        <button class="text-primary hover:underline transition-colors duration-200 cursor-pointer" onclick="event.stopPropagation(); showSettlementDetail('pending-confirm', 'SET-20260401-004')">查看</button>
+                                        <button class="text-primary hover:underline transition-colors duration-200 cursor-pointer" onclick="event.stopPropagation(); showSettlementDetail('pending-reconciliation-confirm', 'SET-20260401-006')">查看</button>
                                     </td>
                                 </tr>
+                                <!-- 待确认（含申诉中） -->
                                 <tr class="table-row border-b border-neutral-100 transition-colors cursor-pointer" style="height: 56px;" onclick="showSettlementDetail('appealing', 'SET-20260401-005')">
                                     <td class="py-3 px-3 text-center text-neutral-500">5</td>
                                     <td class="py-3 px-3 font-mono text-primary cursor-pointer hover:underline">SET-20260401-005</td>
@@ -323,12 +351,37 @@
                                     <td class="py-3 px-3 text-neutral-600">月结（2026-03-01 ~ 2026-03-31）</td>
                                     <td class="py-3 px-3 text-center">234</td>
                                     <td class="py-3 px-3 text-right font-semibold text-neutral-800">¥28,560.00</td>
-                                    <td class="py-3 px-3 text-center"><span class="inline-block px-3 py-0.5 bg-red-50 text-red-600 text-xs" style="border-radius: 12px; height: 24px; line-height: 16px;">申诉中</span></td>
-                                    <td class="py-3 px-3 text-neutral-600 text-xs">2026-04-01 01:00:00</td>
-                                    <td class="py-3 px-3 text-neutral-400 text-xs">-</td>
-                                    <td class="py-3 px-3 text-neutral-400 text-xs">-</td>
+                                    <td class="py-3 px-3 text-center"><span class="inline-block px-3 py-0.5 bg-orange-50 text-orange-500 text-xs" style="border-radius: 12px; height: 24px; line-height: 16px;">待确认</span></td>
+                                    <td class="py-3 px-3 text-neutral-600 text-xs">2026-04-01 02:30:00</td>
+                                    <td class="py-3 px-3 text-neutral-600 text-xs">2026-04-02 10:30:00</td>
+                                    <td class="py-3 px-3">
+                                        <div class="flex flex-col gap-1">
+                                            <div class="inline-flex self-start px-2 py-0.5 bg-red-100 text-red-600 text-[11px] rounded whitespace-nowrap" style="height: 18px; line-height: 12px;">⚠ 申诉中，账单锁定</div>
+                                        </div>
+                                    </td>
                                     <td class="py-3 px-3 text-center">
                                         <button class="text-primary hover:underline transition-colors duration-200 cursor-pointer" onclick="event.stopPropagation(); showSettlementDetail('appealing', 'SET-20260401-005')">查看</button>
+                                    </td>
+                                </tr>
+                                <!-- 待确认（对账调账+申诉调账已完成） -->
+                                <tr class="table-row border-b border-neutral-100 hover:bg-neutral-50 transition-colors cursor-pointer" style="height: 56px;" onclick="showSettlementDetail('appeal-handled', 'SET-20260401-007')">
+                                    <td class="py-3 px-3 text-center text-neutral-500">6</td>
+                                    <td class="py-3 px-3 font-mono text-primary cursor-pointer hover:underline">SET-20260401-007</td>
+                                    <td class="py-3 px-3">中国石油安徽分公司</td>
+                                    <td class="py-3 px-3 text-neutral-600">T+7（2026-03-25 ~ 2026-04-01）</td>
+                                    <td class="py-3 px-3 text-center">156</td>
+                                    <td class="py-3 px-3 text-right font-semibold text-neutral-800">¥16,230.00</td>
+                                    <td class="py-3 px-3 text-center"><span class="inline-block px-3 py-0.5 bg-orange-50 text-orange-500 text-xs" style="border-radius: 12px; height: 24px; line-height: 16px;">待确认</span></td>
+                                    <td class="py-3 px-3 text-neutral-600 text-xs">2026-04-01 02:30:00</td>
+                                    <td class="py-3 px-3 text-neutral-600 text-xs">2026-04-02 14:00:00</td>
+                                    <td class="py-3 px-3">
+                                        <div class="flex flex-col gap-1">
+                                            <div class="inline-flex self-start px-2 py-0.5 bg-blue-100 text-blue-600 text-[11px] rounded whitespace-nowrap" style="height: 18px; line-height: 12px;">对账调账 +¥500.00</div>
+                                            <div class="inline-flex self-start px-2 py-0.5 bg-green-100 text-green-600 text-[11px] rounded whitespace-nowrap" style="height: 18px; line-height: 12px;">申诉调账 +¥730.00</div>
+                                        </div>
+                                    </td>
+                                    <td class="py-3 px-3 text-center">
+                                        <button class="text-primary hover:underline transition-colors duration-200 cursor-pointer" onclick="event.stopPropagation(); showSettlementDetail('appeal-handled', 'SET-20260401-007')">查看</button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -338,7 +391,7 @@
 
                 <!-- 分页区 -->
                 <div class="flex justify-between items-center">
-                    <span class="text-sm text-neutral-600">共 <span class="font-semibold">4</span> 条记录</span>
+                    <span class="text-sm text-neutral-600">共 <span class="font-semibold">6</span> 条记录</span>
                     <div class="flex items-center gap-2">
                         <select class="px-2 py-1 border border-neutral-200 rounded text-sm">
                             <option>10条/页</option>
@@ -360,14 +413,14 @@
             <!-- Settlement Detail Page -->
             <div id="page-settlement-detail" class="page">
                 <!-- 第1层：页面标题区 -->
-                <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center justify-between mb-4">
                     <h1 class="text-base font-bold text-neutral-800">
                         结算账单详情
                     </h1>
                     <!-- 操作按钮组 -->
                     <div class="flex gap-2">
-                        <button class="btn-secondary px-4 py-1.5 rounded-sm text-sm font-medium cursor-pointer transition-colors duration-200" onclick="showPage('settlement-list')">返回上级页面</button>
-                        <button class="btn-primary px-4 py-1.5 rounded-sm text-sm font-medium flex items-center gap-1.5 cursor-pointer transition-opacity duration-200" onclick="handleExport()">
+                        <button class="btn-secondary px-3 py-1.5 rounded-sm text-sm font-medium cursor-pointer transition-colors duration-200 h-8 flex items-center gap-1.5" onclick="showPage('settlement-list')"><i data-lucide="arrow-left" class="w-4 h-4"></i>返回上级页面</button>
+                        <button class="btn-primary px-3 py-1.5 rounded-sm text-sm font-medium flex items-center gap-1.5 cursor-pointer transition-opacity duration-200 h-8" onclick="handleExport()">
                             <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5"></i>
                             核销明细导出
                         </button>
@@ -375,106 +428,112 @@
                 </div>
 
                 <!-- 第2层：结算流程时间轴 + 操作按钮区 -->
-                <div class="bg-white rounded-sm border border-neutral-200 p-6 mb-4">
-                    <h3 class="text-sm font-semibold text-neutral-700 mb-6">结算流程</h3>
-                    <div class="flex items-center justify-center max-w-3xl mx-auto mb-4">
+                <div class="bg-white rounded-sm border border-neutral-200 px-5 py-4 mb-4">
+                    <h3 class="text-sm font-semibold text-neutral-700 mb-4">结算流程</h3>
+                    <div class="flex items-center justify-center max-w-3xl mx-auto mb-3">
                         <!-- 步骤1：生成结算单 -->
                         <div class="flex flex-col items-center" id="timeline-step1">
-                            <div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center timeline-dot">
-                                <i data-lucide="check" class="w-5 h-5 text-white"></i>
+                            <div class="relative">
+                                <div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center timeline-dot cursor-pointer" onclick="toggleSubEvents('step1')">
+                                    <i data-lucide="check" class="w-5 h-5 text-white"></i>
+                                </div>
+                                <!-- 子事件徽章 -->
+                                <div class="absolute -top-1 -right-1 w-4 h-4 bg-primary text-white text-[10px] rounded-full flex items-center justify-center font-bold cursor-pointer hover:opacity-80" id="step1-badge" onclick="toggleSubEvents('step1')">2</div>
                             </div>
                             <div class="text-xs mt-2 text-primary font-medium timeline-name">生成结算单</div>
-                            <div class="text-xs text-neutral-500 mt-1 timeline-time">2026-04-01 01:00:00</div>
+                            <div class="text-xs text-neutral-500 mt-1 timeline-time">2026-04-01 02:30:00</div>
                         </div>
                         <!-- 连接线 -->
-                        <div class="flex-1 h-0.5 bg-primary mx-4 mb-8 timeline-line"></div>
-                        <!-- 步骤2：店铺审核 -->
+                        <div class="flex-1 h-0.5 bg-primary mx-4 mb-7 timeline-line"></div>
+                        <!-- 步骤2：商户确认 -->
                         <div class="flex flex-col items-center" id="timeline-step2">
-                            <div class="w-10 h-10 rounded-full border-2 border-primary flex items-center justify-center timeline-dot">
-                                <div class="w-3 h-3 rounded-full bg-primary"></div>
+                            <div class="relative">
+                                <div class="w-10 h-10 rounded-full border-2 border-primary flex items-center justify-center timeline-dot cursor-pointer" onclick="toggleSubEvents('step2')">
+                                    <div class="w-3 h-3 rounded-full bg-primary"></div>
+                                </div>
+                                <!-- 子事件徽章 -->
+                                <div class="absolute -top-1 -right-1 w-4 h-4 bg-primary text-white text-[10px] rounded-full flex items-center justify-center font-bold cursor-pointer hover:opacity-80 hidden" id="step2-badge" onclick="toggleSubEvents('step2')">0</div>
                             </div>
-                            <div class="text-xs mt-2 text-primary font-medium timeline-name">店铺审核</div>
-                            <div class="text-xs text-primary mt-1 timeline-time">等待店铺审核</div>
+                            <div class="text-xs mt-1.5 text-primary font-medium timeline-name">商户确认</div>
+                            <div class="text-xs text-primary mt-0.5 timeline-time" id="step2-pending-text">等待商户确认</div>
                         </div>
                         <!-- 连接线 -->
-                        <div class="flex-1 h-0.5 bg-neutral-200 mx-4 mb-8 timeline-line"></div>
+                        <div class="flex-1 h-0.5 bg-neutral-200 mx-4 mb-7 timeline-line"></div>
                         <!-- 步骤3：结算打款 -->
                         <div class="flex flex-col items-center" id="timeline-step3">
-                            <div class="w-10 h-10 rounded-full border-2 border-neutral-300 flex items-center justify-center timeline-dot">
-                                <div class="w-3 h-3 rounded-full bg-neutral-300"></div>
+                            <div class="relative">
+                                <div class="w-10 h-10 rounded-full border-2 border-neutral-300 flex items-center justify-center timeline-dot cursor-pointer" onclick="toggleSubEvents('step3')">
+                                    <div class="w-3 h-3 rounded-full bg-neutral-300"></div>
+                                </div>
+                                <!-- 子事件徽章 -->
+                                <div class="absolute -top-1 -right-1 w-4 h-4 bg-neutral-300 text-white text-[10px] rounded-full flex items-center justify-center font-bold cursor-pointer hidden" id="step3-badge" onclick="toggleSubEvents('step3')">0</div>
                             </div>
-                            <div class="text-xs mt-2 text-neutral-400 timeline-name">结算打款</div>
-                            <div class="text-xs text-neutral-400 mt-1 timeline-time">-</div>
+                            <div class="text-xs mt-1.5 text-neutral-400 timeline-name">结算打款</div>
+                            <div class="text-xs text-neutral-400 mt-0.5 timeline-time">-</div>
                         </div>
                         <!-- 连接线 -->
-                        <div class="flex-1 h-0.5 bg-neutral-200 mx-4 mb-8 timeline-line"></div>
+                        <div class="flex-1 h-0.5 bg-neutral-200 mx-4 mb-7 timeline-line"></div>
                         <!-- 步骤4：完成 -->
                         <div class="flex flex-col items-center" id="timeline-step4">
                             <div class="w-10 h-10 rounded-full border-2 border-neutral-300 flex items-center justify-center timeline-dot">
                                 <div class="w-3 h-3 rounded-full bg-neutral-300"></div>
                             </div>
-                            <div class="text-xs mt-2 text-neutral-400 timeline-name">完成</div>
-                            <div class="text-xs text-neutral-400 mt-1 timeline-time">-</div>
+                            <div class="text-xs mt-1.5 text-neutral-400 timeline-name">完成</div>
+                            <div class="text-xs text-neutral-400 mt-0.5 timeline-time">-</div>
                         </div>
                     </div>
 
-                    <!-- 申诉流程状态（仅在申诉中状态下显示） -->
-                    <div id="appeal-process-section" class="hidden mt-6 pt-6 border-t border-neutral-200">
-                        <h4 class="text-sm font-semibold text-error mb-4 flex items-center gap-2">
-                            <i data-lucide="alert-triangle" class="w-4 h-4"></i>
-                            申诉处理流程
-                        </h4>
-                        <div class="flex items-center justify-center max-w-2xl mx-auto">
-                            <div class="flex flex-col items-center">
-                                <div class="w-8 h-8 rounded-full bg-error flex items-center justify-center">
-                                    <i data-lucide="alert-circle" class="w-4 h-4 text-white"></i>
-                                </div>
-                                <div class="text-xs mt-2 text-error font-medium">商户发起申诉</div>
-                                <div class="text-xs text-neutral-500 mt-1">2026-04-02 10:30:00</div>
-                            </div>
-                            <div class="flex-1 h-0.5 bg-error mx-4 mb-6"></div>
-                            <div class="flex flex-col items-center">
-                                <div class="w-8 h-8 rounded-full border-2 border-warning flex items-center justify-center">
-                                    <div class="w-2 h-2 rounded-full bg-warning"></div>
-                                </div>
-                                <div class="text-xs mt-2 text-warning font-medium">平台处理中</div>
-                                <div class="text-xs text-warning mt-1">等待平台管理员处理</div>
-                            </div>
-                        </div>
-                        <div class="mt-4 bg-error/5 border border-error/20 rounded-sm p-4">
-                            <div class="space-y-3">
-                                <div class="flex justify-between">
-                                    <span class="text-xs text-neutral-500">申诉原因</span>
-                                    <span class="text-xs text-neutral-800">核销数量与实际不符，有10笔订单未核销但被纳入结算</span>
-                                </div>
-                                <div class="flex justify-between">
-                                    <span class="text-xs text-neutral-500">附件</span>
-                                    <span class="text-xs text-primary cursor-pointer hover:underline">查看附件（2个）</span>
-                                </div>
-                                <div class="flex justify-between">
-                                    <span class="text-xs text-neutral-500">申诉时间</span>
-                                    <span class="text-xs text-neutral-800">2026-04-02 10:30:00</span>
-                                </div>
-                            </div>
+                    <!-- 时间轴子事件展开区域（默认隐藏，点击徽章展开） -->
+                    <div id="sub-events-container" class="border-t border-neutral-200 mt-4 pt-4 hidden">
+                        <div id="sub-events-list" class="space-y-1">
+                            <!-- 子事件内容动态生成 -->
                         </div>
                     </div>
 
                     <!-- 操作按钮区（位于时间轴下方） -->
-                    <div class="mt-6 pt-6 border-t border-neutral-200">
+                    <div class="mt-4 pt-4 border-t border-neutral-200">
                         <div id="action-buttons-container" class="flex items-center justify-center gap-3">
                             <!-- 按钮将根据状态动态生成 -->
                         </div>
                     </div>
                 </div>
 
+                <!-- 提醒条：对账/申诉差异处理提醒（状态驱动显示） -->
+                <div id="reconciliation-alert-bar" class="hidden bg-orange-50 border-l-4 border-orange-400 rounded-r-sm px-4 py-3 mb-3 transition-colors duration-200">
+                    <div class="flex items-start gap-3">
+                        <i data-lucide="alert-triangle" class="w-4 h-4 text-primary flex-shrink-0 mt-0.5"></i>
+                        <div class="flex-1 flex items-center justify-between gap-3">
+                            <span id="reconciliation-alert-text" class="text-sm text-neutral-800"></span>
+                            <div id="reconciliation-alert-link" class="hidden flex items-center gap-1 text-primary text-sm font-medium whitespace-nowrap hover:underline cursor-pointer" onclick="navigateToReconciliation(event)">
+                                <span id="reconciliation-alert-link-text"></span>
+                                <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 提醒条：申诉调账提醒（状态驱动显示） -->
+                <div id="appeal-alert-bar" class="hidden bg-orange-50 border-l-4 border-orange-400 rounded-r-sm px-4 py-3 mb-3 transition-colors duration-200">
+                    <div class="flex items-start gap-3">
+                        <i data-lucide="alert-triangle" class="w-4 h-4 text-primary flex-shrink-0 mt-0.5"></i>
+                        <div class="flex-1 flex items-center justify-between gap-3">
+                            <span id="appeal-alert-text" class="text-sm text-neutral-800"></span>
+                            <div id="appeal-alert-link" class="hidden flex items-center gap-1 text-primary text-sm font-medium whitespace-nowrap hover:underline cursor-pointer" onclick="showAppealDetailFromAlert(event)">
+                                <span id="appeal-alert-link-text"></span>
+                                <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- 第3层：结算概要区 -->
-                <div class="bg-white rounded-sm border border-neutral-200 p-6 mb-4">
-                    <h3 class="text-sm font-semibold text-neutral-700 mb-6">结算概要</h3>
-                    <div class="grid grid-cols-2 gap-6">
+                <div class="bg-white rounded-sm border border-neutral-200 px-5 py-4 mb-4">
+                    <h3 class="text-sm font-semibold text-neutral-700 mb-4">结算概要</h3>
+                    <div class="grid grid-cols-2 gap-5">
                         <!-- 左侧：结算基础信息 -->
                         <div>
-                            <h4 class="text-xs font-semibold text-neutral-600 mb-3">基础信息</h4>
-                            <div class="space-y-3">
+                            <h4 class="text-xs font-semibold text-neutral-600 mb-2">基础信息</h4>
+                            <div class="space-y-2">
                                 <div class="flex justify-between">
                                     <span class="text-xs text-neutral-500">结算单号</span>
                                     <span class="text-xs font-mono text-neutral-800" id="detail-bill-no">SET-20260401-001</span>
@@ -512,28 +571,63 @@
                         <!-- 右侧：金额汇总与活动发行方分摊明细 -->
                         <div>
                             <h4 class="text-xs font-semibold text-neutral-600 mb-3">金额汇总与发行方分摊</h4>
-                            <div class="bg-white border border-neutral-200 rounded-sm overflow-hidden">
+                            <div class="bg-white border border-neutral-200 rounded-sm">
                                 <!-- 总金额行 -->
                                 <div class="bg-primary/5 px-4 py-3 border-b border-neutral-200">
-                                    <div class="flex justify-between items-center">
-                                        <span class="text-xs font-medium text-neutral-700">结算总金额</span>
-                                        <span class="text-xl font-bold text-primary" id="detail-total-amount">¥15,230.00</span>
+                                    <div id="amount-summary-container">
+                                        <!-- 基础显示（无调账时） -->
+                                        <div id="amount-base-display" class="flex justify-between items-center">
+                                            <span class="text-xs font-medium text-neutral-700">结算总金额</span>
+                                            <span class="text-xl font-bold text-primary" id="detail-total-amount">¥15,230.00</span>
+                                        </div>
+                                        <!-- 调账公式显示（有调账时） -->
+                                        <div id="amount-formula-display" class="hidden">
+                                            <div class="flex justify-between items-center mb-2">
+                                                <span class="text-xs font-medium text-neutral-700">结算总金额</span>
+                                                <span class="text-xl font-bold text-primary" id="detail-final-amount">¥15,730.00</span>
+                                            </div>
+                                            <div class="text-xs text-neutral-500 mt-1 flex items-center gap-1" id="amount-formula-text">
+                                                = 原结算金额 ¥15,000.00 + 对账调账 ¥500.00 + 申诉调账 ¥230.00
+                                                <!-- 调账提示角标 -->
+                                                <span class="relative inline-flex items-center justify-center w-3.5 h-3.5 text-[8px] font-bold text-white bg-orange-500 rounded-full cursor-help group flex-shrink-0">
+                                                    ?
+                                                    <span class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 px-3 py-2 bg-neutral-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none leading-relaxed shadow-xl z-[9999]">
+                                                        对账调账和申诉调账的分摊明细需相关方线下确认，系统不参与计算
+                                                        <span class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-neutral-800"></span>
+                                                    </span>
+                                                </span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <!-- 发行方分摊行 -->
                                 <div class="divide-y divide-neutral-100" id="generators-list">
                                     <div class="px-4 py-2.5 flex justify-between items-center hover:bg-neutral-50 transition-colors">
-                                        <span class="text-sm text-neutral-800">数科公司</span>
+                                        <span class="text-sm text-neutral-800">皖通活动 A</span>
                                         <div class="flex items-center gap-6">
-                                            <span class="text-sm font-medium text-neutral-800">¥10,000.00</span>
-                                            <span class="text-xs text-neutral-500 w-12 text-right">65.7%</span>
+                                            <span class="text-sm font-medium text-neutral-800">¥5,625.00</span>
+                                            <span class="text-xs text-neutral-500 w-12 text-right">37.5%</span>
                                         </div>
                                     </div>
                                     <div class="px-4 py-2.5 flex justify-between items-center hover:bg-neutral-50 transition-colors">
-                                        <span class="text-sm text-neutral-800">联网公司</span>
+                                        <span class="text-sm text-neutral-800">皖通活动 B</span>
                                         <div class="flex items-center gap-6">
-                                            <span class="text-sm font-medium text-neutral-800">¥5,230.00</span>
-                                            <span class="text-xs text-neutral-500 w-12 text-right">34.3%</span>
+                                            <span class="text-sm font-medium text-neutral-800">¥3,750.00</span>
+                                            <span class="text-xs text-neutral-500 w-12 text-right">25.0%</span>
+                                        </div>
+                                    </div>
+                                    <div class="px-4 py-2.5 flex justify-between items-center hover:bg-neutral-50 transition-colors">
+                                        <span class="text-sm text-neutral-800">石化活动 A</span>
+                                        <div class="flex items-center gap-6">
+                                            <span class="text-sm font-medium text-neutral-800">¥3,750.00</span>
+                                            <span class="text-xs text-neutral-500 w-12 text-right">25.0%</span>
+                                        </div>
+                                    </div>
+                                    <div class="px-4 py-2.5 flex justify-between items-center hover:bg-neutral-50 transition-colors">
+                                        <span class="text-sm text-neutral-800">驿达活动 A</span>
+                                        <div class="flex items-center gap-6">
+                                            <span class="text-sm font-medium text-neutral-800">¥1,875.00</span>
+                                            <span class="text-xs text-neutral-500 w-12 text-right">12.5%</span>
                                         </div>
                                     </div>
                                 </div>
@@ -543,25 +637,17 @@
                 </div>
 
                 <!-- 第4层：核销明细区 -->
-                <div class="bg-white rounded-sm border border-neutral-200 p-6 mb-6">
-                    <h3 class="text-sm font-semibold text-neutral-700 mb-4">核销明细</h3>
+                <div class="bg-white rounded-sm border border-neutral-200 px-5 py-4 mb-4">
+                    <h3 class="text-sm font-semibold text-neutral-700 mb-3">核销明细</h3>
                     <!-- 筛选条件 -->
-                    <div class="flex flex-wrap gap-4 mb-4">
-                        <div class="flex items-center border border-neutral-200 rounded-sm h-8 bg-white overflow-hidden flex-1 min-w-[200px]">
-                            <span class="text-sm text-neutral-600 px-3 whitespace-nowrap border-r border-neutral-200">券码 ID</span>
-                            <input type="text" placeholder="请输入券码 ID" class="flex-1 h-full px-3 border-0 text-sm focus:outline-none bg-transparent placeholder:text-neutral-400">
-                        </div>
+                    <div class="flex flex-wrap gap-3 mb-3">
                         <div class="flex items-center border border-neutral-200 rounded-sm h-8 bg-white overflow-hidden flex-1 min-w-[200px]">
                             <span class="text-sm text-neutral-600 px-3 whitespace-nowrap border-r border-neutral-200">订单号</span>
                             <input type="text" placeholder="请输入订单号" class="flex-1 h-full px-3 border-0 text-sm focus:outline-none bg-transparent placeholder:text-neutral-400">
                         </div>
                         <div class="flex items-center border border-neutral-200 rounded-sm h-8 bg-white overflow-hidden flex-1 min-w-[200px]">
-                            <span class="text-sm text-neutral-600 px-3 whitespace-nowrap border-r border-neutral-200">订单状态</span>
-                            <select class="flex-1 h-full px-3 border-0 text-sm focus:outline-none bg-transparent text-neutral-800">
-                                <option value="" class="text-neutral-400">全部</option>
-                                <option class="text-neutral-800">已完成</option>
-                                <option class="text-neutral-800">已退货</option>
-                            </select>
+                            <span class="text-sm text-neutral-600 px-3 whitespace-nowrap border-r border-neutral-200">券码 ID</span>
+                            <input type="text" placeholder="请输入券码 ID" class="flex-1 h-full px-3 border-0 text-sm focus:outline-none bg-transparent placeholder:text-neutral-400">
                         </div>
                         <div class="flex items-center border border-neutral-200 rounded-sm h-8 bg-white overflow-hidden flex-1 min-w-[200px]">
                             <span class="text-sm text-neutral-600 px-3 whitespace-nowrap border-r border-neutral-200">业务类型</span>
@@ -574,6 +660,14 @@
                                 <option class="text-neutral-800">其他</option>
                             </select>
                         </div>
+                        <div class="flex items-center border border-neutral-200 rounded-sm h-8 bg-white overflow-hidden flex-1 min-w-[200px]">
+                            <span class="text-sm text-neutral-600 px-3 whitespace-nowrap border-r border-neutral-200">订单状态</span>
+                            <select class="flex-1 h-full px-3 border-0 text-sm focus:outline-none bg-transparent text-neutral-800">
+                                <option value="" class="text-neutral-400">全部</option>
+                                <option class="text-neutral-800">已完成</option>
+                                <option class="text-neutral-800">已退货</option>
+                            </select>
+                        </div>
                         <div class="flex items-center border border-neutral-200 rounded-sm h-8 bg-white overflow-hidden flex-1 min-w-[280px]">
                             <span class="text-sm text-neutral-600 px-3 whitespace-nowrap border-r border-neutral-200">核销时间</span>
                             <input type="text" placeholder="开始日期" class="h-full px-3 border-0 text-sm focus:outline-none bg-transparent rounded-none flex-1 min-w-0">
@@ -582,8 +676,8 @@
                         </div>
                     </div>
                     <div class="flex justify-end mb-4">
-                        <button class="btn-secondary px-4 py-1.5 rounded-sm text-sm font-medium cursor-pointer transition-colors duration-200 mr-2">重置</button>
-                        <button class="btn-primary px-4 py-1.5 rounded-sm text-sm font-medium cursor-pointer transition-opacity duration-200">查询</button>
+                        <button class="btn-secondary px-4 py-1.5 rounded-sm text-sm font-medium cursor-pointer transition-colors duration-200 mr-2">重 置</button>
+                        <button class="btn-primary px-4 py-1.5 rounded-sm text-sm font-medium cursor-pointer transition-opacity duration-200">查 询</button>
                     </div>
                     <!-- 数据表格 -->
                     <div class="overflow-x-auto">
@@ -596,6 +690,7 @@
                                     <th class="text-center py-2 px-2 font-semibold text-neutral-600">业务类型</th>
                                     <th class="text-left py-2 px-2 font-semibold text-neutral-600">核销时间</th>
                                     <th class="text-right py-2 px-2 font-semibold text-neutral-600">券码面额</th>
+                                    <th class="text-right py-2 px-2 font-semibold text-neutral-600">结算金额</th>
                                     <th class="text-center py-2 px-2 font-semibold text-neutral-600">活动发行方分摊</th>
                                     <th class="text-center py-2 px-2 font-semibold text-neutral-600">订单状态</th>
                                     <th class="text-center py-2 px-2 font-semibold text-neutral-600">是否纳入结算</th>
@@ -609,8 +704,9 @@
                                     <td class="py-2 px-2 text-center"><span class="inline-block px-2 py-0.5 bg-blue-50 text-blue-600 text-xs" style="border-radius: 10px; height: 20px; line-height: 12px;">加油</span></td>
                                     <td class="py-2 px-2 text-neutral-600">2026-04-01 10:30:00</td>
                                     <td class="py-2 px-2 text-right font-semibold text-neutral-800">¥100.00</td>
+                                    <td class="py-2 px-2 text-right font-semibold text-neutral-800">¥100.00</td>
                                     <td class="py-2 px-2 text-center">
-                                        <span class="text-neutral-600">数科 ¥65.70 | 联网 ¥34.30</span>
+                                        <span class="text-neutral-600">皖通活动 A ¥60.00 | 石化活动 A ¥40.00</span>
                                     </td>
                                     <td class="py-2 px-2 text-center"><span class="inline-block px-2 py-0.5 bg-green-50 text-green-600 text-xs" style="border-radius: 10px; height: 20px; line-height: 12px;">已完成</span></td>
                                     <td class="py-2 px-2 text-center text-green-600">是</td>
@@ -622,8 +718,9 @@
                                     <td class="py-2 px-2 text-center"><span class="inline-block px-2 py-0.5 bg-purple-50 text-purple-600 text-xs" style="border-radius: 10px; height: 20px; line-height: 12px;">商城</span></td>
                                     <td class="py-2 px-2 text-neutral-600">2026-04-01 11:15:00</td>
                                     <td class="py-2 px-2 text-right font-semibold text-neutral-800">¥50.00</td>
+                                    <td class="py-2 px-2 text-right font-semibold text-neutral-800">¥50.00</td>
                                     <td class="py-2 px-2 text-center">
-                                        <span class="text-neutral-600">数科 ¥32.85 | 联网 ¥17.15</span>
+                                        <span class="text-neutral-600">皖通活动 B ¥30.00 | 驿达活动 A ¥20.00</span>
                                     </td>
                                     <td class="py-2 px-2 text-center"><span class="inline-block px-2 py-0.5 bg-green-50 text-green-600 text-xs" style="border-radius: 10px; height: 20px; line-height: 12px;">已完成</span></td>
                                     <td class="py-2 px-2 text-center text-green-600">是</td>
@@ -635,8 +732,9 @@
                                     <td class="py-2 px-2 text-center"><span class="inline-block px-2 py-0.5 bg-orange-50 text-orange-600 text-xs" style="border-radius: 10px; height: 20px; line-height: 12px;">加气</span></td>
                                     <td class="py-2 px-2 text-neutral-600">2026-04-01 14:20:00</td>
                                     <td class="py-2 px-2 text-right font-semibold text-neutral-800">¥200.00</td>
+                                    <td class="py-2 px-2 text-right font-semibold text-neutral-800">¥120.00</td>
                                     <td class="py-2 px-2 text-center">
-                                        <span class="text-neutral-600">数科 ¥131.40 | 联网 ¥68.60</span>
+                                        <span class="text-neutral-600">皖通活动 A ¥48.00 | 皖通活动 B ¥36.00 | 石化活动 A ¥36.00</span>
                                     </td>
                                     <td class="py-2 px-2 text-center"><span class="inline-block px-2 py-0.5 bg-green-50 text-green-600 text-xs" style="border-radius: 10px; height: 20px; line-height: 12px;">已完成</span></td>
                                     <td class="py-2 px-2 text-center text-green-600">是</td>
@@ -648,8 +746,9 @@
                                     <td class="py-2 px-2 text-center"><span class="inline-block px-2 py-0.5 bg-green-50 text-green-600 text-xs" style="border-radius: 10px; height: 20px; line-height: 12px;">充电</span></td>
                                     <td class="py-2 px-2 text-neutral-600">2026-04-01 16:45:00</td>
                                     <td class="py-2 px-2 text-right font-semibold text-neutral-800">¥80.00</td>
+                                    <td class="py-2 px-2 text-right font-semibold text-neutral-800">¥0.00</td>
                                     <td class="py-2 px-2 text-center">
-                                        <span class="text-neutral-600">数科 ¥52.56 | 联网 ¥27.44</span>
+                                        <span class="text-neutral-600">-</span>
                                     </td>
                                     <td class="py-2 px-2 text-center"><span class="inline-block px-2 py-0.5 bg-red-50 text-red-600 text-xs" style="border-radius: 10px; height: 20px; line-height: 12px;">已退货</span></td>
                                     <td class="py-2 px-2 text-center text-neutral-400">否</td>
@@ -661,8 +760,9 @@
                                     <td class="py-2 px-2 text-center"><span class="inline-block px-2 py-0.5 bg-neutral-100 text-neutral-600 text-xs" style="border-radius: 10px; height: 20px; line-height: 12px;">其他</span></td>
                                     <td class="py-2 px-2 text-neutral-600">2026-04-01 18:10:00</td>
                                     <td class="py-2 px-2 text-right font-semibold text-neutral-800">¥150.00</td>
+                                    <td class="py-2 px-2 text-right font-semibold text-neutral-800">¥150.00</td>
                                     <td class="py-2 px-2 text-center">
-                                        <span class="text-neutral-600">数科 ¥98.55 | 联网 ¥51.45</span>
+                                        <span class="text-neutral-600">石化活动 B ¥90.00 | 驿达活动 A ¥60.00</span>
                                     </td>
                                     <td class="py-2 px-2 text-center"><span class="inline-block px-2 py-0.5 bg-green-50 text-green-600 text-xs" style="border-radius: 10px; height: 20px; line-height: 12px;">已完成</span></td>
                                     <td class="py-2 px-2 text-center text-green-600">是</td>
@@ -726,25 +826,8 @@
 
                     <div class="flex flex-wrap gap-4 mb-4">
                         <div class="flex items-center border border-neutral-200 rounded-sm h-8 bg-white overflow-hidden flex-1 min-w-[200px]">
-                            <span class="text-sm text-neutral-600 px-3 whitespace-nowrap border-r border-neutral-200">对账日期</span>
-                            <input type="text" placeholder="开始日期" class="h-full px-3 border-0 text-sm focus:outline-none bg-transparent rounded-none flex-1 min-w-0">
-                            <span class="text-neutral-400 px-1 text-sm whitespace-nowrap">→</span>
-                            <input type="text" placeholder="结束日期" class="h-full px-3 border-0 text-sm focus:outline-none bg-transparent rounded-none flex-1 min-w-0">
-                        </div>
-                        <div class="flex items-center border border-neutral-200 rounded-sm h-8 bg-white overflow-hidden flex-1 min-w-[200px]">
                             <span class="text-sm text-neutral-600 px-3 whitespace-nowrap border-r border-neutral-200">商户名称</span>
                             <input type="text" placeholder="请输入商户名称" class="h-full px-3 border-0 text-sm focus:outline-none bg-transparent rounded-none flex-1 min-w-0">
-                        </div>
-                        <div class="flex items-center border border-neutral-200 rounded-sm h-8 bg-white overflow-hidden flex-1 min-w-[200px]">
-                            <span class="text-sm text-neutral-600 px-3 whitespace-nowrap border-r border-neutral-200">业务类型</span>
-                            <select class="flex-1 h-full px-3 border-0 text-sm focus:outline-none bg-transparent text-neutral-800">
-                                <option value="" class="text-neutral-400">全部</option>
-                                <option class="text-neutral-800">商城</option>
-                                <option class="text-neutral-800">加油</option>
-                                <option class="text-neutral-800">加气</option>
-                                <option class="text-neutral-800">充电</option>
-                                <option class="text-neutral-800">其他</option>
-                            </select>
                         </div>
                         <div class="flex items-center border border-neutral-200 rounded-sm h-8 bg-white overflow-hidden flex-1 min-w-[200px]">
                             <span class="text-sm text-neutral-600 px-3 whitespace-nowrap border-r border-neutral-200">对账状态</span>
@@ -756,10 +839,14 @@
                                 <option class="text-neutral-800">已处理</option>
                             </select>
                         </div>
+                        <div class="flex items-center border border-neutral-200 rounded-sm h-8 bg-white overflow-hidden flex-1 min-w-[200px]">
+                            <span class="text-sm text-neutral-600 px-3 whitespace-nowrap border-r border-neutral-200">对账日期</span>
+                            <input type="date" class="h-full px-3 border-0 text-sm focus:outline-none bg-transparent rounded-none flex-1 min-w-0">
+                        </div>
                     </div>
                     <div class="flex justify-end">
-                        <button class="btn-secondary px-4 py-1.5 rounded-sm text-sm font-medium cursor-pointer transition-colors duration-200 mr-2">重置</button>
-                        <button class="btn-primary px-4 py-1.5 rounded-sm text-sm font-medium cursor-pointer transition-opacity duration-200">查询</button>
+                        <button class="btn-secondary px-4 py-1.5 rounded-sm text-sm font-medium cursor-pointer transition-colors duration-200 mr-2">重 置</button>
+                        <button class="btn-primary px-4 py-1.5 rounded-sm text-sm font-medium cursor-pointer transition-opacity duration-200">查 询</button>
                     </div>
                 </div>
 
@@ -773,7 +860,6 @@
                                     <th class="text-left py-2.5 px-3 font-semibold text-neutral-600">对账记录号</th>
                                     <th class="text-left py-2.5 px-3 font-semibold text-neutral-600">对账日期</th>
                                     <th class="text-left py-2.5 px-3 font-semibold text-neutral-600">商户名称</th>
-                                    <th class="text-left py-2.5 px-3 font-semibold text-neutral-600">业务类型</th>
                                     <th class="text-center py-2.5 px-3 font-semibold text-neutral-600">订单券码总数</th>
                                     <th class="text-center py-2.5 px-3 font-semibold text-neutral-600">核销券码总数</th>
                                     <th class="text-right py-2.5 px-3 font-semibold text-neutral-600">订单券码总金额</th>
@@ -791,7 +877,6 @@
                                     <td class="py-3 px-3 font-mono text-primary cursor-pointer hover:underline">REC-20260401-001</td>
                                     <td class="py-3 px-3 text-neutral-600">2026-04-01</td>
                                     <td class="py-3 px-3 text-neutral-800">中国石油安徽分公司</td>
-                                    <td class="py-3 px-3"><span class="inline-block px-2 py-0.5 bg-blue-50 text-blue-600 text-xs" style="border-radius: 10px; height: 20px; line-height: 12px;">加油</span></td>
                                     <td class="py-3 px-3 text-center text-neutral-600">156</td>
                                     <td class="py-3 px-3 text-center text-neutral-600">156</td>
                                     <td class="py-3 px-3 text-right font-semibold text-neutral-800">¥15,600.00</td>
@@ -809,7 +894,6 @@
                                     <td class="py-3 px-3 font-mono text-primary cursor-pointer hover:underline">REC-20260401-002</td>
                                     <td class="py-3 px-3 text-neutral-600">2026-04-01</td>
                                     <td class="py-3 px-3 text-neutral-800">驿达石化能源</td>
-                                    <td class="py-3 px-3"><span class="inline-block px-2 py-0.5 bg-green-50 text-green-600 text-xs" style="border-radius: 10px; height: 20px; line-height: 12px;">充电</span></td>
                                     <td class="py-3 px-3 text-center text-neutral-600">89</td>
                                     <td class="py-3 px-3 text-center text-neutral-600">87</td>
                                     <td class="py-3 px-3 text-right font-semibold text-neutral-800">¥8,900.00</td>
@@ -827,7 +911,6 @@
                                     <td class="py-3 px-3 font-mono text-primary cursor-pointer hover:underline">REC-20260401-003</td>
                                     <td class="py-3 px-3 text-neutral-600">2026-04-01</td>
                                     <td class="py-3 px-3 text-neutral-800">交控新能源</td>
-                                    <td class="py-3 px-3"><span class="inline-block px-2 py-0.5 bg-orange-50 text-orange-600 text-xs" style="border-radius: 10px; height: 20px; line-height: 12px;">加气</span></td>
                                     <td class="py-3 px-3 text-center text-neutral-600">45</td>
                                     <td class="py-3 px-3 text-center text-neutral-600">45</td>
                                     <td class="py-3 px-3 text-right font-semibold text-neutral-800">¥4,500.00</td>
@@ -845,7 +928,6 @@
                                     <td class="py-3 px-3 font-mono text-primary cursor-pointer hover:underline">REC-20260401-004</td>
                                     <td class="py-3 px-3 text-neutral-600">2026-04-01</td>
                                     <td class="py-3 px-3 text-neutral-800">中国石油安徽分公司</td>
-                                    <td class="py-3 px-3"><span class="inline-block px-2 py-0.5 bg-purple-50 text-purple-600 text-xs" style="border-radius: 10px; height: 20px; line-height: 12px;">商城</span></td>
                                     <td class="py-3 px-3 text-center text-neutral-600">67</td>
                                     <td class="py-3 px-3 text-center text-neutral-600">67</td>
                                     <td class="py-3 px-3 text-right font-semibold text-neutral-800">¥6,700.00</td>
@@ -863,7 +945,6 @@
                                     <td class="py-3 px-3 font-mono text-primary cursor-pointer hover:underline">REC-20260331-005</td>
                                     <td class="py-3 px-3 text-neutral-600">2026-03-31</td>
                                     <td class="py-3 px-3 text-neutral-800">驿达石化能源</td>
-                                    <td class="py-3 px-3"><span class="inline-block px-2 py-0.5 bg-green-50 text-green-600 text-xs" style="border-radius: 10px; height: 20px; line-height: 12px;">充电</span></td>
                                     <td class="py-3 px-3 text-center text-neutral-600">120</td>
                                     <td class="py-3 px-3 text-center text-neutral-600">115</td>
                                     <td class="py-3 px-3 text-right font-semibold text-neutral-800">¥12,000.00</td>
@@ -1019,7 +1100,7 @@
                 <div class="flex items-center justify-between mb-6">
                     <h1 class="text-base font-bold text-neutral-800">对账详情</h1>
                     <div class="flex gap-2">
-                        <button class="btn-secondary px-4 py-1.5 rounded-sm text-sm font-medium cursor-pointer transition-colors duration-200" onclick="showPage('reconciliation')">返回上级页面</button>
+                        <button class="btn-secondary px-4 py-1.5 rounded-sm text-sm font-medium cursor-pointer transition-colors duration-200 flex items-center gap-1.5" onclick="showPage('reconciliation')"><i data-lucide="arrow-left" class="w-4 h-4"></i>返回上级页面</button>
                         <button class="btn-primary px-4 py-1.5 rounded-sm text-sm font-medium flex items-center gap-1.5 cursor-pointer transition-opacity duration-200 hidden" id="detail-download-btn" onclick="handleExport()">
                             <i data-lucide="download" class="w-3.5 h-3.5"></i>
                             差异明细导出
@@ -1045,10 +1126,6 @@
                                 <div class="flex justify-between">
                                     <span class="text-xs text-neutral-500">商户名称</span>
                                     <span class="text-xs text-neutral-800" id="detail-merchant">驿达石化能源</span>
-                                </div>
-                                <div class="flex justify-between">
-                                    <span class="text-xs text-neutral-500">业务类型</span>
-                                    <span class="inline-block px-2 py-0.5 bg-green-50 text-green-600 text-xs" id="detail-biz-type" style="border-radius: 10px; height: 20px; line-height: 12px;">充电</span>
                                 </div>
                                 <div class="flex justify-between">
                                     <span class="text-xs text-neutral-500">对账状态</span>
@@ -1111,6 +1188,7 @@
                                     <th class="text-center py-2 px-2 font-semibold text-neutral-600" style="height: 36px;">序号</th>
                                     <th class="text-left py-2 px-2 font-semibold text-neutral-600">订单号</th>
                                     <th class="text-left py-2 px-2 font-semibold text-neutral-600">券码 ID</th>
+                                    <th class="text-center py-2 px-2 font-semibold text-neutral-600">业务类型</th>
                                     <th class="text-center py-2 px-2 font-semibold text-neutral-600">订单状态</th>
                                     <th class="text-center py-2 px-2 font-semibold text-neutral-600">核销状态</th>
                                     <th class="text-right py-2 px-2 font-semibold text-neutral-600">订单券码金额</th>
@@ -1126,6 +1204,7 @@
                                     <td class="py-2 px-2 text-center text-neutral-500">1</td>
                                     <td class="py-2 px-2 font-mono text-neutral-800">ORD-20260401-015</td>
                                     <td class="py-2 px-2 font-mono text-neutral-800">VC-20260401-015</td>
+                                    <td class="py-2 px-2 text-center"><span class="inline-block px-2 py-0.5 bg-green-50 text-green-600 text-xs" style="border-radius: 10px; height: 20px; line-height: 12px;">充电</span></td>
                                     <td class="py-2 px-2 text-center"><span class="inline-block px-2 py-0.5 bg-green-50 text-green-600 text-xs" style="border-radius: 10px; height: 20px; line-height: 12px;">已完成</span></td>
                                     <td class="py-2 px-2 text-center"><span class="inline-block px-2 py-0.5 bg-blue-50 text-blue-600 text-xs" style="border-radius: 10px; height: 20px; line-height: 12px;">已核销</span></td>
                                     <td class="py-2 px-2 text-right font-semibold text-neutral-800">¥150.00</td>
@@ -1139,6 +1218,7 @@
                                     <td class="py-2 px-2 text-center text-neutral-500">2</td>
                                     <td class="py-2 px-2 font-mono text-neutral-800">ORD-20260401-023</td>
                                     <td class="py-2 px-2 font-mono text-neutral-800">VC-20260401-023</td>
+                                    <td class="py-2 px-2 text-center"><span class="inline-block px-2 py-0.5 bg-blue-50 text-blue-600 text-xs" style="border-radius: 10px; height: 20px; line-height: 12px;">加油</span></td>
                                     <td class="py-2 px-2 text-center"><span class="inline-block px-2 py-0.5 bg-green-50 text-green-600 text-xs" style="border-radius: 10px; height: 20px; line-height: 12px;">已完成</span></td>
                                     <td class="py-2 px-2 text-center"><span class="inline-block px-2 py-0.5 bg-blue-50 text-blue-600 text-xs" style="border-radius: 10px; height: 20px; line-height: 12px;">已核销</span></td>
                                     <td class="py-2 px-2 text-right font-semibold text-neutral-800">¥200.00</td>
@@ -1152,6 +1232,7 @@
                                     <td class="py-2 px-2 text-center text-neutral-500">3</td>
                                     <td class="py-2 px-2 font-mono text-neutral-800">ORD-20260401-031</td>
                                     <td class="py-2 px-2 font-mono text-neutral-800">VC-20260401-031</td>
+                                    <td class="py-2 px-2 text-center"><span class="inline-block px-2 py-0.5 bg-orange-50 text-orange-600 text-xs" style="border-radius: 10px; height: 20px; line-height: 12px;">加气</span></td>
                                     <td class="py-2 px-2 text-center"><span class="inline-block px-2 py-0.5 bg-green-50 text-green-600 text-xs" style="border-radius: 10px; height: 20px; line-height: 12px;">已完成</span></td>
                                     <td class="py-2 px-2 text-center"><span class="inline-block px-2 py-0.5 bg-orange-50 text-orange-500 text-xs" style="border-radius: 10px; height: 20px; line-height: 12px;">已冻结</span></td>
                                     <td class="py-2 px-2 text-right font-semibold text-neutral-800">¥100.00</td>
@@ -1193,7 +1274,7 @@
                 <div class="flex items-center justify-between mb-6">
                     <h1 class="text-base font-bold text-neutral-800">差异处理</h1>
                     <div class="flex gap-2">
-                        <button class="btn-secondary px-4 py-1.5 rounded-sm text-sm font-medium cursor-pointer transition-colors duration-200" onclick="showPage('reconciliation')">返回上级页面</button>
+                        <button class="btn-secondary px-4 py-1.5 rounded-sm text-sm font-medium cursor-pointer transition-colors duration-200 flex items-center gap-1.5" onclick="showPage('reconciliation')"><i data-lucide="arrow-left" class="w-4 h-4"></i>返回上级页面</button>
                         <button class="btn-primary px-4 py-1.5 rounded-sm text-sm font-medium flex items-center gap-1.5 cursor-pointer transition-opacity duration-200" onclick="handleExport()">
                             <i data-lucide="download" class="w-3.5 h-3.5"></i>
                             导出差异明细
@@ -1739,90 +1820,262 @@
 
     <!-- Appeal Processing Modal (平台管理员处理申诉) -->
     <div id="modal-appeal-process" class="fixed inset-0 bg-black/50 z-[999] hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-sm shadow-lg w-full max-w-xl overflow-hidden">
+        <div class="bg-white rounded-sm shadow-lg w-full max-w-3xl overflow-hidden">
+            <!-- 标题区 -->
             <div class="flex items-center justify-between p-4 border-b border-neutral-200">
                 <h3 class="text-base font-semibold text-neutral-900 flex items-center gap-2">
-                    <i data-lucide="shield-check" class="w-4 h-4 text-primary"></i>
+                    <i data-lucide="shield-check" class="w-5 h-5 text-primary"></i>
                     申诉处理
                 </h3>
-                <button onclick="closeModal('modal-appeal-process')" class="p-1.5 hover:bg-neutral-100 rounded-sm transition-colors">
-                    <i data-lucide="x" class="w-4 h-4 text-neutral-500"></i>
+                <button onclick="closeModal('modal-appeal-process')" class="p-1.5 hover:bg-neutral-100 rounded-sm transition-colors cursor-pointer">
+                    <i data-lucide="x" class="w-5 h-5 text-neutral-500"></i>
                 </button>
             </div>
+            <!-- 内容区 -->
             <div class="p-6">
-                <!-- 申诉信息展示 -->
-                <div class="bg-error/5 border border-error/20 rounded-sm p-4 mb-6">
-                    <h4 class="text-sm font-semibold text-error mb-3">商户申诉信息</h4>
+                <!-- 申诉信息区（只读） -->
+                <div class="bg-neutral-50 border border-neutral-200 rounded-sm p-4 mb-4">
+                    <h4 class="text-sm font-semibold text-neutral-900 mb-3">申诉信息</h4>
                     <div class="space-y-3">
-                        <div class="flex justify-between">
-                            <span class="text-xs text-neutral-500">结算单号</span>
-                            <span class="text-xs font-mono text-neutral-800">SET-20260401-001</span>
+                        <!-- 申诉原因 -->
+                        <div>
+                            <span class="text-xs text-neutral-500 block mb-2">申诉原因</span>
+                            <div id="appeal-process-reason" class="bg-white border border-neutral-200 rounded-sm p-3 text-sm text-neutral-800 leading-relaxed">
+                                商户对结算金额有异议，实际核销金额应为500元，而非450元，请核实。
+                            </div>
                         </div>
-                        <div class="flex justify-between">
-                            <span class="text-xs text-neutral-500">申诉原因</span>
-                            <span class="text-xs text-neutral-800">核销数量与实际不符，有10笔订单未核销但被纳入结算</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-xs text-neutral-500">附件材料</span>
-                            <span class="text-xs text-primary cursor-pointer hover:underline">查看附件（2个）</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-xs text-neutral-500">申诉时间</span>
-                            <span class="text-xs text-neutral-800">2026-04-02 10:30:00</span>
+                        <!-- 附件列表 -->
+                        <div>
+                            <span class="text-xs text-neutral-500 block mb-2">附件列表</span>
+                            <div id="appeal-process-attachments" class="flex gap-4">
+                                <div class="flex items-center gap-2">
+                                    <i data-lucide="file-text" class="w-4 h-4 text-neutral-500"></i>
+                                    <span class="text-sm text-neutral-800">凭证1.jpg</span>
+                                    <button class="text-xs text-primary hover:underline cursor-pointer flex items-center gap-1">
+                                        <i data-lucide="download" class="w-3.5 h-3.5"></i>
+                                        下载
+                                    </button>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <i data-lucide="file-text" class="w-4 h-4 text-neutral-500"></i>
+                                    <span class="text-sm text-neutral-800">凭证2.pdf</span>
+                                    <button class="text-xs text-primary hover:underline cursor-pointer flex items-center gap-1">
+                                        <i data-lucide="download" class="w-3.5 h-3.5"></i>
+                                        下载
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- 处理选项 -->
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-sm text-neutral-600 mb-2">处理方式 <span class="text-error">*</span></label>
-                        <div class="space-y-2">
-                            <label class="flex items-start gap-2 cursor-pointer">
-                                <input type="radio" name="appeal-action" value="pass" class="mt-1 cursor-pointer" onchange="toggleAppealAdjustAmount()">
-                                <div>
-                                    <div class="text-sm text-neutral-800 font-medium">申诉通过</div>
-                                    <div class="text-xs text-neutral-500">平台管理员人工调整结算金额，账单状态变更为"待确认"</div>
-                                </div>
-                            </label>
-                            <label class="flex items-start gap-2 cursor-pointer">
-                                <input type="radio" name="appeal-action" value="reject" class="mt-1 cursor-pointer" onchange="toggleAppealAdjustAmount()">
-                                <div>
-                                    <div class="text-sm text-neutral-800 font-medium">申诉驳回</div>
-                                    <div class="text-xs text-neutral-500">维持原结算金额，账单状态恢复为"待确认"</div>
-                                </div>
-                            </label>
-                        </div>
-                    </div>
-
-                    <!-- 调整金额（仅申诉通过时显示） -->
-                    <div id="appeal-adjust-section" class="hidden bg-neutral-50 border border-neutral-200 rounded-sm p-4">
-                        <h4 class="text-sm font-medium text-neutral-700 mb-3">金额调整</h4>
-                        <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-xs text-neutral-500 mb-1">原结算金额</label>
-                                <div class="text-sm font-semibold text-neutral-800">¥15,230.00</div>
-                            </div>
-                            <div>
-                                <label class="block text-xs text-neutral-500 mb-1">调整后金额</label>
-                                <input type="number" step="0.01" placeholder="请输入调整后金额" class="w-full px-3 py-2 border border-neutral-200 rounded-sm text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20">
+                <!-- 处理操作区 -->
+                <div class="border-t border-neutral-200 mt-4 pt-4">
+                    <h4 class="text-sm font-semibold text-neutral-900 mb-4">处理操作</h4>
+                    <div class="space-y-4">
+                        <!-- 处理结果 -->
+                        <div>
+                            <label class="block text-sm text-neutral-600 mb-3">处理结果 <span class="text-error">*</span></label>
+                            <div class="flex gap-6">
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="radio" name="appeal-action" value="pass" class="cursor-pointer" onchange="toggleAppealAdjustAmount()">
+                                    <span class="text-sm text-neutral-800">申诉通过</span>
+                                </label>
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="radio" name="appeal-action" value="reject" class="cursor-pointer" onchange="toggleAppealAdjustAmount()">
+                                    <span class="text-sm text-neutral-800">申诉驳回</span>
+                                </label>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- 处理备注 -->
-                    <div>
-                        <label class="block text-sm text-neutral-600 mb-2">处理备注 <span class="text-error">*</span></label>
-                        <textarea id="appeal-process-note" class="w-full px-3 py-2 border border-neutral-200 rounded-sm text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 resize-none" rows="3" placeholder="请输入处理备注..."></textarea>
+                        <!-- 调整后金额（仅申诉通过时显示） -->
+                        <div id="appeal-adjust-section" class="hidden">
+                            <label class="block text-sm text-neutral-600 mb-2">调整后金额 <span class="text-error">*</span></label>
+                            <div class="flex items-center gap-4">
+                                <div class="flex items-center border border-neutral-200 rounded-sm h-8 bg-white overflow-hidden">
+                                    <span class="text-sm text-neutral-600 px-3 whitespace-nowrap border-r border-neutral-200">¥</span>
+                                    <input type="number" id="appeal-adjust-amount" step="0.01" placeholder="请输入调整后金额" class="flex-1 h-full px-3 border-0 text-sm focus:outline-none bg-transparent" oninput="calculateAppealAdjustment()">
+                                </div>
+                                <div class="text-sm text-neutral-500">
+                                    <span>原结算金额：</span>
+                                    <span id="appeal-original-amount" class="font-semibold text-neutral-800">¥8,000.00</span>
+                                </div>
+                                <div class="text-sm text-neutral-500">
+                                    <span>调整金额：</span>
+                                    <span id="appeal-adjust-diff" class="font-semibold text-primary">¥0.00</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 处理说明 -->
+                        <div>
+                            <label class="block text-sm text-neutral-600 mb-2">处理说明 <span class="text-error">*</span></label>
+                            <textarea id="appeal-process-note" class="w-full px-3 py-2 border border-neutral-200 rounded-sm text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 resize-none" rows="3" placeholder="请输入处理说明（必填，最大500字符）" oninput="updateAppealNoteCount()"></textarea>
+                            <div class="text-xs text-neutral-500 mt-1 text-right">
+                                <span id="appeal-note-count">0</span>/500
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
+            <!-- 底部按钮区 -->
             <div class="flex gap-3 p-4 bg-neutral-50 border-t border-neutral-200">
                 <button onclick="closeModal('modal-appeal-process')" class="flex-1 px-4 py-2 border border-neutral-300 text-neutral-700 rounded-sm font-medium hover:bg-neutral-100 transition-all duration-200 cursor-pointer">
                     取消
                 </button>
+                <button onclick="showAppealConfirmModal()" class="flex-1 px-4 py-2 bg-primary text-white rounded-sm font-medium hover:opacity-90 transition-all duration-200 cursor-pointer">
+                    确认
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Appeal Confirm Modal (申诉处理二次确认) -->
+    <div id="modal-appeal-confirm" class="fixed inset-0 bg-black/50 z-[1000] hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-sm shadow-lg w-full max-w-md overflow-hidden">
+            <!-- 标题区 -->
+            <div class="flex items-center justify-between p-4 border-b border-neutral-200">
+                <h3 class="text-base font-semibold text-neutral-900 flex items-center gap-2">
+                    <i data-lucide="alert-circle" class="w-5 h-5 text-primary"></i>
+                    确认处理申诉？
+                </h3>
+                <button onclick="closeModal('modal-appeal-confirm')" class="p-1.5 hover:bg-neutral-100 rounded-sm transition-colors cursor-pointer">
+                    <i data-lucide="x" class="w-5 h-5 text-neutral-500"></i>
+                </button>
+            </div>
+            <!-- 内容区 -->
+            <div class="p-6">
+                <div class="space-y-3">
+                    <div class="flex justify-between">
+                        <span class="text-sm text-neutral-500">处理结果</span>
+                        <span id="appeal-confirm-result" class="text-sm font-semibold text-neutral-800">申诉通过</span>
+                    </div>
+                    <div id="appeal-confirm-amount-section" class="flex justify-between">
+                        <span class="text-sm text-neutral-500">调整后金额</span>
+                        <span id="appeal-confirm-amount" class="text-sm font-semibold text-primary">¥8,500.00</span>
+                    </div>
+                    <div id="appeal-confirm-diff-section" class="flex justify-between">
+                        <span class="text-sm text-neutral-500">调整金额</span>
+                        <span id="appeal-confirm-diff" class="text-sm font-semibold text-green-600">+¥500.00</span>
+                    </div>
+                    <div class="mt-4 p-3 bg-orange-50 border border-orange-200 rounded-sm">
+                        <p class="text-sm text-orange-800">
+                            <i data-lucide="info" class="w-4 h-4 inline mr-1"></i>
+                            处理后账单状态将变更为"待确认"
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <!-- 底部按钮区 -->
+            <div class="flex gap-3 p-4 bg-neutral-50 border-t border-neutral-200">
+                <button onclick="closeModal('modal-appeal-confirm')" class="flex-1 px-4 py-2 border border-neutral-300 text-neutral-700 rounded-sm font-medium hover:bg-neutral-100 transition-all duration-200 cursor-pointer">
+                    取消
+                </button>
                 <button onclick="submitAppealProcess()" class="flex-1 px-4 py-2 bg-primary text-white rounded-sm font-medium hover:opacity-90 transition-all duration-200 cursor-pointer">
-                    提交处理
+                    确认
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Appeal Detail Modal (申诉详情弹窗 - 统一展示) -->
+    <div id="modal-appeal-detail" class="fixed inset-0 bg-black/50 z-[999] hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-sm shadow-lg w-full max-w-2xl overflow-hidden">
+            <!-- 标题区 -->
+            <div class="flex items-center justify-between p-4 border-b border-neutral-200">
+                <h3 class="text-base font-semibold text-neutral-900 flex items-center gap-2">
+                    <i data-lucide="message-square" class="w-5 h-5 text-primary"></i>
+                    申诉详情
+                </h3>
+                <button onclick="closeModal('modal-appeal-detail')" class="p-1.5 hover:bg-neutral-100 rounded-sm transition-colors cursor-pointer">
+                    <i data-lucide="x" class="w-5 h-5 text-neutral-500"></i>
+                </button>
+            </div>
+            <!-- 内容区 -->
+            <div class="p-6">
+                <!-- 申诉信息区（始终显示） -->
+                <div class="mb-4">
+                    <h4 class="text-sm font-semibold text-neutral-900 mb-3">申诉信息</h4>
+                    <div class="space-y-3">
+                        <!-- 申诉状态 -->
+                        <div class="flex items-center gap-3">
+                            <span class="text-xs text-neutral-500" style="min-width: 80px;">申诉状态</span>
+                            <span id="appeal-detail-status" class="inline-block px-3 py-0.5 bg-red-50 text-red-600 text-xs" style="border-radius: 12px; height: 24px; line-height: 16px;">申诉中</span>
+                        </div>
+                        <!-- 申诉时间 -->
+                        <div class="flex items-center gap-3">
+                            <span class="text-xs text-neutral-500" style="min-width: 80px;">申诉时间</span>
+                            <span id="appeal-detail-time" class="text-sm text-neutral-800">2026-05-10 14:30:25</span>
+                        </div>
+                        <!-- 申诉原因 -->
+                        <div>
+                            <span class="text-xs text-neutral-500 block mb-2">申诉原因</span>
+                            <div id="appeal-detail-reason" class="bg-neutral-50 border border-neutral-200 rounded-sm p-3 text-sm text-neutral-800 leading-relaxed">
+                                商户对结算金额有异议，实际核销金额应为500元，而非450元，请核实。
+                            </div>
+                        </div>
+                        <!-- 附件列表 -->
+                        <div>
+                            <span class="text-xs text-neutral-500 block mb-2">附件列表</span>
+                            <div id="appeal-detail-attachments" class="space-y-2">
+                                <div class="flex items-center gap-2">
+                                    <i data-lucide="file-text" class="w-4 h-4 text-neutral-500"></i>
+                                    <span class="text-sm text-neutral-800">凭证1.jpg</span>
+                                    <button class="text-xs text-primary hover:underline cursor-pointer flex items-center gap-1">
+                                        <i data-lucide="download" class="w-3.5 h-3.5"></i>
+                                        下载
+                                    </button>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <i data-lucide="file-text" class="w-4 h-4 text-neutral-500"></i>
+                                    <span class="text-sm text-neutral-800">凭证2.pdf</span>
+                                    <button class="text-xs text-primary hover:underline cursor-pointer flex items-center gap-1">
+                                        <i data-lucide="download" class="w-3.5 h-3.5"></i>
+                                        下载
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 处理信息区（仅已处理状态显示） -->
+                <div id="appeal-detail-process-section" class="hidden border-t border-neutral-200 mt-4 pt-4">
+                    <h4 class="text-sm font-semibold text-neutral-900 mb-3">处理信息</h4>
+                    <div class="space-y-3">
+                        <!-- 处理结果 -->
+                        <div class="flex items-center gap-3">
+                            <span class="text-xs text-neutral-500" style="min-width: 80px;">处理结果</span>
+                            <span id="appeal-detail-result" class="inline-block px-3 py-0.5 bg-green-50 text-green-600 text-xs" style="border-radius: 12px; height: 24px; line-height: 16px;">申诉通过</span>
+                        </div>
+                        <!-- 调整金额 -->
+                        <div class="flex items-center gap-3">
+                            <span class="text-xs text-neutral-500" style="min-width: 80px;">调整金额</span>
+                            <span id="appeal-detail-amount" class="text-sm font-semibold text-green-600">+¥500.00</span>
+                        </div>
+                        <!-- 处理人 -->
+                        <div class="flex items-center gap-3">
+                            <span class="text-xs text-neutral-500" style="min-width: 80px;">处理人</span>
+                            <span id="appeal-detail-handler" class="text-sm text-neutral-800">张三</span>
+                        </div>
+                        <!-- 处理时间 -->
+                        <div class="flex items-center gap-3">
+                            <span class="text-xs text-neutral-500" style="min-width: 80px;">处理时间</span>
+                            <span id="appeal-detail-handle-time" class="text-sm text-neutral-800">2026-05-11 09:15:30</span>
+                        </div>
+                        <!-- 处理说明 -->
+                        <div>
+                            <span class="text-xs text-neutral-500 block mb-2">处理说明</span>
+                            <div id="appeal-detail-note" class="bg-neutral-50 border border-neutral-200 rounded-sm p-3 text-sm text-neutral-800 leading-relaxed">
+                                经核实，商户反馈情况属实，予以调整。
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 底部按钮区 -->
+            <div class="flex justify-end p-4 bg-white border-t border-neutral-200">
+                <button onclick="closeModal('modal-appeal-detail')" class="px-4 py-2 border border-neutral-300 text-neutral-700 rounded-sm font-medium hover:bg-neutral-100 transition-all duration-200 cursor-pointer">
+                    关闭
                 </button>
             </div>
         </div>
@@ -1885,17 +2138,6 @@
                                     <option>驿达石化能源</option>
                                     <option>交控新能源</option>
                                     <option>安徽高速能源</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-neutral-700 mb-2">业务类型</label>
-                                <select class="w-full px-3 py-2 border border-neutral-200 rounded text-sm focus:outline-none focus:border-primary" id="reconciliation-biz-type">
-                                    <option value="">全部</option>
-                                    <option>商城</option>
-                                    <option>加油</option>
-                                    <option>加气</option>
-                                    <option>充电</option>
-                                    <option>其他</option>
                                 </select>
                             </div>
                         </div>
@@ -2270,20 +2512,35 @@
                             <!-- 手动调账字段 -->
                             <div id="diff-adjust-fields" class="hidden bg-neutral-50 border border-neutral-200 rounded-sm p-4">
                                 <h4 class="text-sm font-medium text-neutral-700 mb-3">调账信息</h4>
-                                <div class="grid grid-cols-2 gap-4 mb-4">
-                                    <div>
-                                        <label class="block text-xs text-neutral-500 mb-1">订单券码金额（可修改）</label>
-                                        <input type="number" step="0.01" id="diff-adjust-order-amount" placeholder="请输入订单券码金额" class="w-full px-3 py-2 border border-neutral-200 rounded-sm text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20">
+                                <div class="space-y-3 mb-4">
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <div>
+                                            <label class="block text-xs text-neutral-500 mb-1">订单券码金额（可修改）</label>
+                                            <input type="number" step="0.01" id="diff-adjust-order-amount" oninput="updateAdjustDiffDisplay()" placeholder="请输入订单券码金额" class="w-full px-3 py-2 border border-neutral-200 rounded-sm text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20">
+                                        </div>
+                                        <div>
+                                            <label class="block text-xs text-neutral-500 mb-1">券码核销金额（可修改）</label>
+                                            <input type="number" step="0.01" id="diff-adjust-verify-amount" oninput="updateAdjustDiffDisplay()" placeholder="请输入券码核销金额" class="w-full px-3 py-2 border border-neutral-200 rounded-sm text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20">
+                                        </div>
                                     </div>
-                                    <div>
-                                        <label class="block text-xs text-neutral-500 mb-1">券码核销金额（可修改）</label>
-                                        <input type="number" step="0.01" id="diff-adjust-verify-amount" placeholder="请输入券码核销金额" class="w-full px-3 py-2 border border-neutral-200 rounded-sm text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20">
+                                    <div class="bg-blue-50 border border-blue-100 rounded-sm p-3">
+                                        <div class="flex items-center justify-between mb-1">
+                                            <span class="text-xs text-blue-600 font-medium">调整后差异金额</span>
+                                            <span class="text-sm font-bold text-blue-700" id="diff-adjust-diff-display">¥0.00</span>
+                                        </div>
+                                        <div class="text-xs text-orange-500 font-medium" id="diff-adjust-warning">
+                                            <i data-lucide="alert-triangle" class="w-3.5 h-3.5 inline mr-1"></i>
+                                            必须调整为 0 才能提交
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="bg-blue-50 border border-blue-100 rounded-sm p-3">
-                                    <div class="flex items-center justify-between">
-                                        <span class="text-xs text-blue-600 font-medium">调整后差异金额</span>
-                                        <span class="text-sm font-bold text-blue-700" id="diff-adjust-diff-display">¥0.00</span>
+                                    <div class="bg-neutral-100 border border-neutral-200 rounded-sm p-3">
+                                        <div class="flex items-center justify-between">
+                                            <span class="text-xs text-neutral-600 font-medium">结算金额调整值</span>
+                                            <span class="text-sm font-bold text-neutral-700" id="diff-adjust-settlement-value">¥0.00</span>
+                                        </div>
+                                        <div class="text-xs text-neutral-500 mt-1">
+                                            （= 券码核销金额变化量，正数增加/负数减少）
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -2307,7 +2564,7 @@
                         <button onclick="closeModal('modal-diff-handle')" class="flex-1 px-4 py-2 border border-neutral-300 text-neutral-700 rounded-sm font-medium hover:bg-neutral-100 transition-all duration-200 cursor-pointer">
                             取消
                         </button>
-                        <button onclick="submitDiffHandle()" class="flex-1 px-4 py-2 bg-primary text-white rounded-sm font-medium hover:opacity-90 transition-all duration-200 cursor-pointer">
+                        <button onclick="submitDiffHandle(event)" class="flex-1 px-4 py-2 bg-primary text-white rounded-sm font-medium hover:opacity-90 transition-all duration-200 cursor-pointer">
                             提交处理
                         </button>
                     </div>
@@ -2422,6 +2679,8 @@
                         {
                             orderNo: 'ORD-20260401-015',
                             voucherId: 'VC-20260401-015',
+                            bizType: '充电',
+                            bizTypeColor: 'bg-green-50 text-green-600',
                             orderStatus: '已完成',
                             verifyStatus: '已核销',
                             orderAmount: '¥150.00',
@@ -2433,6 +2692,8 @@
                         {
                             orderNo: 'ORD-20260401-023',
                             voucherId: 'VC-20260401-023',
+                            bizType: '加油',
+                            bizTypeColor: 'bg-blue-50 text-blue-600',
                             orderStatus: '已完成',
                             verifyStatus: '已核销',
                             orderAmount: '¥200.00',
@@ -2444,6 +2705,8 @@
                         {
                             orderNo: 'ORD-20260401-031',
                             voucherId: 'VC-20260401-031',
+                            bizType: '加气',
+                            bizTypeColor: 'bg-orange-50 text-orange-600',
                             orderStatus: '已完成',
                             verifyStatus: '已冻结',
                             orderAmount: '¥100.00',
@@ -2505,6 +2768,8 @@
                         {
                             orderNo: 'ORD-20260331-018',
                             voucherId: 'VC-20260331-018',
+                            bizType: '充电',
+                            bizTypeColor: 'bg-green-50 text-green-600',
                             orderStatus: '已完成',
                             verifyStatus: '已核销',
                             orderAmount: '¥200.00',
@@ -2518,6 +2783,8 @@
                         {
                             orderNo: 'ORD-20260331-025',
                             voucherId: 'VC-20260331-025',
+                            bizType: '加油',
+                            bizTypeColor: 'bg-blue-50 text-blue-600',
                             orderStatus: '已完成',
                             verifyStatus: '已冻结',
                             orderAmount: '¥150.00',
@@ -2560,9 +2827,6 @@
             document.getElementById('detail-record-no').textContent = data.recordNo;
             document.getElementById('detail-date').textContent = data.date;
             document.getElementById('detail-merchant').textContent = data.merchant;
-            const bizTypeEl = document.getElementById('detail-biz-type');
-            bizTypeEl.textContent = data.bizType;
-            bizTypeEl.className = `inline-block px-2 py-0.5 ${data.bizTypeColor} text-xs`;
             document.getElementById('detail-status').textContent = data.statusText;
             document.getElementById('detail-status').className = `inline-block px-3 py-0.5 ${data.statusColor} text-xs`;
             document.getElementById('detail-status').style.borderRadius = '12px';
@@ -2608,6 +2872,7 @@
                         <td class="py-2 px-2 text-center text-neutral-500">${index + 1}</td>
                         <td class="py-2 px-2 font-mono text-neutral-800">${row.orderNo}</td>
                         <td class="py-2 px-2 font-mono text-neutral-800">${row.voucherId}</td>
+                        <td class="py-2 px-2 text-center"><span class="inline-block px-2 py-0.5 ${row.bizTypeColor || 'bg-neutral-100 text-neutral-600'} text-xs" style="border-radius: 10px; height: 20px; line-height: 12px;">${row.bizType || '-'}</span></td>
                         <td class="py-2 px-2 text-center"><span class="inline-block px-2 py-0.5 ${orderStatusColor} text-xs" style="border-radius: 10px; height: 20px; line-height: 12px;">${row.orderStatus || '-'}</span></td>
                         <td class="py-2 px-2 text-center"><span class="inline-block px-2 py-0.5 ${verifyStatusColor} text-xs" style="border-radius: 10px; height: 20px; line-height: 12px;">${row.verifyStatus || '-'}</span></td>
                         <td class="py-2 px-2 text-right font-semibold text-neutral-800">${row.orderAmount}</td>
@@ -2679,6 +2944,31 @@
         function showSettlementDetail(status, billNo) {
             showPage('settlement-detail');
             
+            // 重置时间轴子事件展开状态（清除上一个账单的缓存）
+            const subEventsContainer = document.getElementById('sub-events-container');
+            const subEventsList = document.getElementById('sub-events-list');
+            if (subEventsContainer) {
+                subEventsContainer.classList.add('hidden');
+                subEventsContainer.dataset.currentStep = '';
+            }
+            if (subEventsList) {
+                subEventsList.innerHTML = '';
+            }
+            window.currentSubEvents = {};
+            
+            // 重置所有步骤的徽章为隐藏状态
+            ['step1', 'step2', 'step3'].forEach(stepId => {
+                const badge = document.getElementById(`${stepId}-badge`);
+                if (badge) {
+                    badge.classList.add('hidden');
+                    badge.textContent = '0';
+                }
+            });
+            
+            // 重置提醒条
+            const alertBar = document.getElementById('reconciliation-alert-bar');
+            if (alertBar) alertBar.classList.add('hidden');
+            
             const settlementDataMap = {
                 'pending-confirm': {
                     billNo: billNo || 'SET-20260401-001',
@@ -2689,18 +2979,71 @@
                     voucherCount: 156,
                     totalAmount: '¥15,230.00',
                     generators: [
-                        { name: '数科公司', amount: '¥10,000.00', ratio: '65.7%' },
-                        { name: '联网公司', amount: '¥5,230.00', ratio: '34.3%' }
+                        { name: '皖通活动 A', amount: '¥5,711.25', ratio: '37.5%' },
+                        { name: '皖通活动 B', amount: '¥3,807.50', ratio: '25.0%' },
+                        { name: '石化活动 A', amount: '¥3,807.50', ratio: '25.0%' },
+                        { name: '驿达活动 A', amount: '¥1,903.75', ratio: '12.5%' }
                     ],
-                    generatedTime: '2026-04-01 01:00:00',
+                    generatedTime: '2026-04-01 02:30:00',
                     confirmedTime: '-',
                     paymentTime: '-',
+                    pendingTexts: {
+                        step2: '等待商户确认',
+                        step3: '-'
+                    },
                     timelineStatus: {
                         step1: 'completed',
                         step2: 'current',
                         step3: 'pending',
                         step4: 'pending'
                     },
+                    subEvents: {
+                        step1: [
+                            { type: 'reconciliation-diff', time: '04-01 02:00', text: '对账异常 - 3 笔券码存在差异', linkText: '查看详情', linkUrl: '#', icon: 'alert-triangle', iconColor: 'text-warning' },
+                            { type: 'reconciliation-resolved', time: '04-01 02:30', text: '差异处理完成 - 手动调账 +¥450.00', linkText: '查看详情', linkUrl: '#', icon: 'check-circle', iconColor: 'text-green-600' }
+                        ]
+                    },
+                    hasReconciliationDiff: true,
+                    reconciliationProcessingMethod: 'manual-adjust',
+                    reconciliationProcessingTime: '2026-04-01 02:30',
+                    adjustmentAmount: 450.00,
+                    originalSettlementAmount: 14850.00,
+                    showAppeal: false,
+                    currentStep: 2
+                },
+                'pending-confirm-2': {
+                    billNo: billNo || 'SET-20260401-004',
+                    merchantName: '驿达石化能源',
+                    settlementCycle: 'T+7（2026-03-25 ~ 2026-04-01）',
+                    statusText: '待确认',
+                    statusClass: 'bg-orange-50 text-orange-500',
+                    voucherCount: 92,
+                    totalAmount: '¥9,180.00',
+                    generators: [
+                        { name: '皖通活动 A', amount: '¥3,442.50', ratio: '37.5%' },
+                        { name: '皖通活动 B', amount: '¥2,295.00', ratio: '25.0%' },
+                        { name: '石化活动 A', amount: '¥2,295.00', ratio: '25.0%' },
+                        { name: '驿达活动 A', amount: '¥1,147.50', ratio: '12.5%' }
+                    ],
+                    generatedTime: '2026-04-01 02:30:00',
+                    confirmedTime: '-',
+                    paymentTime: '-',
+                    pendingTexts: {
+                        step2: '等待商户确认',
+                        step3: '-'
+                    },
+                    timelineStatus: {
+                        step1: 'completed',
+                        step2: 'current',
+                        step3: 'pending',
+                        step4: 'pending'
+                    },
+                    subEvents: {},
+                    hasReconciliationDiff: false,
+                    reconciliationProcessingMethod: null,
+                    reconciliationProcessingTime: null,
+                    adjustmentAmount: 0,
+                    originalSettlementAmount: 9180.00,
                     showAppeal: false,
                     currentStep: 2
                 },
@@ -2713,18 +3056,34 @@
                     voucherCount: 89,
                     totalAmount: '¥9,850.00',
                     generators: [
-                        { name: '数科公司', amount: '¥6,500.00', ratio: '66.0%' },
-                        { name: '联网公司', amount: '¥3,350.00', ratio: '34.0%' }
+                        { name: '皖通活动 A', amount: '¥3,693.75', ratio: '37.5%' },
+                        { name: '皖通活动 B', amount: '¥2,462.50', ratio: '25.0%' },
+                        { name: '石化活动 A', amount: '¥2,462.50', ratio: '25.0%' },
+                        { name: '驿达活动 A', amount: '¥1,231.25', ratio: '12.5%' }
                     ],
                     generatedTime: '2026-04-01 01:00:00',
                     confirmedTime: '2026-04-07 15:20:00',
                     paymentTime: '-',
+                    pendingTexts: {
+                        step3: '待平台登记打款'
+                    },
                     timelineStatus: {
                         step1: 'completed',
                         step2: 'completed',
                         step3: 'current',
                         step4: 'pending'
                     },
+                    subEvents: {
+                        step1: [
+                            { type: 'reconciliation-diff', time: '04-01 02:00', text: '对账异常 - 2 笔券码存在差异', icon: 'alert-triangle', iconColor: 'text-warning' },
+                            { type: 'reconciliation-resolved', time: '04-01 02:30', text: '差异处理完成 - 手动调账 +¥350.00', linkText: '查看详情', linkUrl: '#', icon: 'check-circle', iconColor: 'text-green-600' }
+                        ]
+                    },
+                    hasReconciliationDiff: true,
+                    reconciliationProcessingMethod: 'manual-adjust',
+                    reconciliationProcessingTime: '2026-04-01 02:30',
+                    adjustmentAmount: 350.00,
+                    originalSettlementAmount: 9500.00,
                     showAppeal: false,
                     currentStep: 3
                 },
@@ -2737,8 +3096,10 @@
                     voucherCount: 42,
                     totalAmount: '¥4,280.00',
                     generators: [
-                        { name: '数科公司', amount: '¥2,800.00', ratio: '65.4%' },
-                        { name: '联网公司', amount: '¥1,480.00', ratio: '34.6%' }
+                        { name: '皖通活动 A', amount: '¥1,605.00', ratio: '37.5%' },
+                        { name: '皖通活动 B', amount: '¥1,070.00', ratio: '25.0%' },
+                        { name: '石化活动 A', amount: '¥1,070.00', ratio: '25.0%' },
+                        { name: '驿达活动 A', amount: '¥535.00', ratio: '12.5%' }
                     ],
                     generatedTime: '2026-04-01 01:00:00',
                     confirmedTime: '2026-04-04 10:30:00',
@@ -2749,6 +3110,12 @@
                         step3: 'completed',
                         step4: 'completed'
                     },
+                    subEvents: {},
+                    hasReconciliationDiff: false,
+                    reconciliationProcessingMethod: null,
+                    reconciliationProcessingTime: null,
+                    adjustmentAmount: 0,
+                    originalSettlementAmount: 4280.00,
                     showAppeal: false,
                     currentStep: 4
                 },
@@ -2761,19 +3128,124 @@
                     voucherCount: 234,
                     totalAmount: '¥28,560.00',
                     generators: [
-                        { name: '数科公司', amount: '¥18,800.00', ratio: '65.8%' },
-                        { name: '联网公司', amount: '¥9,760.00', ratio: '34.2%' }
+                        { name: '皖通活动 A', amount: '¥10,710.00', ratio: '37.5%' },
+                        { name: '皖通活动 B', amount: '¥7,140.00', ratio: '25.0%' },
+                        { name: '石化活动 A', amount: '¥7,140.00', ratio: '25.0%' },
+                        { name: '驿达活动 A', amount: '¥3,570.00', ratio: '12.5%' }
                     ],
                     generatedTime: '2026-04-01 01:00:00',
                     confirmedTime: '-',
                     paymentTime: '-',
+                    pendingTexts: {
+                        step2: '申诉中，待平台处理',
+                        step3: '-'
+                    },
                     timelineStatus: {
                         step1: 'completed',
                         step2: 'current',
                         step3: 'pending',
                         step4: 'pending'
                     },
+                    subEvents: {
+                        step2: [
+                            { type: 'appeal-initiated', time: '04-02 10:30', text: '申诉发起 - 商户对金额有异议', icon: 'file-text', iconColor: 'text-red-600' }
+                        ]
+                    },
+                    hasReconciliationDiff: false,
+                    reconciliationProcessingMethod: null,
+                    reconciliationProcessingTime: null,
+                    adjustmentAmount: 0,
+                    originalSettlementAmount: 28560.00,
+                    showAppeal: false,
+                    currentStep: 2
+                },
+                'appeal-handled': {
+                    billNo: billNo || 'SET-20260401-007',
+                    merchantName: '中国石油安徽分公司',
+                    settlementCycle: 'T+7（2026-03-25 ~ 2026-04-01）',
+                    statusText: '待确认',
+                    statusClass: 'bg-orange-50 text-orange-500',
+                    voucherCount: 156,
+                    totalAmount: '¥16,230.00',
+                    generators: [
+                        { name: '皖通活动 A', amount: '¥5,625.00', ratio: '37.5%' },
+                        { name: '皖通活动 B', amount: '¥3,750.00', ratio: '25.0%' },
+                        { name: '石化活动 A', amount: '¥3,750.00', ratio: '25.0%' },
+                        { name: '驿达活动 A', amount: '¥1,875.00', ratio: '12.5%' }
+                    ],
+                    generatedTime: '2026-04-01 02:30:00',
+                    confirmedTime: '-',
+                    paymentTime: '-',
+                    pendingTexts: {
+                        step2: '等待商户确认',
+                        step3: '-'
+                    },
+                    timelineStatus: {
+                        step1: 'completed',
+                        step2: 'current',
+                        step3: 'pending',
+                        step4: 'pending'
+                    },
+                    subEvents: {
+                        step1: [
+                            { type: 'reconciliation-diff', time: '04-01 02:00', text: '对账异常 - 3 笔券码存在差异', linkText: '查看详情', linkUrl: '#', icon: 'alert-triangle', iconColor: 'text-warning' },
+                            { type: 'reconciliation-resolved', time: '04-01 02:30', text: '差异处理完成 - 手动调账 +¥500.00', linkText: '查看详情', linkUrl: '#', icon: 'check-circle', iconColor: 'text-green-600' }
+                        ],
+                        step2: [
+                            { type: 'appeal-initiated', time: '04-02 10:30', text: '申诉发起 - 商户对金额有异议', linkText: '查看详情', linkUrl: '#', linkType: 'appeal-modal', icon: 'file-text', iconColor: 'text-red-600' },
+                            { type: 'appeal-resolved', time: '04-02 14:00', text: '申诉处理完成 - 申诉通过，调整¥730.00', linkText: '查看详情', linkUrl: '#', linkType: 'appeal-modal', icon: 'check-circle', iconColor: 'text-green-600' }
+                        ]
+                    },
+                    hasReconciliationDiff: true,
+                    reconciliationProcessingMethod: 'manual-adjust',
+                    reconciliationProcessingTime: '2026-04-01 02:30',
+                    adjustmentAmount: 500.00,
+                    originalSettlementAmount: 15000.00,
+                    appealAdjustment: 730.00,
+                    appealStatus: 'handled',
+                    appealHandleTime: '2026-04-02 14:00:00',
+                    appealResult: 'approved',
                     showAppeal: true,
+                    currentStep: 2
+                },
+                'pending-reconciliation-confirm': {
+                    billNo: billNo || 'SET-20260401-006',
+                    merchantName: '中国石油安徽分公司',
+                    settlementCycle: 'T+7（2026-03-25 ~ 2026-04-01）',
+                    statusText: '对账异常',
+                    statusClass: 'bg-warning/10 text-warning',
+                    voucherCount: 168,
+                    totalAmount: '¥16,850.00',
+                    generators: [
+                        { name: '皖通活动 A', amount: '¥6,318.75', ratio: '37.5%' },
+                        { name: '皖通活动 B', amount: '¥4,212.50', ratio: '25.0%' },
+                        { name: '石化活动 A', amount: '¥4,212.50', ratio: '25.0%' },
+                        { name: '驿达活动 A', amount: '¥2,106.25', ratio: '12.5%' }
+                    ],
+                    generatedTime: '2026-04-01 02:30:00',
+                    confirmedTime: '-',
+                    paymentTime: '-',
+                    pendingTexts: {
+                        step2: '等待对账差异处理',
+                        step3: '-'
+                    },
+                    timelineStatus: {
+                        step1: 'completed',
+                        step2: 'current',
+                        step3: 'pending',
+                        step4: 'pending'
+                    },
+                    subEvents: {
+                        step1: [
+                            { type: 'reconciliation-diff', time: '04-01 02:00', text: '对账异常 - 5 笔券码存在差异', linkText: '查看详情', linkUrl: '#', icon: 'alert-triangle', iconColor: 'text-warning' }
+                        ]
+                    },
+                    hasReconciliationDiff: true,
+                    reconciliationProcessingMethod: null,
+                    reconciliationProcessingTime: null,
+                    adjustmentAmount: 0,
+                    originalSettlementAmount: 16850.00,
+                    showAppeal: false,
                     currentStep: 2
                 }
             };
@@ -2791,10 +3263,48 @@
             document.getElementById('settlement-detail-status').style.height = '20px';
             document.getElementById('settlement-detail-status').style.lineHeight = '12px';
             document.getElementById('detail-voucher-count').textContent = data.voucherCount;
-            document.getElementById('detail-total-amount').textContent = data.totalAmount;
             document.getElementById('detail-generated-time').textContent = data.generatedTime;
             document.getElementById('detail-confirmed-time').textContent = data.confirmedTime;
             document.getElementById('detail-payment-time').textContent = data.paymentTime;
+            
+            // Update amount summary with formula (reconciliation + appeal adjustments)
+            const amountBaseDisplay = document.getElementById('amount-base-display');
+            const amountFormulaDisplay = document.getElementById('amount-formula-display');
+            const amountFormulaText = document.getElementById('amount-formula-text');
+            
+            const hasReconciliationAdjustment = data.adjustmentAmount && data.adjustmentAmount !== 0;
+            const hasAppealAdjustment = data.appealAdjustment && data.appealAdjustment !== 0;
+            const hasAnyAdjustment = hasReconciliationAdjustment || hasAppealAdjustment;
+            
+            if (hasAnyAdjustment && amountBaseDisplay && amountFormulaDisplay && amountFormulaText) {
+                amountBaseDisplay.classList.add('hidden');
+                amountFormulaDisplay.classList.remove('hidden');
+                
+                // Build formula text (preserve tooltip span)
+                let formulaParts = [`原结算金额 ¥${(data.originalSettlementAmount || 0).toFixed(2)}`];
+                if (hasReconciliationAdjustment) {
+                    const sign = data.adjustmentAmount > 0 ? '+' : '';
+                    formulaParts.push(`对账调账 ${sign}¥${data.adjustmentAmount.toFixed(2)}`);
+                }
+                if (hasAppealAdjustment) {
+                    const sign = data.appealAdjustment > 0 ? '+' : '';
+                    formulaParts.push(`申诉调账 ${sign}¥${data.appealAdjustment.toFixed(2)}`);
+                }
+                // Only update text content, preserve tooltip HTML
+                const tooltipHtml = amountFormulaText.querySelector('.group') ? amountFormulaText.querySelector('.group').outerHTML : '';
+                amountFormulaText.innerHTML = `= ${formulaParts.join(' + ')}` + (tooltipHtml ? ` ${tooltipHtml}` : '');
+                
+                // Set final amount
+                const finalAmountEl = document.getElementById('detail-final-amount');
+                if (finalAmountEl) finalAmountEl.textContent = data.totalAmount;
+            } else if (amountBaseDisplay && amountFormulaDisplay) {
+                amountBaseDisplay.classList.remove('hidden');
+                amountFormulaDisplay.classList.add('hidden');
+                
+                // Set base amount
+                const baseAmountEl = document.getElementById('detail-total-amount');
+                if (baseAmountEl) baseAmountEl.textContent = data.totalAmount;
+            }
             
             // Update generators list
             const generatorsContainer = document.getElementById('generators-list');
@@ -2813,14 +3323,20 @@
             });
             
             // Update timeline
-            updateTimeline(data.timelineStatus, data.generatedTime, data.confirmedTime, data.paymentTime);
+            updateTimeline(data.timelineStatus, data.generatedTime, data.confirmedTime, data.paymentTime, data.pendingTexts || {});
             
-            // Show/hide appeal section
-            const appealSection = document.getElementById('appeal-process-section');
-            if (data.showAppeal) {
-                appealSection.classList.remove('hidden');
+            // Update sub-events badges and data
+            updateSubEvents(data.subEvents || {});
+            
+            // Show/hide reconciliation alert bar based on status
+            updateReconciliationAlert(status, data.hasReconciliationDiff || false, data.reconciliationProcessingMethod || null, data.reconciliationProcessingTime || null);
+            
+            // Show/hide appeal alert bar based on appeal status
+            if (data.appealStatus) {
+                updateAppealAlert(data.appealStatus, data.appealHandleTime || null, data.appealResult || null, data.appealAdjustment || 0);
             } else {
-                appealSection.classList.add('hidden');
+                const appealAlertBar = document.getElementById('appeal-alert-bar');
+                if (appealAlertBar) appealAlertBar.classList.add('hidden');
             }
             
             // Update action buttons based on status
@@ -2830,13 +3346,147 @@
             lucide.createIcons();
         }
         
+        // Update reconciliation alert bar content based on status
+        function updateReconciliationAlert(status, hasReconciliationDiff, processingMethod, processingTime) {
+            const alertBar = document.getElementById('reconciliation-alert-bar');
+            const alertText = document.getElementById('reconciliation-alert-text');
+            const alertLink = document.getElementById('reconciliation-alert-link');
+            const alertLinkText = document.getElementById('reconciliation-alert-link-text');
+            
+            if (!alertBar || !alertText || !alertLink || !alertLinkText) return;
+            
+            // Reset
+            alertBar.classList.add('hidden');
+            alertLink.classList.add('hidden');
+            
+            if (status === 'pending-reconciliation-confirm') {
+                // 对账异常状态：提示差异待处理
+                alertText.textContent = '该结算单存在对账差异，待差异处理完成后更新结算单。';
+                alertLinkText.textContent = '查看详情';
+                alertLink.classList.remove('hidden');
+                alertBar.classList.remove('hidden');
+            } else if (hasReconciliationDiff && (status === 'pending-confirm' || status === 'pending-payment' || status === 'appeal-handled')) {
+                // 待确认/待打款/申诉处理完成状态：曾存在对账差异已处理
+                let timeStr = processingTime || '2026-04-01 02:30';
+                if (processingMethod === 'manual-adjust') {
+                    alertText.textContent = `该结算单曾存在对账差异，已于 ${timeStr} 手动调账并重新生成，调账金额：+¥500.00，调账金额分摊明细需相关方线下确认。`;
+                } else if (processingMethod === 'ignore') {
+                    alertText.textContent = `该结算单曾存在对账差异，已于 ${timeStr} 忽略差异并重新生成。`;
+                } else if (processingMethod === 're-reconciliation') {
+                    alertText.textContent = `该结算单曾存在对账差异，已于 ${timeStr} 重新对账并重新生成。`;
+                } else {
+                    alertText.textContent = `该结算单曾存在对账差异，已于 ${timeStr} 处理完成并重新生成。`;
+                }
+                alertLinkText.textContent = '查看差异处理详情';
+                alertLink.classList.remove('hidden');
+                alertBar.classList.remove('hidden');
+            }
+        }
+        
+        // Update sub-events badges
+        function updateSubEvents(subEvents) {
+            ['step1', 'step2', 'step3'].forEach(stepId => {
+                const badge = document.getElementById(`${stepId}-badge`);
+                if (!badge) return;
+                
+                const events = subEvents[stepId] || [];
+                if (events.length > 0) {
+                    badge.classList.remove('hidden');
+                    badge.textContent = events.length;
+                } else {
+                    badge.classList.add('hidden');
+                }
+            });
+            
+            // Store sub-events data globally for toggle
+            window.currentSubEvents = subEvents;
+        }
+        
+        // Toggle sub-events expand/collapse
+        function toggleSubEvents(stepId) {
+            const container = document.getElementById('sub-events-container');
+            const list = document.getElementById('sub-events-list');
+            const badge = document.getElementById(`${stepId}-badge`);
+            if (!container || !list || !badge) return;
+            
+            const subEvents = window.currentSubEvents || {};
+            const events = subEvents[stepId] || [];
+            
+            if (events.length === 0) {
+                container.classList.add('hidden');
+                return;
+            }
+            
+            // Check if already showing this step's events
+            if (container.dataset.currentStep === stepId && !container.classList.contains('hidden')) {
+                container.classList.add('hidden');
+                return;
+            }
+            
+            container.dataset.currentStep = stepId;
+            container.classList.remove('hidden');
+            
+            // Render sub-events
+            list.innerHTML = '';
+            const lastIndex = events.length - 1;
+            events.forEach((event, index) => {
+                const div = document.createElement('div');
+                div.className = 'flex items-center gap-3 py-2 hover:bg-neutral-50 transition-colors duration-300';
+                
+                // 只在最后一个事件显示链接
+                let linkHtml = '';
+                if (event.linkText && index === lastIndex) {
+                    if (event.linkType === 'appeal-modal') {
+                        linkHtml = `<span class="text-primary cursor-pointer hover:underline text-xs ml-2 flex items-center gap-0.5" onclick="showAppealDetail('handled')">${event.linkText} <i data-lucide="external-link" class="w-3 h-3"></i></span>`;
+                    } else if (event.linkType === 'modal') {
+                        linkHtml = `<span class="text-primary cursor-pointer hover:underline text-xs ml-2 flex items-center gap-0.5" onclick="showAppealDetailModal()">${event.linkText} <i data-lucide="external-link" class="w-3 h-3"></i></span>`;
+                    } else {
+                        linkHtml = `<span class="text-primary cursor-pointer hover:underline text-xs ml-2 flex items-center gap-0.5" onclick="navigateToReconciliation(event)">${event.linkText} <i data-lucide="external-link" class="w-3 h-3"></i></span>`;
+                    }
+                }
+                
+                div.innerHTML = `
+                    <i data-lucide="${event.icon}" class="w-4 h-4 ${event.iconColor} flex-shrink-0"></i>
+                    <span class="text-xs text-neutral-500">[${event.time}]</span>
+                    <span class="text-xs text-neutral-600">${event.text}</span>
+                    ${linkHtml}
+                `;
+                list.appendChild(div);
+            });
+            
+            lucide.createIcons();
+        }
+        
+        // Navigate to reconciliation detail page
+        function navigateToReconciliation(event) {
+            if (event) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            showPage('reconciliation-detail');
+            showReconciliationDetail('diff');
+        }
+        
+        // Show appeal detail modal
+        function showAppealDetailModal() {
+            const modal = document.getElementById('modal-appeal-detail');
+            if (modal) {
+                modal.classList.add('active');
+            }
+        }
+        
+        // Make functions globally available
+        window.toggleSubEvents = toggleSubEvents;
+        window.navigateToReconciliation = navigateToReconciliation;
+        window.showAppealDetailModal = showAppealDetailModal;
+        
         // Update timeline based on status
-        function updateTimeline(timelineStatus, generatedTime, confirmedTime, paymentTime) {
+        function updateTimeline(timelineStatus, generatedTime, confirmedTime, paymentTime, pendingTexts = {}) {
             const steps = [
-                { id: 'step1', name: '生成结算单', defaultTime: generatedTime, pendingText: '-' },
-                { id: 'step2', name: '店铺审核', defaultTime: confirmedTime, pendingText: '等待店铺审核' },
-                { id: 'step3', name: '结算打款', defaultTime: paymentTime, pendingText: '-' },
-                { id: 'step4', name: '完成', defaultTime: '-', pendingText: '-' }
+                { id: 'step1', name: '生成结算单', defaultTime: generatedTime, pendingText: pendingTexts.step1 || '-' },
+                { id: 'step2', name: '商户确认', defaultTime: confirmedTime, pendingText: pendingTexts.step2 || '等待商户确认' },
+                { id: 'step3', name: '结算打款', defaultTime: paymentTime, pendingText: pendingTexts.step3 || '-' },
+                { id: 'step4', name: '完成', defaultTime: '-', pendingText: pendingTexts.step4 || '-' }
             ];
             
             steps.forEach((step, index) => {
@@ -2852,29 +3502,29 @@
                 if (status === 'completed') {
                     dotElement.className = 'w-10 h-10 rounded-full bg-primary flex items-center justify-center timeline-dot';
                     dotElement.innerHTML = '<i data-lucide="check" class="w-5 h-5 text-white"></i>';
-                    nameElement.className = 'text-xs mt-2 text-primary font-medium timeline-name';
-                    timeElement.className = 'text-xs text-neutral-500 mt-1 timeline-time';
+                    nameElement.className = 'text-xs mt-1.5 text-primary font-medium timeline-name';
+                    timeElement.className = 'text-xs text-neutral-500 mt-0.5 timeline-time';
                     timeElement.textContent = step.defaultTime;
                     if (lineAfter && lineAfter.classList.contains('timeline-line')) {
-                        lineAfter.className = 'flex-1 h-0.5 bg-primary mx-4 mb-8 timeline-line';
+                        lineAfter.className = 'flex-1 h-0.5 bg-primary mx-4 mb-7 timeline-line';
                     }
                 } else if (status === 'current') {
                     dotElement.className = 'w-10 h-10 rounded-full border-2 border-primary flex items-center justify-center timeline-dot';
                     dotElement.innerHTML = '<div class="w-3 h-3 rounded-full bg-primary"></div>';
-                    nameElement.className = 'text-xs mt-2 text-primary font-medium timeline-name';
-                    timeElement.className = 'text-xs text-primary mt-1 timeline-time';
+                    nameElement.className = 'text-xs mt-1.5 text-primary font-medium timeline-name';
+                    timeElement.className = 'text-xs text-primary mt-0.5 timeline-time';
                     timeElement.textContent = step.pendingText;
                     if (lineAfter && lineAfter.classList.contains('timeline-line')) {
-                        lineAfter.className = 'flex-1 h-0.5 bg-primary mx-4 mb-8 timeline-line';
+                        lineAfter.className = 'flex-1 h-0.5 bg-primary mx-4 mb-7 timeline-line';
                     }
                 } else {
                     dotElement.className = 'w-10 h-10 rounded-full border-2 border-neutral-300 flex items-center justify-center timeline-dot';
                     dotElement.innerHTML = '<div class="w-3 h-3 rounded-full bg-neutral-300"></div>';
-                    nameElement.className = 'text-xs mt-2 text-neutral-400 timeline-name';
-                    timeElement.className = 'text-xs text-neutral-400 mt-1 timeline-time';
+                    nameElement.className = 'text-xs mt-1.5 text-neutral-400 timeline-name';
+                    timeElement.className = 'text-xs text-neutral-400 mt-0.5 timeline-time';
                     timeElement.textContent = step.defaultTime;
                     if (lineAfter && lineAfter.classList.contains('timeline-line')) {
-                        lineAfter.className = 'flex-1 h-0.5 bg-neutral-200 mx-4 mb-8 timeline-line';
+                        lineAfter.className = 'flex-1 h-0.5 bg-neutral-200 mx-4 mb-7 timeline-line';
                     }
                 }
             });
@@ -2891,20 +3541,26 @@
                 case 'pending-confirm':
                     // Merchant: confirm settlement + appeal
                     buttonsContainer.innerHTML = `
-                        <button class="btn-primary px-4 py-2 rounded-sm text-sm font-medium flex items-center gap-1.5 cursor-pointer transition-all duration-200" onclick="openModal('modal-settlement')">
+                        <button class="btn-primary px-3 py-1.5 rounded-sm text-sm font-medium flex items-center gap-1.5 cursor-pointer transition-all duration-200 h-8" onclick="openModal('modal-settlement')">
                             <i data-lucide="check-circle" class="w-4 h-4"></i>
                             确认结算
                         </button>
-                        <button class="btn-secondary px-4 py-2 rounded-sm text-sm font-medium flex items-center gap-1.5 cursor-pointer transition-all duration-200" onclick="openModal('modal-appeal')">
+                        <button class="btn-secondary px-3 py-1.5 rounded-sm text-sm font-medium flex items-center gap-1.5 cursor-pointer transition-all duration-200 h-8" onclick="openModal('modal-appeal')">
                             <i data-lucide="alert-circle" class="w-4 h-4"></i>
                             发起申诉
                         </button>
                     `;
                     break;
+                case 'pending-reconciliation-confirm':
+                    // Reconciliation differences exist - no action buttons, alert bar shows above
+                    buttonsContainer.innerHTML = `
+                        <span class="text-sm text-neutral-500">等待对账差异处理</span>
+                    `;
+                    break;
                 case 'pending-payment':
                     // Finance: payment registration
                     buttonsContainer.innerHTML = `
-                        <button class="btn-primary px-4 py-2 rounded-sm text-sm font-medium flex items-center gap-1.5 cursor-pointer transition-all duration-200" onclick="openModal('modal-payment')">
+                        <button class="btn-primary px-3 py-1.5 rounded-sm text-sm font-medium flex items-center gap-1.5 cursor-pointer transition-all duration-200 h-8" onclick="openModal('modal-payment')">
                             <i data-lucide="send" class="w-4 h-4"></i>
                             打款登记
                         </button>
@@ -2919,7 +3575,7 @@
                 case 'appealing':
                     // Platform admin: handle appeal
                     buttonsContainer.innerHTML = `
-                        <button class="px-4 py-2 rounded-sm text-sm font-medium flex items-center gap-1.5 cursor-pointer transition-all duration-200" style="background-color: #7c3aed; color: white;" onclick="openModal('modal-appeal-process')">
+                        <button class="px-3 py-1.5 rounded-sm text-sm font-medium flex items-center gap-1.5 cursor-pointer transition-all duration-200 h-8" style="background-color: #7c3aed; color: white;" onclick="openModal('modal-appeal-process')">
                             <i data-lucide="shield-check" class="w-4 h-4"></i>
                             申诉处理
                         </button>
@@ -3100,14 +3756,12 @@
             const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
             document.getElementById('reconciliation-date').value = yesterday;
             document.getElementById('reconciliation-merchant-select').value = '';
-            document.getElementById('reconciliation-biz-type').value = '';
             openModal('modal-generate-reconciliation');
         }
 
         function submitGenerateReconciliation() {
             const date = document.getElementById('reconciliation-date').value;
             const merchant = document.getElementById('reconciliation-merchant-select').value;
-            const bizType = document.getElementById('reconciliation-biz-type').value;
             
             if (!date) {
                 alert('请选择对账日期');
@@ -3119,9 +3773,6 @@
             let message = `对账文件已开始生成`;
             if (merchant) {
                 message += `，商户：${merchant}`;
-            }
-            if (bizType) {
-                message += `，业务类型：${bizType}`;
             }
             showSuccessModal('对账文件生成中', message);
         }
@@ -3265,12 +3916,45 @@
 
         // 处理差异功能
         function openDiffHandle(orderNo, time, amount, reason) {
-            document.getElementById('diff-order-no').textContent = orderNo;
-            document.getElementById('diff-time').textContent = time;
-            document.getElementById('diff-amount').textContent = `¥${amount}`;
-            document.getElementById('diff-reason').textContent = reason;
-            document.getElementById('diff-handle-type').value = '';
-            document.getElementById('diff-handle-remark').value = '';
+            // 安全地设置元素值，避免访问不存在的元素报错
+            const elements = {
+                'diff-order-no': orderNo,
+                'diff-time': time,
+                'diff-amount': amount ? `¥${amount}` : '',
+                'diff-reason': reason,
+                'diff-handle-type': '',
+                'diff-handle-remark': ''
+            };
+            
+            Object.keys(elements).forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    if (el.tagName === 'INPUT' || el.tagName === 'SELECT') {
+                        el.value = elements[id];
+                    } else {
+                        el.textContent = elements[id];
+                    }
+                }
+            });
+            
+            // 重置单选按钮
+            const radioButtons = document.querySelectorAll('input[name="diff-action"]');
+            radioButtons.forEach(radio => {
+                radio.checked = false;
+            });
+            
+            // 重置调账字段显示
+            const adjustFields = document.getElementById('diff-adjust-fields');
+            if (adjustFields) {
+                adjustFields.classList.add('hidden');
+            }
+            
+            // 重置处理说明
+            const note = document.getElementById('diff-handle-note');
+            if (note) {
+                note.value = '';
+            }
+            
             openModal('modal-diff-handle');
         }
 
@@ -3297,21 +3981,26 @@
         function updateDiffHandleSummary() {
             const checkboxes = document.querySelectorAll('.diff-checkbox');
             const checkedRows = [];
+            
             checkboxes.forEach((cb, index) => {
                 if (cb.checked) {
                     const tr = cb.closest('tr');
-                    const cells = tr.querySelectorAll('td');
-                    // 列顺序：勾选框(0)、序号(1)、订单号(2)、券码ID(3)、订单状态(4)、核销状态(5)、订单券码金额(6)、核销金额(7)、差异金额(8)、差异类型(9)、处理状态(10)
-                    const orderAmount = cells[6]?.textContent?.trim() || '0';
-                    const verifyAmount = cells[7]?.textContent?.trim() || '0';
-                    const diffAmount = cells[8]?.textContent?.trim() || '0';
-                    checkedRows.push({
-                        orderNo: cells[2]?.textContent?.trim() || '',
-                        voucherId: cells[3]?.textContent?.trim() || '',
-                        orderAmount: parseFloat(orderAmount.replace('¥', '').replace(',', '')) || 0,
-                        verifyAmount: parseFloat(verifyAmount.replace('¥', '').replace(',', '')) || 0,
-                        diffAmount: parseFloat(diffAmount.replace('¥', '').replace(',', '')) || 0
-                    });
+                    if (tr) {
+                        const cells = tr.querySelectorAll('td');
+                        if (cells.length >= 12) {
+                            // 列顺序：勾选框(0)、序号(1)、订单号(2)、券码ID(3)、业务类型(4)、订单状态(5)、核销状态(6)、订单券码金额(7)、核销金额(8)、差异金额(9)、差异类型(10)、处理状态(11)
+                            const orderAmount = cells[7]?.textContent?.trim() || '0';
+                            const verifyAmount = cells[8]?.textContent?.trim() || '0';
+                            const diffAmount = cells[9]?.textContent?.trim() || '0';
+                            checkedRows.push({
+                                orderNo: cells[2]?.textContent?.trim() || '',
+                                voucherId: cells[3]?.textContent?.trim() || '',
+                                orderAmount: parseFloat(orderAmount.replace('¥', '').replace(/,/g, '')) || 0,
+                                verifyAmount: parseFloat(verifyAmount.replace('¥', '').replace(/,/g, '')) || 0,
+                                diffAmount: parseFloat(diffAmount.replace('¥', '').replace(/,/g, '')) || 0
+                            });
+                        }
+                    }
                 }
             });
             
@@ -3319,30 +4008,109 @@
             const totalVerify = checkedRows.reduce((sum, r) => sum + r.verifyAmount, 0);
             const totalDiff = totalOrder - totalVerify;
             
-            document.getElementById('diff-selected-count').textContent = checkedRows.length;
-            document.getElementById('diff-total-order-amount').textContent = '¥' + totalOrder.toFixed(2);
-            document.getElementById('diff-total-verify-amount').textContent = '¥' + totalVerify.toFixed(2);
-            document.getElementById('diff-total-diff-amount').textContent = '¥' + totalDiff.toFixed(2);
+            // 安全地更新元素
+            const elements = {
+                'diff-selected-count': checkedRows.length,
+                'diff-total-order-amount': '¥' + totalOrder.toFixed(2),
+                'diff-total-verify-amount': '¥' + totalVerify.toFixed(2),
+                'diff-total-diff-amount': '¥' + totalDiff.toFixed(2)
+            };
+            
+            Object.keys(elements).forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.textContent = elements[id];
+                }
+            });
             
             // 同步更新调账字段默认值
-            document.getElementById('diff-adjust-order-amount').value = totalOrder.toFixed(2);
-            document.getElementById('diff-adjust-verify-amount').value = totalVerify.toFixed(2);
-            document.getElementById('diff-adjust-diff-display').textContent = '¥' + totalDiff.toFixed(2);
+            const orderInput = document.getElementById('diff-adjust-order-amount');
+            const verifyInput = document.getElementById('diff-adjust-verify-amount');
+            const diffDisplay = document.getElementById('diff-adjust-diff-display');
+            
+            if (orderInput) orderInput.value = totalOrder.toFixed(2);
+            if (verifyInput) verifyInput.value = totalVerify.toFixed(2);
+            if (diffDisplay) diffDisplay.textContent = '¥' + totalDiff.toFixed(2);
+            
+            // Store original verify amount for settlement adjustment calculation
+            originalVerifyAmount = totalVerify;
+            
+            // Initialize settlement adjustment value display
+            const settlementValueDisplay = document.getElementById('diff-adjust-settlement-value');
+            if (settlementValueDisplay) {
+                settlementValueDisplay.textContent = '¥0.00';
+                settlementValueDisplay.className = 'text-sm font-bold text-neutral-700';
+            }
+            
+            // Hide warning initially
+            const warningEl = document.getElementById('diff-adjust-warning');
+            if (warningEl) {
+                warningEl.classList.add('hidden');
+            }
         }
 
         // 调账金额实时计算
+        let originalVerifyAmount = 0; // Store original verify amount for settlement adjustment calculation
+        
         function updateAdjustDiffDisplay() {
-            const orderAmount = parseFloat(document.getElementById('diff-adjust-order-amount').value) || 0;
-            const verifyAmount = parseFloat(document.getElementById('diff-adjust-verify-amount').value) || 0;
-            const diff = orderAmount - verifyAmount;
+            const orderAmountInput = document.getElementById('diff-adjust-order-amount');
+            const verifyAmountInput = document.getElementById('diff-adjust-verify-amount');
             const diffDisplay = document.getElementById('diff-adjust-diff-display');
-            diffDisplay.textContent = '¥' + diff.toFixed(2);
-            if (diff > 0) {
-                diffDisplay.className = 'text-sm font-bold text-red-600';
-            } else if (diff < 0) {
-                diffDisplay.className = 'text-sm font-bold text-blue-600';
-            } else {
-                diffDisplay.className = 'text-sm font-bold text-green-600';
+            const settlementValueDisplay = document.getElementById('diff-adjust-settlement-value');
+            const warningEl = document.getElementById('diff-adjust-warning');
+            const submitBtn = document.querySelector('#modal-diff-handle button[onclick*="submitDiffHandle"]');
+            
+            // 安全获取输入值
+            const orderAmount = orderAmountInput ? (parseFloat(orderAmountInput.value) || 0) : 0;
+            const verifyAmount = verifyAmountInput ? (parseFloat(verifyAmountInput.value) || 0) : 0;
+            
+            const diff = orderAmount - verifyAmount;
+            
+            // 更新调整后差异
+            if (diffDisplay) {
+                diffDisplay.textContent = '¥' + diff.toFixed(2);
+                if (diff > 0) {
+                    diffDisplay.className = 'text-sm font-bold text-red-600';
+                } else if (diff < 0) {
+                    diffDisplay.className = 'text-sm font-bold text-blue-600';
+                } else {
+                    diffDisplay.className = 'text-sm font-bold text-green-600';
+                }
+            }
+            
+            // Calculate settlement adjustment value (= verify amount change)
+            const settlementAdjustment = verifyAmount - originalVerifyAmount;
+            const sign = settlementAdjustment >= 0 ? '+' : '';
+            if (settlementValueDisplay) {
+                settlementValueDisplay.textContent = sign + '¥' + settlementAdjustment.toFixed(2);
+                
+                // Color for settlement adjustment value
+                if (settlementAdjustment > 0) {
+                    settlementValueDisplay.className = 'text-sm font-bold text-green-600';
+                } else if (settlementAdjustment < 0) {
+                    settlementValueDisplay.className = 'text-sm font-bold text-red-600';
+                } else {
+                    settlementValueDisplay.className = 'text-sm font-bold text-neutral-700';
+                }
+            }
+            
+            // Show/hide warning and enable/disable submit button
+            if (warningEl) {
+                if (diff !== 0) {
+                    warningEl.classList.remove('hidden');
+                    if (submitBtn) {
+                        submitBtn.disabled = true;
+                        submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                        submitBtn.classList.remove('hover:opacity-90');
+                    }
+                } else {
+                    warningEl.classList.add('hidden');
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                        submitBtn.classList.add('hover:opacity-90');
+                    }
+                }
             }
         }
 
@@ -3356,43 +4124,81 @@
             }
         }
 
-        function submitDiffHandle() {
-            const selectedAction = document.querySelector('input[name="diff-action"]:checked');
-            const note = document.getElementById('diff-handle-note').value;
-            
-            if (!selectedAction) {
-                alert('请选择处理方式');
-                return;
-            }
-            if (!note.trim()) {
-                alert('请输入处理说明');
-                return;
-            }
-            if (selectedAction.value === 'adjust') {
-                const orderAmount = document.getElementById('diff-adjust-order-amount').value;
-                const verifyAmount = document.getElementById('diff-adjust-verify-amount').value;
-                if (!orderAmount || !verifyAmount) {
-                    alert('请填写订单券码金额和券码核销金额');
+        function submitDiffHandle(event) {
+            try {
+                // 阻止按钮默认行为（防止页面跳转）
+                if (event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                
+                console.log('submitDiffHandle 开始执行');
+                
+                // 1. 获取所有需要的值
+                const selectedAction = document.querySelector('input[name="diff-action"]:checked');
+                const note = document.getElementById('diff-handle-note');
+                const noteValue = note ? note.value : '';
+                
+                console.log('selectedAction:', selectedAction);
+                console.log('noteValue:', noteValue);
+                
+                // 2. 验证处理方式
+                if (!selectedAction) {
+                    alert('请选择处理方式');
                     return;
                 }
+                
+                // 3. 验证处理说明
+                if (!noteValue.trim()) {
+                    alert('请输入处理说明');
+                    return;
+                }
+                
+                // 4. 验证调账金额（如果选择了手动调账）
+                if (selectedAction.value === 'adjust') {
+                    const orderAmountInput = document.getElementById('diff-adjust-order-amount');
+                    const verifyAmountInput = document.getElementById('diff-adjust-verify-amount');
+                    const orderAmount = orderAmountInput ? orderAmountInput.value : '';
+                    const verifyAmount = verifyAmountInput ? verifyAmountInput.value : '';
+                    
+                    console.log('orderAmount:', orderAmount);
+                    console.log('verifyAmount:', verifyAmount);
+                    
+                    if (!orderAmount || !verifyAmount) {
+                        alert('请填写订单券码金额和券码核销金额');
+                        return;
+                    }
+                }
+                
+                // 5. 获取处理类型文本
+                let typeText = '';
+                switch (selectedAction.value) {
+                    case 'adjust':
+                        typeText = '手动调账';
+                        break;
+                    case 'ignore':
+                        typeText = '忽略差异';
+                        break;
+                    case 'reconcile':
+                        typeText = '重新对账';
+                        break;
+                }
+                
+                console.log('typeText:', typeText);
+                
+                // 6. 直接关闭弹窗并显示成功提示（移除 confirm，避免内置浏览器兼容性问题）
+                console.log('准备关闭弹窗');
+                closeModal('modal-diff-handle');
+                
+                console.log('准备显示成功提示');
+                showSuccessModal('差异处理成功', `已${typeText}处理，结算单已重新生成，已短信通知商户`);
+                
+                console.log('submitDiffHandle 执行完成');
+                
+            } catch (error) {
+                console.error('submitDiffHandle 执行出错:', error);
+                alert('处理失败: ' + error.message);
             }
-            
-            closeModal('modal-diff-handle');
-            
-            let typeText = '';
-            switch (selectedAction.value) {
-                case 'adjust':
-                    typeText = '手动调账';
-                    break;
-                case 'ignore':
-                    typeText = '忽略差异';
-                    break;
-                case 'reconcile':
-                    typeText = '重新对账';
-                    break;
-            }
-            
-            showSuccessModal('差异处理成功', `已${typeText}处理，处理记录已保存`);
         }
 
         // 申诉处理功能（平台管理员）
@@ -3403,33 +4209,176 @@
                 adjustSection.classList.remove('hidden');
             } else {
                 adjustSection.classList.add('hidden');
+                // 清空调整金额
+                const adjustInput = document.getElementById('appeal-adjust-amount');
+                if (adjustInput) adjustInput.value = '';
+                document.getElementById('appeal-adjust-diff').textContent = '¥0.00';
             }
         }
 
-        function submitAppealProcess() {
+        // 计算申诉调整金额
+        function calculateAppealAdjustment() {
+            const originalAmount = 8000.00; // 原结算金额
+            const adjustInput = document.getElementById('appeal-adjust-amount');
+            const diffEl = document.getElementById('appeal-adjust-diff');
+            
+            if (adjustInput && diffEl) {
+                const adjustedAmount = parseFloat(adjustInput.value) || 0;
+                const diff = adjustedAmount - originalAmount;
+                
+                // 显示调整金额（带正负号）
+                if (diff > 0) {
+                    diffEl.textContent = `+¥${diff.toFixed(2)}`;
+                    diffEl.className = 'font-semibold text-green-600';
+                } else if (diff < 0) {
+                    diffEl.textContent = `-¥${Math.abs(diff).toFixed(2)}`;
+                    diffEl.className = 'font-semibold text-red-600';
+                } else {
+                    diffEl.textContent = '¥0.00';
+                    diffEl.className = 'font-semibold text-neutral-800';
+                }
+            }
+        }
+
+        // 更新申诉处理说明字符计数
+        function updateAppealNoteCount() {
+            const noteTextarea = document.getElementById('appeal-process-note');
+            const countEl = document.getElementById('appeal-note-count');
+            if (noteTextarea && countEl) {
+                countEl.textContent = noteTextarea.value.length;
+            }
+        }
+
+        // 显示申诉处理二次确认弹窗
+        function showAppealConfirmModal() {
             const selectedAction = document.querySelector('input[name="appeal-action"]:checked');
             const note = document.getElementById('appeal-process-note').value;
             
             if (!selectedAction) {
-                alert('请选择处理方式');
+                alert('请选择处理结果');
                 return;
             }
             if (!note.trim()) {
-                alert('请输入处理备注');
+                alert('请填写处理说明');
                 return;
             }
             if (selectedAction.value === 'pass') {
-                const adjustAmount = document.querySelector('#appeal-adjust-section input[type="number"]').value;
+                const adjustAmount = document.getElementById('appeal-adjust-amount').value;
                 if (!adjustAmount) {
-                    alert('请填写调整后金额');
+                    alert('请输入调整后金额');
                     return;
                 }
             }
             
+            // 填充二次确认弹窗内容
+            const resultEl = document.getElementById('appeal-confirm-result');
+            const amountSection = document.getElementById('appeal-confirm-amount-section');
+            const amountEl = document.getElementById('appeal-confirm-amount');
+            const diffSection = document.getElementById('appeal-confirm-diff-section');
+            const diffEl = document.getElementById('appeal-confirm-diff');
+            
+            if (selectedAction.value === 'pass') {
+                resultEl.textContent = '申诉通过';
+                resultEl.className = 'text-sm font-semibold text-green-600';
+                amountSection.classList.remove('hidden');
+                diffSection.classList.remove('hidden');
+                
+                const adjustedAmount = parseFloat(document.getElementById('appeal-adjust-amount').value) || 0;
+                const originalAmount = 8000.00;
+                const diff = adjustedAmount - originalAmount;
+                
+                amountEl.textContent = `¥${adjustedAmount.toFixed(2)}`;
+                if (diff > 0) {
+                    diffEl.textContent = `+¥${diff.toFixed(2)}`;
+                    diffEl.className = 'text-sm font-semibold text-green-600';
+                } else if (diff < 0) {
+                    diffEl.textContent = `-¥${Math.abs(diff).toFixed(2)}`;
+                    diffEl.className = 'text-sm font-semibold text-red-600';
+                } else {
+                    diffEl.textContent = '¥0.00';
+                    diffEl.className = 'text-sm font-semibold text-neutral-800';
+                }
+            } else {
+                resultEl.textContent = '申诉驳回';
+                resultEl.className = 'text-sm font-semibold text-red-600';
+                amountSection.classList.add('hidden');
+                diffSection.classList.add('hidden');
+            }
+            
+            openModal('modal-appeal-confirm');
+        }
+
+        function submitAppealProcess() {
+            const selectedAction = document.querySelector('input[name="appeal-action"]:checked');
+            
+            if (!selectedAction) {
+                alert('请选择处理结果');
+                return;
+            }
+            
+            // 关闭二次确认弹窗
+            closeModal('modal-appeal-confirm');
+            // 关闭申诉处理弹窗
             closeModal('modal-appeal-process');
             
             let actionText = selectedAction.value === 'pass' ? '申诉通过' : '申诉驳回';
             showSuccessModal('申诉处理成功', `已${actionText}，账单状态变更为"待确认"`);
+        }
+
+        // Update appeal alert bar content based on appeal status
+        function updateAppealAlert(appealStatus, appealHandleTime, appealResult, appealAdjustment) {
+            const alertBar = document.getElementById('appeal-alert-bar');
+            const alertText = document.getElementById('appeal-alert-text');
+            const alertLink = document.getElementById('appeal-alert-link');
+            const alertLinkText = document.getElementById('appeal-alert-link-text');
+
+            if (!alertBar || !alertText || !alertLink || !alertLinkText) return;
+
+            // Reset
+            alertBar.classList.add('hidden');
+            alertLink.classList.add('hidden');
+
+            // Only show when appeal is handled and adjustment amount != 0
+            if (appealStatus === 'handled' && appealAdjustment && appealAdjustment !== 0) {
+                let timeStr = appealHandleTime || '2026-05-11 09:15:30';
+                let resultText = appealResult === 'approved' ? '申诉通过' : '申诉驳回';
+                let adjustText = appealAdjustment > 0 ? `+¥${appealAdjustment.toFixed(2)}` : `-¥${Math.abs(appealAdjustment).toFixed(2)}`;
+
+                alertText.textContent = `该结算单曾存在申诉，已于 ${timeStr} ${resultText}并调整结算金额，调账金额：${adjustText}，调账金额分摊明细需相关方线下确认。`;
+                alertLinkText.textContent = '查看申诉详情';
+                alertLink.classList.remove('hidden');
+                alertBar.classList.remove('hidden');
+            }
+        }
+
+        // Show appeal detail from alert bar
+        function showAppealDetailFromAlert(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            showAppealDetail('handled');
+        }
+
+        // Show appeal detail modal (unified)
+        function showAppealDetail(appealStatus) {
+            // Set appeal info
+            const statusEl = document.getElementById('appeal-detail-status');
+            const statusText = appealStatus === 'appealing' ? '申诉中' : '已处理';
+            const statusClass = appealStatus === 'appealing' ? 'bg-red-50 text-red-600' : 'bg-green-50 text-green-600';
+            if (statusEl) {
+                statusEl.textContent = statusText;
+                statusEl.className = `inline-block px-3 py-0.5 ${statusClass} text-xs`;
+                statusEl.style.cssText = 'border-radius: 12px; height: 24px; line-height: 16px;';
+            }
+
+            // Set process info (only when handled)
+            const processSection = document.getElementById('appeal-detail-process-section');
+            if (appealStatus === 'handled') {
+                processSection.classList.remove('hidden');
+            } else {
+                processSection.classList.add('hidden');
+            }
+
+            openModal('modal-appeal-detail');
         }
 
         // Make all new functions globally available
@@ -3464,7 +4413,13 @@
         window.openDeleteAccount = openDeleteAccount;
         window.confirmDeleteAccount = confirmDeleteAccount;
         window.toggleAppealAdjustAmount = toggleAppealAdjustAmount;
+        window.calculateAppealAdjustment = calculateAppealAdjustment;
+        window.updateAppealNoteCount = updateAppealNoteCount;
+        window.showAppealConfirmModal = showAppealConfirmModal;
         window.submitAppealProcess = submitAppealProcess;
+        window.showAppealDetailFromAlert = showAppealDetailFromAlert;
+        window.showAppealDetail = showAppealDetail;
+        window.updateAppealAlert = updateAppealAlert;
     </script>
 </body>
 </html>
